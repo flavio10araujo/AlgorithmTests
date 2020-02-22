@@ -1,3 +1,4 @@
+package General;
 
 // Java recursive program to solve tower of hanoi puzzle. 
 class TowerOfHanoi {
