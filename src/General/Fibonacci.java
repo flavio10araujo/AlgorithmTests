@@ -4,8 +4,9 @@ package General;
 class Fibonacci {
 	public static void main(String args[]) {
 		int n = 8;
-		System.out.println(fibSolution01(n));
+		//System.out.println(fibSolution01(n));
 		//System.out.println(fibSolution02(n));
+		System.out.println(fibSolution03(n));
 	}
 	
 	/**
@@ -24,7 +25,7 @@ class Fibonacci {
 	}
 	
 	/**
-	 * Solução usando Dynamic Programming.
+	 * Solução usando Dynamic Programming com Memoization.
 	 * Essa solução é melhor que a 01 porque evita de refazer um cálculo que já foi feito.
 	 */
 	private static int fibSolution02(int n) {
@@ -47,5 +48,23 @@ class Fibonacci {
 
 	    memoize[n] = CalculateFibonacciRecursive(memoize, n-1) + CalculateFibonacciRecursive(memoize, n-2);
 	    return memoize[n];
-	  }
+	}
+	
+	/**
+	 * Solução usando Dynamic Programming com Tabulation.
+	 */
+	private static int fibSolution03(int n) {
+		int dp[] = new int[n + 1];
+
+		// base cases
+		dp[0] = 0;
+		dp[1] = 1;
+
+		for (int i = 2; i <= n; i++) {
+			dp[i] = dp[i - 1] + dp[i - 2];
+			System.out.println("dp[i] = dp[i - 1] + dp[i - 2] => dp["+i+"]=" + dp[i] + " dp["+i+" - 1]=" + dp[i - 1] + " dp["+i+" - 2]=" + dp[i - 2]);
+		}
+
+		return dp[n];
+	}
 }
