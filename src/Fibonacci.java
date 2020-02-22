@@ -2,7 +2,11 @@
 // Ex.: 0 1 1 2 3 5 8 13 = the next will be 21.
 class Fibonacci {
 	static int fib(int n) {
+		
+		System.out.println("n = " + n);
+		
 		if (n <= 1) {
+			System.out.println("entrou no if");
 			return n;
 		}
 		
