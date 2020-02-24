@@ -63,10 +63,9 @@ public class QuickSort {
 	// Driver program
 	public static void main(String args[]) {
 		int arr[] = { 64, 34, 25, 12, 22, 11, 90, 1, 29 };
-		int n = arr.length;
 		System.out.println("Quick Sort:");
 		QuickSort ob = new QuickSort();
-		ob.sort(arr, 0, n - 1);
+		ob.sort(arr, 0, arr.length - 1);
 		printArray(arr);
 	}
 }
