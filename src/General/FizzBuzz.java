@@ -1,24 +1,28 @@
 package General;
-import java.util.ArrayList;
+
 import java.util.HashMap;
-import java.util.List;
+import java.util.Hashtable;
 
 /*
 Write a program that outputs the string representation of numbers from 1 to n.
 
-But for multiples of three it should output “Fizz” instead of the number and for the multiples of five output “Buzz”. 
-For numbers which are multiples of both three and five output “FizzBuzz”.
+But for multiples of three it should output Fizz instead of the number and for the multiples of five output Buzz. 
+For numbers which are multiples of both three and five output FizzBuzz.
  */
 public class FizzBuzz {
 
 	public static void main(String[] args) {
-		FizzBuzz fb = new FizzBuzz();
 		int n = 15;
-		// fb.doFizzBuzzNaiveSolution(n);
-		//fb.doFizzBuzzConcatSolution(n);
-		fb.dofizzBuzzHashTableSolution(n);
+		//FizzBuzz.doFizzBuzzNaiveSolution(n);
+		//FizzBuzz.doFizzBuzzConcatSolution(n);
+		FizzBuzz.dofizzBuzzHashMapSolution(n);
 	}
 
+	/**
+	 * Time complexity linear: O(n).
+	 * @param n
+	 */
+	@SuppressWarnings("unused")
 	private static void doFizzBuzzNaiveSolution(int n) {
 		boolean fizz = false;
 		boolean buzz = false;
@@ -48,14 +52,13 @@ public class FizzBuzz {
 	}
 
 	/**
-	 * This solution is better than NaiveSolution because we have less ifs and
-	 * is simpler to change if in the future we want to add new conditions, for
-	 * example, "jack" when the n is divisible by 7.
-	 * 
+	 * This solution is better than NaiveSolution because we have less ifs 
+	 * and is simpler to change if in the future we want to add new conditions, for example, "jack" when the n is divisible by 7.
+	 * Time complexity linear: O(n).
 	 * @param n
 	 */
+	@SuppressWarnings("unused")
 	private static void doFizzBuzzConcatSolution(int n) {
-
 		String print = "";
 
 		for (int i = 1; i <= n; i++) {
@@ -73,11 +76,11 @@ public class FizzBuzz {
 	}
 
 	/**
-	 * This solution is an improvement for the Concat Solution. With the Hash
-	 * Table, we can add future conditions without changing the code. For
-	 * example, we can add 7=Jack.
+	 * This solution is an improvement for the ConcatSolution. 
+	 * With the Hash Map, we can add future conditions without changing the code. For example, we can add 7=Jack.
+	 * Time complexity linear: O(n).
 	 */
-	private static void dofizzBuzzHashTableSolution(int n) {
+	private static void dofizzBuzzHashMapSolution(int n) {
 
 		// Hash map to store all fizzbuzz mappings.
 		HashMap<Integer, String> fizzBizzDict = new HashMap<Integer, String>() {
@@ -88,26 +91,34 @@ public class FizzBuzz {
 			}
 		};
 		
+		/*
+		Hashtable<Integer, String> fizzBizzDict = new Hashtable<Integer, String>() {
+			{
+				put(3, "Fizz");
+				put(5, "Buzz");
+				put(7, "Jack");
+			}
+		};
+		*/
+		
 		String print = "";
 
 		for (int i = 1; i <= n; i++) {
 
 			for (Integer key : fizzBizzDict.keySet()) {
-
-				// If the num is divisible by key,
-				// then add the corresponding string mapping to current
-				// numAnsStr
+				// If the num is divisible by key, then add the corresponding string mapping to current print.
 				if (i % key == 0) {
 					print += fizzBizzDict.get(key);
 				}
 			}
 
-			if (print.equals("")) {
-				// Not divisible by 3 or 5, add the number
-				print += Integer.toString(i);
+			if ("".equals(print)) {
+				// Not divisible by any value in the HashMap, show the number.
+				System.out.println(i);
+			} else {
+				System.out.println(print);
 			}
 
-			System.out.println("".equals(print) ? i : print);
 			print = "";
 		}
 	}
