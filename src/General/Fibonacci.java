@@ -5,11 +5,16 @@ package General;
 // We want to know the next number in the list.
 // Answer: 21.
 class Fibonacci {
+	
+	private static int counter = 0;
+	
 	public static void main(String args[]) {
 		int n = 8;
 		//System.out.println(fibSolution01(n)); // Solution with recursion.
 		//System.out.println(fibSolution02(n)); // Solution with dynamic programming and memoization.
 		System.out.println(fibSolution03(n)); // Solution with dynamic programming and tabulation.
+		
+		System.out.println("Counter = " + counter);
 	}
 
 	/**
@@ -18,10 +23,10 @@ class Fibonacci {
 	 */
 	@SuppressWarnings("unused")
 	private static int fibSolution01(int n) {
+		counter++;
 		System.out.println("n = " + n);
 
 		if (n <= 1) {
-			System.out.println("inside the if");
 			return n;
 		}
 
@@ -40,10 +45,10 @@ class Fibonacci {
 	}
 
 	private static int calculateFibonacciRecursive(int[] memoize, int n) {
+		counter++;
 		System.out.println("n = " + n);
 
 		if (n <= 1) {
-			System.out.println("inside the if");
 			return n;
 		}
 
@@ -68,8 +73,9 @@ class Fibonacci {
 		dp[1] = 1;
 
 		for (int i = 2; i <= n; i++) {
+			counter++;
 			dp[i] = dp[i - 1] + dp[i - 2];
-			System.out.println("dp[i] = dp[i - 1] + dp[i - 2] => dp["+i+"]=" + dp[i] + " dp["+i+" - 1]=" + dp[i - 1] + " dp["+i+" - 2]=" + dp[i - 2]);
+			//System.out.println("dp[i] = dp[i - 1] + dp[i - 2] => dp["+i+"]=" + dp[i] + " dp["+i+" - 1]=" + dp[i - 1] + " dp["+i+" - 2]=" + dp[i - 2]);
 		}
 
 		return dp[n];
