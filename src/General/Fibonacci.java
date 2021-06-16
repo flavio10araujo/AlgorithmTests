@@ -1,17 +1,20 @@
 package General;
 
-// Fibonacci series using recursion.
-// Ex.: 0 1 1 2 3 5 8 13 = the next one will be 21.
+// Fibonacci solved with three different approaches.
+// We have the list: 0 1 1 2 3 5 8 13.
+// We want to know the next number in the list.
+// Answer: 21.
 class Fibonacci {
 	public static void main(String args[]) {
 		int n = 8;
-		//System.out.println(fibSolution01(n));
-		//System.out.println(fibSolution02(n));
-		System.out.println(fibSolution03(n));
+		//System.out.println(fibSolution01(n)); // Solution with recursion.
+		//System.out.println(fibSolution02(n)); // Solution with dynamic programming and memoization.
+		System.out.println(fibSolution03(n)); // Solution with dynamic programming and tabulation.
 	}
 
 	/**
 	 * Solution with recursion.
+	 * Time complexity - exponential: O(2 ^ n).
 	 */
 	@SuppressWarnings("unused")
 	private static int fibSolution01(int n) {
@@ -28,17 +31,18 @@ class Fibonacci {
 	/**
 	 * Solution with dynamic programming and memoization.
 	 * This solution is better than the 01 because it avoids making the same calculation more than once.
+	 * Time complexity - linear: O(n).
 	 */
 	@SuppressWarnings("unused")
 	private static int fibSolution02(int n) {
 		int memoize[] = new int[n + 1];
-		return CalculateFibonacciRecursive(memoize, n);
+		return calculateFibonacciRecursive(memoize, n);
 	}
 
-	private static int CalculateFibonacciRecursive(int[] memoize, int n) {
+	private static int calculateFibonacciRecursive(int[] memoize, int n) {
 		System.out.println("n = " + n);
 
-		if (n < 2) {
+		if (n <= 1) {
 			System.out.println("inside the if");
 			return n;
 		}
@@ -48,13 +52,14 @@ class Fibonacci {
 			return memoize[n];
 		}
 
-		memoize[n] = CalculateFibonacciRecursive(memoize, n - 1) + CalculateFibonacciRecursive(memoize, n - 2);
+		memoize[n] = calculateFibonacciRecursive(memoize, n - 1) + calculateFibonacciRecursive(memoize, n - 2);
 		
 		return memoize[n];
 	}
 
 	/**
 	 * Solution with dynamic programming and tabulation.
+	 * Time complexity - linear: O(n).
 	 */
 	private static int fibSolution03(int n) {
 		int dp[] = new int[n + 1];
