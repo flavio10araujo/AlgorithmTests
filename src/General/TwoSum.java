@@ -9,40 +9,46 @@ import java.util.HashSet;
  */
 public class TwoSum {
 	public static void main(String[] args) {
-		TwoSum t = new TwoSum();
 		//int[] a = { 1 };
 		int[] a = { 3, 5, 2, -4, 8, 11, 7 };
-		int s = 7;
-		t.calcTwoSumSolution02(a, s);
+		int S = 7;
+		//TwoSum.solution01(a, S);
+		TwoSum.solution02(a, S);
 	}
 	
-	private static int calcTwoSumSolution01(int[] a, int s){
-		int sum = 0;
-		
+	/**
+	 * Time complexity linearithmic: O(n log n).
+	 * 
+	 * @param a
+	 * @param S
+	 */
+	private static void solution01(int[] a, int S){
 		for (int i = 0; i < a.length; i++) {
 			for (int j = i + 1; j < a.length; j++) {
-				if (a[i] + a[j] == 7) {
-					System.out.println(a[i] + " e " + a[j]);
+				if (a[i] + a[j] == S) {
+					System.out.println(a[i] + ", " + a[j]);
 				}
 			}
 		}
-		
-		return sum;
 	}
 	
-	private static int calcTwoSumSolution02(int[] a, int s) {
-		int sum = 0;
-		
+	/**
+	 * Time complexity linear: O(n).
+	 * 
+	 * The HashSet offers constant time performance for the basic operations: add, remove, contains and size.
+	 * 
+	 * @param a
+	 * @param S
+	 */
+	private static void solution02(int[] a, int S) {
 		HashSet<Integer> nums = new HashSet<Integer>();
 		
 		for (int i = 0; i < a.length; i++) {
 			nums.add(a[i]);
 			
-			if (nums.contains(s - a[i])) {
-				System.out.println(a[i] + " and " + (s - a[i]));
+			if (nums.contains(S - a[i])) {
+				System.out.println(a[i] + ", " + (S - a[i]));
 			}
 		}
-		
-		return sum;
 	}
 }
