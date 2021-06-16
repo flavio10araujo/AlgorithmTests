@@ -1,22 +1,26 @@
 package General;
 
+/**
+ * 
+ * Two different solutions to find the factorial of a number.
+ * For example: n = 7
+ * Answer: 7 * 6 * 5 * 4 * 3 * 2 * 1 = 5040.
+ *
+ */
 public class Factorial {
 
 	public static void main(String[] args) {
-		
-		Factorial f = new Factorial();
 		int n = 7;
-		
-		System.out.println(f.calculateFactorialSolution01(n));
-		System.out.println(f.calculateFactorialSolution02(n));
+		//System.out.println(Factorial.calculateFactorialSolution01(n));
+		System.out.println(Factorial.calculateFactorialSolution02(n));
 	}
 
 	/**
-	 * Ex.: n = 4, 4 * 3 * 2 * 1 = 24.
-	 * 
+	 * Time complexity linear: O(n).
 	 * @param n
 	 * @return
 	 */
+	@SuppressWarnings("unused")
 	private static int calculateFactorialSolution01(int n) {
 		int sum = 1;
 		
@@ -29,7 +33,8 @@ public class Factorial {
 	}
 	
 	/**
-	 * Usando recursividade.
+	 * With recursion.
+	 * Time complexity linear: O(n).
 	 * @param n
 	 * @return
 	 */
@@ -38,6 +43,6 @@ public class Factorial {
 			return 1;
 		}
 		
-		return n * calculateFactorialSolution02(n-1);
+		return n * calculateFactorialSolution02(n - 1);
 	}
 }
