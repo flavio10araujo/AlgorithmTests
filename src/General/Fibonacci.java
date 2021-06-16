@@ -1,6 +1,7 @@
 package General;
-// Fibonacci Series using Recursion.
-// Ex.: 0 1 1 2 3 5 8 13 = the next will be 21.
+
+// Fibonacci series using recursion.
+// Ex.: 0 1 1 2 3 5 8 13 = the next one will be 21.
 class Fibonacci {
 	public static void main(String args[]) {
 		int n = 8;
@@ -8,54 +9,55 @@ class Fibonacci {
 		//System.out.println(fibSolution02(n));
 		System.out.println(fibSolution03(n));
 	}
-	
+
 	/**
-	 * Solução usando recursividade.
+	 * Solution with recursion.
 	 */
+	@SuppressWarnings("unused")
 	private static int fibSolution01(int n) {
-		
 		System.out.println("n = " + n);
-		
+
 		if (n <= 1) {
-			System.out.println("entrou no if");
+			System.out.println("inside the if");
 			return n;
 		}
-		
+
 		return fibSolution01(n - 1) + fibSolution01(n - 2);
 	}
-	
+
 	/**
-	 * Solução usando Dynamic Programming com Memoization.
-	 * Essa solução é melhor que a 01 porque evita de refazer um cálculo que já foi feito.
+	 * Solution with dynamic programming and memoization.
+	 * This solution is better than the 01 because it avoids making the same calculation more than once.
 	 */
+	@SuppressWarnings("unused")
 	private static int fibSolution02(int n) {
-	    int memoize[] = new int[n+1];
-	    return CalculateFibonacciRecursive(memoize, n);
-	  }
-	
+		int memoize[] = new int[n + 1];
+		return CalculateFibonacciRecursive(memoize, n);
+	}
+
 	private static int CalculateFibonacciRecursive(int[] memoize, int n) {
-		
 		System.out.println("n = " + n);
-		
+
 		if (n < 2) {
-			System.out.println("entrou no if");
+			System.out.println("inside the if");
 			return n;
 		}
 
-	    // if we have already solved this subproblem, simply return the result from the cache
-	    if(memoize[n] != 0)
-	      return memoize[n];
+		// If we have already solved this subproblem, simply return the result from the cache.
+		if (memoize[n] != 0) {
+			return memoize[n];
+		}
 
-	    memoize[n] = CalculateFibonacciRecursive(memoize, n-1) + CalculateFibonacciRecursive(memoize, n-2);
-	    return memoize[n];
+		memoize[n] = CalculateFibonacciRecursive(memoize, n - 1) + CalculateFibonacciRecursive(memoize, n - 2);
+		
+		return memoize[n];
 	}
-	
+
 	/**
-	 * Solução usando Dynamic Programming com Tabulation.
+	 * Solution with dynamic programming and tabulation.
 	 */
 	private static int fibSolution03(int n) {
 		int dp[] = new int[n + 1];
-
 		// base cases
 		dp[0] = 0;
 		dp[1] = 1;
