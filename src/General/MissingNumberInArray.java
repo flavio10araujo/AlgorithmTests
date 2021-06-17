@@ -2,6 +2,8 @@ package General;
 
 import java.util.BitSet;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 /**
  * 
  * Program to find missing elements in an Integer array containing numbers from 1 to 100.
@@ -26,6 +28,11 @@ public class MissingNumberInArray {
 
 		// Three missing numbers.
 		printMissingNumbers(new int[]{2, 1, 9, 4, 6, 3, 8}, 10);
+		
+		// Third approach.
+		// The same than the second approach, but using an BitSet.
+		// The BitSet uses less memory than an array of booleans.
+		printMissingNumbersBitSet(new int[]{2, 1, 9, 4, 6, 3, 8}, 10);
 	}
 
 	/**
@@ -35,6 +42,8 @@ public class MissingNumberInArray {
 	 * @param qtd
 	 */
 	private static void getMissingNumber(int[] a, int qtd) {
+		System.out.println("*** First approach ***");
+		
 		int totalCountExpected = qtd, totalCountArray = 0;
 
 		if (totalCountExpected % 2 == 0) {
@@ -57,6 +66,29 @@ public class MissingNumberInArray {
 	 * This method will work even if array has more than one missing element.
 	 */
 	private static void printMissingNumbers(int[] numbers, int count) {
+		System.out.println("*** Second approach - using boolean[] ***");
+		
+		boolean[] values = new boolean[count];
+		
+		for (int number : numbers) {
+			values[number - 1] = true;
+		}
+		
+		for (int i = 0; i < count; i++) {
+			if (!values[i]) {
+				System.out.println(i + 1);
+			}
+		}
+	}
+	
+	/**
+	 * Third approach - it works for no matter the quantity of missing numbers.
+	 * This is the best approach because it uses a BitSet, which uses less memory than an array of booleans.
+	 * 
+	 */
+	private static void printMissingNumbersBitSet(int[] numbers, int count) {
+		System.out.println("*** Third approach - using BitSet ***");
+		
 		int missingCount = count - numbers.length; // The number of missing values.
 		BitSet bitSet = new BitSet(count);
 		
