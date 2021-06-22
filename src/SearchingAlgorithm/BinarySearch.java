@@ -17,6 +17,7 @@ public class BinarySearch {
 		BinarySearch.solution01(a, searchingFor);
 		BinarySearch.solution02(a, searchingFor);
 		BinarySearch.solution03(a, searchingFor);
+		BinarySearch.solution04(a, searchingFor);
 	}
 	
 	/**
@@ -149,4 +150,19 @@ public class BinarySearch {
         // We reach here when element is not present in array.
         return -1;
     }
+	
+	/**
+	 * Using Arrays.binarySearch()
+	 */
+	public static void solution04(int[] a, int searchingFor) {
+		System.out.println("### Solution 04 - Arrays.binarySearch(a, searchingFor) ###");
+		
+		int position = Arrays.binarySearch(a, searchingFor);
+		
+		if (position >= 0) {
+			System.out.println("The element " + searchingFor + " is in the position " + position + " in the array " + Arrays.toString(a) + ".");
+		} else {
+			System.out.println("The element " + searchingFor + " is not in the array " + Arrays.toString(a) + ".");
+		}
+	}
 }
