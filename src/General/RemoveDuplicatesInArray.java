@@ -17,7 +17,7 @@ public class RemoveDuplicatesInArray {
 		List<String> duplicateList = (List<String>) Arrays.asList("Android" , "Android", "iOS", "Windows mobile");
 		
 		// First solution : using HashSet.
-		//RemoveDuplicatesInArray.removeDuplicatesWithHashSet(duplicateList);
+		RemoveDuplicatesInArray.removeDuplicatesWithHashSet(duplicateList);
 		
 		// Second solution : using LinkedHashSet.
 		RemoveDuplicatesInArray.removeDuplicatesWithLinkedHashSet(duplicateList);
@@ -25,7 +25,7 @@ public class RemoveDuplicatesInArray {
 	
 	/**
 	 * The first approach to remove duplicates in a list is to convert the list to HashSet.
-	 * HashSet don't insert the items in order. So you will end up with a list without duplicates but in a different order.
+	 * HashSet doesn't insert the items in order. So you will end up with a list without duplicates but in a different order.
 	 * 
 	 * @param duplicateList
 	 */
