@@ -1,7 +1,8 @@
 package SortingAlgorithm;
 
 public class BubbleSort {
-	void bubbleSort(int arr[]) {
+	
+	void sort(int arr[]) {
 		int n = arr.length;
 		boolean swapped = false;
 		
@@ -29,7 +30,6 @@ public class BubbleSort {
 		}
 	}
 
-	// Prints the array.
 	void printArray(int arr[]) {
 		int n = arr.length;
 		for (int i = 0; i < n; ++i)
@@ -37,13 +37,11 @@ public class BubbleSort {
 		System.out.println();
 	}
 
-	// Driver method to test above.
 	public static void main(String args[]) {
 		BubbleSort ob = new BubbleSort();
-		int arr[] = { 64, 34, 25, 12, 22, 11, 90, 1, 29, 91, 92, 93, 94 };
+		int arr[] = { 64, 34, 25, 12, 22, 11, 1 };
 		System.out.println("Bubble Sort:");
 		ob.printArray(arr);
-		ob.bubbleSort(arr);
-		ob.printArray(arr);
+		ob.sort(arr);
 	}
 }
