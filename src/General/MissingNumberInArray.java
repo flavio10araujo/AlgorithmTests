@@ -2,8 +2,6 @@ package General;
 
 import java.util.BitSet;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
 /**
  * 
  * Program to find missing elements in an Integer array containing numbers from 1 to 100.
@@ -68,6 +66,7 @@ public class MissingNumberInArray {
 	private static void printMissingNumbers(int[] numbers, int count) {
 		System.out.println("*** Second approach - using boolean[] ***");
 		
+		// bollean[] uses 16 Bytes for the header of the array + 1 Byte for each element of the array.
 		boolean[] values = new boolean[count];
 		
 		for (int number : numbers) {
@@ -90,6 +89,7 @@ public class MissingNumberInArray {
 		System.out.println("*** Third approach - using BitSet ***");
 		
 		int missingCount = count - numbers.length; // The number of missing values.
+		// BitSet uses 24 Bytes for the header of the Object + 1 Byte for each 8 elements.
 		BitSet bitSet = new BitSet(count);
 		
 		for (int number : numbers) {
