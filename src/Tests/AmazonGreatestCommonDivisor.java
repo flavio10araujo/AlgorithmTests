@@ -30,6 +30,7 @@ public class AmazonGreatestCommonDivisor {
 		System.out.println(solution01(num, arr));
 		System.out.println(solution02(num, arr));
 		System.out.println(solution03(num, arr));
+		System.out.println(solution04(num, arr));
 	}
 	
 	/**
@@ -48,6 +49,8 @@ public class AmazonGreatestCommonDivisor {
 	 * @return
 	 */
 	public static int solution01(int num, int[] arr) {
+		System.out.println("### Solution 01 - gcdByBruteForce ###");
+		
 		int gcd = gcdByBruteForce(arr[0], arr[1]);
 		
 		for (int i = 2; i < arr.length; i++) {
@@ -80,6 +83,8 @@ public class AmazonGreatestCommonDivisor {
 	 * @return
 	 */
 	public static int solution02(int num, int[] arr) {
+		System.out.println("### Solution 02 - gcdByEuclidsAlgorithm ###");
+		
 		int gcd = gcdByEuclidsAlgorithm(arr[0], arr[1]);
 		
 		for (int i = 2; i < arr.length; i++) {
@@ -99,22 +104,18 @@ public class AmazonGreatestCommonDivisor {
 	 * @return
 	 */
 	public static int gcdByEuclidsAlgorithm(int n1, int n2) {
-	    
 		if (n1 == n2) {
 			return n1;
 		} else if (n1 > n2) {
-			n1 = (n1 - n2);
+			return gcdByEuclidsAlgorithm((n1 - n2), n2);
 		} else {
 			// n2 > n1
-			n2 = (n2 - n1);
+			return gcdByEuclidsAlgorithm(n1, (n2 - n1));
 		}
-		
-	    return gcdByEuclidsAlgorithm(n1, n2);
 	}
 	
 	/**
-	 * Second approach: We can use Euclid's algorithm to find the GCD.
-	 * The Euclidean algorithm is based on the following key observation: if d divides a and d divides b, then d also divides a - b. 
+	 * Third approach: small modification of Euclid's algorithm.
 	 * In this implementation we'll use modulo instead of subtraction since it's basically many subtractions at a time.
 	 * 
 	 * Time complexity: O(log min(n1, n2)).
@@ -124,6 +125,8 @@ public class AmazonGreatestCommonDivisor {
 	 * @return
 	 */
 	public static int solution03(int num, int[] arr) {
+		System.out.println("### Solution 03 - gcdByEuclidsAlgorithmWithModulo ###");
+		
 		int gcd = gcdByEuclidsAlgorithmWithModulo(arr[0], arr[1]);
 		
 		for (int i = 2; i < arr.length; i++) {
@@ -138,5 +141,73 @@ public class AmazonGreatestCommonDivisor {
 	        return n1;
 	    }
 	    return gcdByEuclidsAlgorithmWithModulo(n2, n1 % n2);
+	}
+	
+	/**
+	 * Fourth approach: We can use Stein's algorithm to find the GCD.
+	 * 
+	 * Time complexity: When n1 > n2 is O((log2 n1) ^ 2); When n1 < n2, it is O((log2 n2) ^ 2).
+	 * 
+	 * @param num
+	 * @param arr
+	 * @return
+	 */
+	public static int solution04(int num, int[] arr) {
+		System.out.println("### Solution 04 - gcdBySteinsAlgorithm ###");
+		
+		int gcd = gcdBySteinsAlgorithm(arr[0], arr[1]);
+		
+		for (int i = 2; i < arr.length; i++) {
+			gcd = gcdBySteinsAlgorithm(gcd, arr[i]);
+		}
+	    
+	    return gcd;
+	}
+	
+	/**
+	 * Step 1: If a = b, stop -- the GCD of a and a is, of course, a. Otherwise, go to step 2.
+	 * Step 2: If a and b are both even, replace a with a/2, b with b/2, and increment a counter.
+	 * Step 3: If a is even and b is odd, replace a with a/2.
+	 * Step 4: If a is odd and b is even, replace b with b/2.
+	 * Step 5: If a and b are both odd, replace a with a - b.
+	 * 
+	 * @param n1
+	 * @param n2
+	 * @return
+	 */
+	public static int gcdBySteinsAlgorithm(int n1, int n2) {
+	    if (n1 == 0) {
+	        return n2;
+	    }
+
+	    if (n2 == 0) {
+	        return n1;
+	    }
+
+	    int n;
+	    for (n = 0; ((n1 | n2) & 1) == 0; n++) {
+	        n1 >>= 1;
+	        n2 >>= 1;
+	    }
+
+	    while ((n1 & 1) == 0) {
+	        n1 >>= 1;
+	    }
+
+	    do {
+	        while ((n2 & 1) == 0) {
+	            n2 >>= 1;
+	        }
+
+	        if (n1 > n2) {
+	            int temp = n1;
+	            n1 = n2;
+	            n2 = temp;
+	        }
+	        
+	        n2 = (n2 - n1);
+	    } while (n2 != 0);
+	    
+	    return n1 << n;
 	}
 }
