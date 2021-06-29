@@ -11,6 +11,8 @@ import java.util.LinkedList;
  * The only catch here is, unlike trees, graphs may contain cycles, so we may come to the same node again.
  * To avoid processing a node more than once, we use a boolean visited array.
  * For simplicity, it is assumed that all vertices are reachable from the starting vertex.
+ * 
+ * Time Complexity: O(V + E) where V is the number of vertices in the graph and E is the number of edges in the graph.
  */
 class BreadthFirstSearch {
 	private int V; // No. of vertices/nodes.
