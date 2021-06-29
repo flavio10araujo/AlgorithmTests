@@ -2,6 +2,8 @@ package SearchingAlgorithm.Tree;
 
 /**
  * Level order traversal of a tree is the BFS for a tree.
+ * Time Complexity: O(n ^ 2) in worst case.
+ * Space Complexity: O(n) in worst case.
  */
 public class LevelOrderBinaryTreeTraversal {
 	// Root of the Binary Tree.
@@ -77,15 +79,5 @@ public class LevelOrderBinaryTreeTraversal {
             printCurrentLevel(root.left, level - 1);
             printCurrentLevel(root.right, level - 1);
         }
-    }
-}
-
-class Node {
-    int data;
-    Node left, right;
-    
-    public Node(int item) {
-        data = item;
-        left = right = null;
     }
 }
