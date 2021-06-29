@@ -1,4 +1,4 @@
-package GraphAlgorithm;
+package SearchingAlgorithm.Graph;
 
 import java.util.Iterator;
 import java.util.LinkedList;

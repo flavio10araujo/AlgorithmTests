@@ -1,10 +1,17 @@
-package GraphAlgorithm;
+package SearchingAlgorithm.Graph;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
 // This class represents a directed graph using adjacency list representation.
 // https://www.tutorialspoint.com/data_structures_algorithms/breadth_first_traversal.htm
+
+/**
+ * Breadth First Search (or Traversal) for a graph is similar to BFS of a tree.
+ * The only catch here is, unlike trees, graphs may contain cycles, so we may come to the same node again.
+ * To avoid processing a node more than once, we use a boolean visited array.
+ * For simplicity, it is assumed that all vertices are reachable from the starting vertex.
+ */
 class BreadthFirstSearch {
 	private int V; // No. of vertices
 	private LinkedList<Integer> adj[]; // Adjacency Lists
