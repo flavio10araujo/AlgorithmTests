@@ -6,49 +6,64 @@ import java.util.LinkedList;
 // This class represents a directed graph using adjacency list representation.
 // https://www.tutorialspoint.com/data_structures_algorithms/depth_first_traversal.htm
 class DepthFirstSearch {
-	private int V; // No. of vertices
-
-	// Array of lists for Adjacency List Representation
+	private int V; // No. of vertices/nodes.
+	// Array of lists for Adjacency List Representation.
+	// adj [ 
+	//      0 : [1, 2] 
+	//      1 : [2]
+	//      2 : [0, 3]
+	//      3 : [3]
+	//     ]
 	private LinkedList<Integer> adj[];
 
-	// Constructor
 	DepthFirstSearch(int v) {
 		V = v;
 		adj = new LinkedList[v];
-		for (int i = 0; i < v; ++i)
-			adj[i] = new LinkedList();
+
+		for (int i = 0; i < v; ++i) {
+			adj[i] = new LinkedList<Integer>();
+		}
 	}
 
-	// Function to add an edge into the graph
+	// Function to add an edge into the graph.
 	void addEdge(int v, int w) {
 		adj[v].add(w); // Add w to v's list.
 	}
 
-	// A function used by DFS
+	// The function to do DFS traversal. It uses recursive DFSUtil().
+	void DFS(int v) {
+		// Mark all the vertices as not visited (set as false by default in java).
+		boolean visited[] = new boolean[V];
+		// Call the recursive helper function to print DFS traversal.
+		DFSUtil(v, visited);
+	}
+
+	// A function used by DFS.
 	void DFSUtil(int v, boolean visited[]) {
 		// Mark the current node as visited and print it
 		visited[v] = true;
 		System.out.print(v + " ");
 
-		// Recur for all the vertices adjacent to this vertex
+		// Recur for all the vertices adjacent to this vertex.
 		Iterator<Integer> i = adj[v].listIterator();
+
 		while (i.hasNext()) {
 			int n = i.next();
-			if (!visited[n])
-				DFSUtil(n, visited);
-		}
-	}
 
-	// The function to do DFS traversal. It uses recursive DFSUtil()
-	void DFS(int v) {
-		// Mark all the vertices as not visited(set as false by default in java)
-		boolean visited[] = new boolean[V];
-		// Call the recursive helper function to print DFS traversal
-		DFSUtil(v, visited);
+			if (!visited[n]) {
+				DFSUtil(n, visited);
+			}
+		}
 	}
 
 	public static void main(String args[]) {
 		DepthFirstSearch g = new DepthFirstSearch(4);
+
+		//       0
+		//     // \
+		//    2 __ 1
+		//   /
+		//  3<->
 
 		g.addEdge(0, 1);
 		g.addEdge(0, 2);
