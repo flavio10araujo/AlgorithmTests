@@ -57,7 +57,7 @@ class DepthFirstSearch {
 		g.addEdge(2, 3);
 		g.addEdge(3, 3);
 
-		System.out.println("Following is Depth First Traversal " + "(starting from vertex 2)");
+		System.out.println("Following is Depth First Traversal (starting from vertex 2)");
 
 		g.DFS(2);
 	}
