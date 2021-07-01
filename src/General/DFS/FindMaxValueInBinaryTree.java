@@ -21,10 +21,7 @@ public class FindMaxValueInBinaryTree {
 			return Integer.MIN_VALUE;
 		}
 		
-		int valueLeft = DFS(node.left);
-		int valueRight = DFS(node.right);
-		
-		return getMax(node.data, valueLeft, valueRight);
+		return getMax(node.data, DFS(node.left), DFS(node.right));
 	}
 	
 	public static int getMax(int data, int left, int right) {
