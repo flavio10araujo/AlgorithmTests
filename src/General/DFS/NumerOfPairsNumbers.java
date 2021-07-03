@@ -45,15 +45,12 @@ public class NumerOfPairsNumbers {
 
     /**
      * 
-     * @param root
-     * @param bigNumber
-     * @return
      */
-	public static int solution01(Node<Integer> root, int bigNumber) {
+	public static int dfs(Node<Integer> root) {
         
     	int count = 0;
-		
-		if (root == null) {
+    	
+    	if (root == null) {
     		return 0;
     	}
     	
@@ -61,11 +58,11 @@ public class NumerOfPairsNumbers {
 			count++;
 		}
     	
-    	return count + solution01(root.left, bigNumber) + solution01(root.right, bigNumber);
+    	return count + dfs(root.left) + dfs(root.right);
     }
 
     public static void main(String[] args) {
 		Node<Integer> root = buildTree();
-		System.out.println(solution01(root, Integer.MIN_VALUE));
+		System.out.println(dfs(root));
 	}
 }
