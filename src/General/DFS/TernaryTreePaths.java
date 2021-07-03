@@ -3,7 +3,6 @@ package General.DFS;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
-import java.util.List;
 
 /**
  * Given a ternary tree (each node of the tree has at most three children), find all root-to-leaf paths.
@@ -22,57 +21,33 @@ public class TernaryTreePaths {
 	static int index2 = 0;
 	
 	public static String[] ternaryTreePaths(Node root) {
+        ArrayList<String> res = new ArrayList<>();
         
-		List<String> lista = new ArrayList<String>();
-		
-		if (root != null) {
-			lista.add(root.val+ " ");
-			lista = printLala(root, lista, 0, "");
-		}
-		
-		//System.out.println(lista.toString());
-		
-		String[] retorno = new String[lista.size()];
-		
-		for (int i = 0; i < retorno.length; i++) {
-			retorno[i] = lista.get(i);
-		}
-		
-		return retorno;
+        if (root != null) {
+        	dfs(root, new ArrayList<>(), res);
+        }
+        
+        return res.toArray(new String[res.size()]);
     }
 	
-	public static List<String> printLala(Node node, List<String> lista, int index, String s) {
-		if (node == null) {
-			return lista;
-		}
-		
-		String s1 = "";
-		
-		if ("".equals(s)) {
-			s1 = node.val + "";
-		} else {
-			s1 = s + "->" + node.val;
-		}
-		
-		System.out.println("s1="+s1+" index="+index+" index2="+index2);
-		
-		lista.set(index2, s1);
-		lista = printLala(node.children[0], lista, index, s1);
-		
-		if (node.children[1] != null) {
-			lista.add(s1);
-			index2++;
-			lista = printLala(node.children[1], lista, index++, s1);
-		}
-		
-		if (node.children[2] != null) {
-			lista.add(s1);
-			index2++;
-			lista = printLala(node.children[2], lista, index++, s1);
-		}
-		
-		return lista;
-	}
+	private static void dfs(Node root, ArrayList<String> path, ArrayList<String> res) {
+        // exit condition, reached leaf node, append paths to results
+        if (root.children[0] == null && root.children[1] == null && root.children[2] == null) {
+            path.add(Integer.toString(root.val));
+            res.add(String.join("->", path));
+            path.remove(path.size() - 1);
+            return;
+        }
+
+        // dfs on each non-null child
+        for (Node child : root.children) {
+            if (child != null) {
+                path.add(Integer.toString(root.val));
+                dfs(child, path, res);
+                path.remove(path.size() - 1);
+            }
+        }
+    }
 
     /** Driver class, do not change **/
     static class Node {
