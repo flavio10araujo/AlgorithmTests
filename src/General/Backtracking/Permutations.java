@@ -31,8 +31,14 @@ public class Permutations {
         System.out.println("ANTES DO FOR ");
 
         for (int i = 0; i < used.length; i++) {
-            // skip used letters
-            if (used[i]) continue;
+            
+        	System.out.println("i="+i);
+        	
+        	// Skip used letters.
+            if (used[i]) {
+            	continue;
+            }
+            
             // add letter to permutation, mark letter as used
             path.add(letters[i]);
             used[i] = true;
