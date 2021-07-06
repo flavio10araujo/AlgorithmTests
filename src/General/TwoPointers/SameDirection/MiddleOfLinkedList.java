@@ -1,4 +1,4 @@
-package General.TwoPointers;
+package General.TwoPointers.SameDirection;
 
 public class MiddleOfLinkedList {
 

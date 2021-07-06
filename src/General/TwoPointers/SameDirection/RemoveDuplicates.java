@@ -1,4 +1,4 @@
-package General.TwoPointers;
+package General.TwoPointers.SameDirection;
 
 import java.util.Arrays;
 import java.util.List;
