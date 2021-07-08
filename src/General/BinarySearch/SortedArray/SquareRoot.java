@@ -1,4 +1,4 @@
-package General.BinarySearch;
+package General.BinarySearch.SortedArray;
 
 /**
  * Given an integer, find its square root without using built-in square root function. 

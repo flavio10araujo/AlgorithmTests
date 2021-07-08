@@ -1,4 +1,4 @@
-package General.BinarySearch;
+package General.BinarySearch.SortedArray;
 
 import java.util.Arrays;
 import java.util.List;
