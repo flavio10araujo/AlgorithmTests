@@ -37,10 +37,7 @@ public class WordBreak {
         	
         	if (!memo.contains(path.toString()) && s.startsWith(path.toString())) {
         		memo.add(path.toString());
-        		
-        		if (dfs(s, words, path, memo)) {
-                	return true;
-                }
+        		if (dfs(s, words, path, memo)) return true;
             }
             
         	path = new StringBuilder(path.substring(0, path.length() - words.get(i).length()));
