@@ -1,4 +1,4 @@
-package General.Backtracking;
+package General.Backtracking.CombinatorialSearch;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -44,7 +44,7 @@ public class LetterCombinationsOfPhoneNumber {
     }
 	
 	public static void main(String[] args) {
-        String digits = "56";
+        String digits = "568";
         List<String> res = letterCombinationsOfPhoneNumber(digits);
         System.out.println(String.join(" ", res));
     }

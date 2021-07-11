@@ -1,4 +1,4 @@
-package General.Backtracking;
+package General.Backtracking.CombinatorialSearch;
 
 import java.io.IOException;
 import java.util.ArrayList;

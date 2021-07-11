@@ -74,7 +74,8 @@ public class TernaryTreePaths {
         //Node root = Node.buildTree(Arrays.stream("1 2 3 x x x x x 4 x x x 6 x x x".split(" ")).iterator());
     	//Node root = Node.buildTree(Arrays.stream("1 2 3 x x x x x 4 x x x 6 7 x x x 8 x x x x".split(" ")).iterator());
     	//Node root = Node.buildTree(Arrays.stream("x".split(" ")).iterator());
-    	Node root = Node.buildTree(Arrays.stream("1 2 3 x x x 4 x x x 7 x x x 5 x x x 6 x x x".split(" ")).iterator());
+    	//Node root = Node.buildTree(Arrays.stream("1 2 3 x x x 4 x x x 7 x x x 5 x x x 6 x x x".split(" ")).iterator());
+    	Node root = Node.buildTree(Arrays.stream("1 2 5 x x x x x 3 x x x 4 x x x".split(" ")).iterator());
         
         String[] paths = ternaryTreePaths(root);
         for (String path : paths) {

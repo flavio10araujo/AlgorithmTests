@@ -1,4 +1,4 @@
-package General.Backtracking;
+package General.Backtracking.Memoization;
 
 import java.util.Arrays;
 import java.util.List;
