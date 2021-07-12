@@ -48,8 +48,13 @@ public class DecodeWays {
     }
     
     public static void main(String[] args) {
-        String digits = "18";
+    	long startTime = System.nanoTime();
+    	String digits = "123456";
         int res = decodeWays(digits);
         System.out.println(res);
+        long endTime = System.nanoTime();
+        long timeElapsed = endTime - startTime;
+        System.out.println("Execution time in nanoseconds: " + timeElapsed);
+        System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
     }
 }

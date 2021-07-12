@@ -1,4 +1,4 @@
-package General.Backtracking;
+package General.Backtracking.Pruning;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ public class PalindromePartitioning {
     }
     
     public static void main(String[] args) {
-        String s = "abba";
+        String s = "abcba";
         List<List<String>> res = partition(s);
         for (List<String> row : res) {
             System.out.println(String.join(" ", row));
