@@ -3,6 +3,7 @@ package General.BFS;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Function;
@@ -47,7 +48,7 @@ public class BinaryTreeLevelOrderTraversal {
     	List<List<Integer>> res = new ArrayList<>();
     	if (root == null) return res;
     	
-    	ArrayDeque<Node<Integer>> queue = new ArrayDeque<>();
+    	Deque<Node<Integer>> queue = new ArrayDeque<>();
     	queue.add(root);  // at least one element in the queue to kick start bfs
     	
     	while (queue.size() > 0) {  // as long as there is element in the queue
