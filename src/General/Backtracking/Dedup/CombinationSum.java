@@ -1,5 +1,6 @@
 package General.Backtracking.Dedup;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -46,8 +47,43 @@ import java.util.stream.Collectors;
  */
 public class CombinationSum {
 	public static List<List<Integer>> combinationSum(List<Integer> candidates, int target) {
-        // WRITE YOUR BRILLIANT CODE HERE
-        return List.of();
+        List<List<Integer>> res = new ArrayList<List<Integer>>();
+        dfs(target, candidates, res, new ArrayList<Integer>(), 0);
+        return res;
+    }
+    
+    public static List<List<Integer>> dfs(int target, 
+                                          List<Integer> candidates, 
+                                          List<List<Integer>> res, 
+                                          List<Integer> path,
+                                         int start) {
+        int sum = sumValuesInPath(path);
+        
+        if (sum >= target) {
+            if (sum == target) {
+                res.add(new ArrayList<Integer>(path));
+            }
+            
+            return res;
+        }
+        
+        for (int i = start; i < candidates.size(); i++) {
+            path.add(candidates.get(i));
+            dfs(target, candidates, res, path, i);
+            path.remove(path.size() - 1);
+        }
+        
+        return res;
+    }
+    
+    public static int sumValuesInPath(List<Integer> path) {
+        int r = 0;
+        
+        for (Integer i : path) {
+            r += i;
+        }
+        
+        return r;
     }
 
     public static List<String> splitWords(String s) {
@@ -55,8 +91,8 @@ public class CombinationSum {
     }
 
     public static void main(String[] args) {
-        List<Integer> candidates = splitWords("2 3 6 7").stream().map(Integer::parseInt).collect(Collectors.toList());
-        int target = Integer.parseInt("7");
+        List<Integer> candidates = splitWords("2 3 5").stream().map(Integer::parseInt).collect(Collectors.toList());
+        int target = Integer.parseInt("8");
         
         List<List<Integer>> res = combinationSum(candidates, target);
         for (List<Integer> row : res) {
