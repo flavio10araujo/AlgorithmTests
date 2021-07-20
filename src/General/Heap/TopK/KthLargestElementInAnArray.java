@@ -37,10 +37,11 @@ public class KthLargestElementInAnArray {
     }
 	
 	public static int solution02(List<Integer> nums, int k) {
-        PriorityQueue<Integer> heap = new PriorityQueue<>(nums);
+        Queue<Integer> heap = new PriorityQueue<>(nums);
         
-        for (int j = 0; j < nums.size() - k; j++)
+        for (int j = 0; j < nums.size() - k; j++) {
             heap.poll();
+        }
         
         return heap.poll();
     }

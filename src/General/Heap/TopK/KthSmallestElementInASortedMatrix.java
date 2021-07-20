@@ -23,19 +23,28 @@ import java.util.stream.Collectors;
  * Output: 13
  * 
  * Note: You may assume k is always valid, 1 ≤ k ≤ n^2. You may also assume that 1 <= n <= 1000.
+ * 
+ * Solution
+ * You could sort the entire matrix into a new one and index it that way, but considering that the matrix is already sorted, this seems like a waste.
+ * We can instead use a heap to keep track of the next smallest element. 
+ * Considering that the matrix is sorted in both rows and columns, the number of possibilities drastically reduces.
+ * Time Complexity: O((n*m)*log(n*m))
  */
 public class KthSmallestElementInASortedMatrix {
+	
 	public static int kthSmallest(List<List<Integer>> matrix, int k) {
+		
 		int n = matrix.size();
-        // Keeps track of row and column numbers of items in the heap
-        // The smallest item represented by the row and column number is added to the top
-        Queue<int[]> heap = new PriorityQueue<>(
-            (a, b) -> Integer.compare(matrix.get(a[0]).get(a[1]), matrix.get(b[0]).get(b[1]))
-            );
+        
+		// Keeps track of row and column numbers of items in the heap.
+        // The smallest item represented by the row and column number is added to the top.
+        Queue<int[]> heap = new PriorityQueue<>((a, b) -> Integer.compare(matrix.get(a[0]).get(a[1]), matrix.get(b[0]).get(b[1])));
+        
         heap.offer(new int[]{0, 0});
-        // Keeps track of the top of each row that is not processed
+        
+        // Keeps track of the top of each row that is not processed.
         int[] columnTop = new int[n];
-        // Keeps track of the first number each row not processed
+        // Keeps track of the first number each row not processed.
         int[] rowFirst = new int[n];
         // Repeat the process k - 1 times.
         
@@ -44,17 +53,22 @@ public class KthSmallestElementInASortedMatrix {
             int[] coords = heap.poll();
             int row = coords[0], column = coords[1];
             rowFirst[row] = column + 1;
-            // Add the item on the right to the heap if everything above it is processed
+            
+            // Add the item on the right to the heap if everything above it is processed.
             if (column + 1 < n && columnTop[column + 1] == row) {
                 heap.offer(new int[]{row, column + 1});
             }
+            
             columnTop[column] = row + 1;
-            // Add the item below it to the heap if everything before it is processed
+            
+            // Add the item below it to the heap if everything before it is processed.
             if (row + 1 < n && rowFirst[row + 1] == column) {
                 heap.offer(new int[]{row + 1, column});
             }
         }
+        
         int[] resCoords = heap.poll();
+        
         return matrix.get(resCoords[0]).get(resCoords[1]);
     }
 
@@ -62,6 +76,11 @@ public class KthSmallestElementInASortedMatrix {
         return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
     }
 
+    // 3
+    // 1 5 9
+    // 10 11 13
+    // 12 13 15
+    // 8
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         int matrixLength = Integer.parseInt(scanner.nextLine());
