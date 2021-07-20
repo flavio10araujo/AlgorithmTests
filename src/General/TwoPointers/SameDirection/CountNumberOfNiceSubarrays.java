@@ -53,6 +53,7 @@ public class CountNumberOfNiceSubarrays {
         int ans = 0;
         // For the same reason as above, the final index is n, where n is the size of arr.
         oddIndices.add(arr.size());
+        
         for (int i = 0; i < oddIndices.size() - k - 1; i++) {
             int startDiff = oddIndices.get(i + 1) - oddIndices.get(i);
             int endDiff = oddIndices.get(i + k + 1) - oddIndices.get(i + k);
@@ -67,9 +68,14 @@ public class CountNumberOfNiceSubarrays {
     }
 
     public static void main(String[] args) {
-        int k = Integer.parseInt("3");
+    	long startTime = System.nanoTime();
+    	int k = Integer.parseInt("3");
         List<Integer> arr = splitWords("2 4 5 7 8 10 11 12 14 15 18 20").stream().map(Integer::parseInt).collect(Collectors.toList());
         int res = countNiceSubarrays(k, arr);
         System.out.println(res);
+        long endTime = System.nanoTime();
+        long timeElapsed = endTime - startTime;
+        System.out.println("Execution time in nanoseconds: " + timeElapsed);
+        System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
     }
 }
