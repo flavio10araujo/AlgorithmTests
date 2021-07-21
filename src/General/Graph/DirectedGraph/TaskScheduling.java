@@ -88,7 +88,7 @@ public class TaskScheduling {
             return;
         }
         
-        HashMap<String, Integer> indices = new HashMap<>();
+        Map<String, Integer> indices = new HashMap<>();
         
         for (int i = 0; i < res.size(); i++) {
             indices.put(res.get(i), i);

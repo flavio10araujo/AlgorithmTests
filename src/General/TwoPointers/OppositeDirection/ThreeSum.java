@@ -25,6 +25,25 @@ import java.util.stream.Collectors;
  * Example 2
  * Input: nums = [1, -1, 2, -2, 3, -3, 4, -4]
  * Output: [[-4, 1, 3], [-3, -1, 4], [-3, 1, 2], [-2, -1, 3]]
+ * 
+ * Solution
+ * 
+ * This question is very similar to Two Sum Sorted. 
+ * However, there are a few differences. 
+ * The original list is not sorted, so you need to sort it yourself. 
+ * Instead of simply using two pointers doing one pass, we need three pointers, 
+ * one normal pointer always going forward, and a pair of opposite pointers that gets reset after the first pointer is moved. 
+ * Each cycle, we move the pair of pointers and see if they are in the list. 
+ * If they are, they are a valid pair of pointers. 
+ * If the position of the pair changes, move the slow pointer and reset the position of the pair.
+ * 
+ * For this question, duplicates are not allowed, and the result must be sorted, so we can do a few things to simplify. 
+ * We use a map to count the multiplicity of the numbers that appeared (If a BST is an option, then use it to reduce the need for sorting). 
+ * Every time the pair is reset, the left pointer is reset to the position of the first pointer to guarantee sorted order.
+ * 
+ * Time Complexity: O(n^2)
+ * 
+ * We have a pointer moving through the list and each step we move through the list another time.
  */
 public class ThreeSum {
 	
@@ -32,12 +51,14 @@ public class ThreeSum {
         
 		// This stores how many numbers of each kind is in the list.
         Map<Integer, Integer> numCount = new HashMap<>();
+        
         for (int i : nums) {
             numCount.merge(i, 1, Integer::sum);
         }
         
         // This stores all unique numbers in "nums", sorted.
         List<Integer> uniqueNums = new ArrayList<>(numCount.keySet());
+        
         Collections.sort(uniqueNums);
         
         // Stores a list of triplets that is the return value.

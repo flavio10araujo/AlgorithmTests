@@ -21,7 +21,10 @@ public class LongestSubstringWithoutRepeatingCharacters {
         Set<Character> window = new HashSet<>();
         
         while (r < n) {
-            if (!window.contains(s.charAt(r))) {
+            System.out.println("r="+r+" l="+l);
+            System.out.println(window);
+        	
+        	if (!window.contains(s.charAt(r))) {
                 window.add(s.charAt(r));
                 r++;
             } else {
@@ -30,6 +33,8 @@ public class LongestSubstringWithoutRepeatingCharacters {
             }
             
             longest = Math.max(longest, r - l);
+            
+            System.out.println("longest="+longest);
         }
         
         return longest;
