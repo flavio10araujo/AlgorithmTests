@@ -36,6 +36,7 @@ public class ReorganizeString {
 	public static String reorganizeString(String s) {
 		
         int n = s.length();
+        
         Map<Character, Integer> charCount = new HashMap<>();
         
         // Count up the characters that appear in the string.
@@ -81,7 +82,7 @@ public class ReorganizeString {
     }
 	
 	public static void main(String[] args) {
-        String s = "aab";
+        String s = "aabc";
         String res = reorganizeString(s);
         
         if (res.isEmpty()) {

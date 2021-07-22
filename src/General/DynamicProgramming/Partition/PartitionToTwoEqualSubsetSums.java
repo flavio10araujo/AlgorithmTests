@@ -37,7 +37,8 @@ public class PartitionToTwoEqualSubsetSums {
 
 	public static boolean canPartition(List<Integer> nums) {
 		
-        if (nums.size() < 2) {
+        // If we have only 1 number (or zero) in our list, it is impossible to find two subsets of numbers.
+		if (nums.size() < 2) {
             return false;
         }
         
@@ -47,18 +48,26 @@ public class PartitionToTwoEqualSubsetSums {
             sum += i;
         }
 
+        // If the sum of all numbers in the list are an odd number, it means that we can not have two subsets with the same value.
         if (sum % 2 == 1) {
             return false;
         }
         
-        sum /= 2;
+        sum = sum / 2;
 
         boolean[] dp = new boolean[sum + 1];
         dp[0] = true;
 
+        // Magic code ..,;:*
+        // Impossible to understand.
         for (int i = 0; i < nums.size(); i++) {
             for (int j = sum; j >= nums.get(i); j--) {
-                dp[j] = dp[j] || dp[j - nums.get(i)];
+                
+            	System.out.println("i="+i+" j="+j+" nums.get("+i+")="+nums.get(i)+" dp["+j+"]="+dp[j]);
+            	
+            	dp[j] = dp[j] || dp[j - nums.get(i)];
+            	
+            	System.out.println("Après: dp["+j+"]="+dp[j]);
             }
         }
         
@@ -70,7 +79,7 @@ public class PartitionToTwoEqualSubsetSums {
     }
     
     public static void main(String[] args) {
-        List<Integer> nums = splitWords("3 4 7").stream().map(Integer::parseInt).collect(Collectors.toList());
+        List<Integer> nums = splitWords("7 3 4").stream().map(Integer::parseInt).collect(Collectors.toList());
         boolean res = canPartition(nums);
         System.out.println(res);
     }

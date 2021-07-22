@@ -39,10 +39,17 @@ public class PalindromeCounting {
         for (int len = 1; len < strLength; len++) {
             for (int i = 0; i < strLength - len; i++) {
                 int j = i + len;
-                // Check for the condition as mentioned in the solution that the interval [i + 1, j - 1] is a palindrome and for
-                // matching characters.
+                
+                System.out.println("len="+len+" i="+i+" j="+j);
+                
+                // Check for the condition as mentioned in the solution that the interval [i + 1, j - 1] is a palindrome and for matching characters.
+                
+                System.out.println("IF isPalindrome["+(i+1)+"]["+(j-1)+"] == 1 && s.charAt("+i+") == s.charAt("+j+")");
+                
                 if (isPalindrome[i + 1][j - 1] == 1 && s.charAt(i) == s.charAt(j)) {
                     isPalindrome[i][j] = 1;
+                    
+                    System.out.println("isPalindrome["+i+"]["+j+"] = 1");
                 }
             }
         }
@@ -51,7 +58,9 @@ public class PalindromeCounting {
         int ans = 0;
         for (int i = 0; i < strLength; i++) {
             for (int j = i; j < strLength; j++) {
-                ans += isPalindrome[i][j];
+            	ans += isPalindrome[i][j];
+            	
+            	System.out.println("i="+i+" j="+j+" ans="+ans);            	
             }
         }
         
