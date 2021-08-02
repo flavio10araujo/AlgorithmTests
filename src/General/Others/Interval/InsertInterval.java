@@ -39,6 +39,17 @@ import java.util.stream.Collectors;
  * intervals = [[1,5]]
  * newInterval = [2,7]
  * Output: [[1,7]]
+ * 
+ * Solution:
+ * 
+ * O(n) solution
+ * The solution above is O(nlog(n)) because of the re-sorting of the entire array. 
+ * Since log(n) grows so slowly, most of the time with small ns it can considered a constant. 
+ * But there is also an O(n) solution to the problem.
+ * For intervals whose end time is before the start time of the new interval, add them directly to the final result.
+ * For intervals that overlap with the new interval, expand the new interval's start and end time.
+ * Add the new interval to the final results.
+ * For intervals whose start time is after the end of the new interval, add them directly to the final result.
  */
 public class InsertInterval {
 
