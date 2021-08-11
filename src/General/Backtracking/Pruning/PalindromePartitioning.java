@@ -14,38 +14,42 @@ public class PalindromePartitioning {
 	
 	public static boolean isPalindrome(String s) {
         int l = 0, r = s.length() - 1;
-        while (l<r) {
+        
+        while (l < r) {
             if (s.charAt(l) != s.charAt(r))
                 return false;
+            
             l++;
             r--;
         }
+        
         return true;
     }
 
-    public static void dfs(List<List<String>> ans, ArrayList<String> part, String s, int start) {
+    public static void dfs(int start, String s, List<String> path, List<List<String>> res) {
         if (start == s.length()) {
-            List<String> li = new ArrayList<>(part);
-            ans.add(li);
+            res.add(new ArrayList<String>(path));
+            return;
         }
         
-        for (int i = start; i<s.length(); i++) {
-            if (isPalindrome(s.substring(start, i + 1))) {
-                part.add(s.substring(start, i + 1));
-                dfs(ans, part, s, i + 1);
-                part.remove(part.size() - 1);
+        for (int i = start; i < s.length(); i++) {
+            
+        	if (isPalindrome(s.substring(start, i + 1))) {
+                path.add(s.substring(start, i + 1));
+                dfs(i + 1, s, path, res);
+                path.remove(path.size() - 1);
             }
         }
     }
 
     public static List<List<String>> partition(String s) {
         List<List<String>> ans = new ArrayList<>();
-        dfs(ans, new ArrayList<String>(), s, 0);
+        dfs(0, s, new ArrayList<String>(), ans);
         return ans;
     }
     
     public static void main(String[] args) {
-        String s = "abcba";
+        String s = "aab";
         List<List<String>> res = partition(s);
         for (List<String> row : res) {
             System.out.println(String.join(" ", row));

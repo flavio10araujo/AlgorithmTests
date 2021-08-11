@@ -46,44 +46,52 @@ import java.util.stream.Collectors;
  * 1 <= target <= 500
  */
 public class CombinationSum {
+	
 	public static List<List<Integer>> combinationSum(List<Integer> candidates, int target) {
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        dfs(target, candidates, res, new ArrayList<Integer>(), 0);
+        
+		List<List<Integer>> res = new ArrayList<>();
+        List<Integer> path = new ArrayList<>();
+
+        candidates.sort(null); // It's better to sort the candidates to stop the recursion when we find a candidates that is greater than the target (when candidate + sum > target).
+        
+        dfs(candidates, target, res, path, 0, 0);
+        
         return res;
     }
     
-    public static List<List<Integer>> dfs(int target, 
-                                          List<Integer> candidates, 
-                                          List<List<Integer>> res, 
-                                          List<Integer> path,
-                                         int start) {
-        int sum = sumValuesInPath(path);
-        
-        if (sum >= target) {
-            if (sum == target) {
-                res.add(new ArrayList<Integer>(path));
+	public static void dfs(List<Integer> candidates, int target, List<List<Integer>> res, List<Integer> path, int sum, int start) {
+		
+		if (sum == target) {
+            res.add(new ArrayList<>(path));
+            System.out.println("Colocou o path no res = " + res);
+            return;
+		}
+		
+		if (sum > target) {
+			return;
+		}
+		
+        for (int i = start; i < candidates.size(); i++) {
+            sum += candidates.get(i);
+            
+            System.out.println("candidates.get("+i+") = " + candidates.get(i) + " sum=" + sum + " target="+target);
+            
+            if (sum > target) {
+            	System.out.println("entrou no if sum > target e fez break");
+                break;
             }
             
-            return res;
-        }
-        
-        for (int i = start; i < candidates.size(); i++) {
             path.add(candidates.get(i));
-            dfs(target, candidates, res, path, i);
+            System.out.println("Adicionou o candidates.get("+i+") no path = " + path);
+            
+            dfs(candidates, target, res, path, sum, i);
+            
             path.remove(path.size() - 1);
+            
+            System.out.println("Removeu o último elemento do path = " + path);
+            
+            sum -= candidates.get(i);
         }
-        
-        return res;
-    }
-    
-    public static int sumValuesInPath(List<Integer> path) {
-        int r = 0;
-        
-        for (Integer i : path) {
-            r += i;
-        }
-        
-        return r;
     }
 
     public static List<String> splitWords(String s) {
@@ -91,8 +99,8 @@ public class CombinationSum {
     }
 
     public static void main(String[] args) {
-        List<Integer> candidates = splitWords("2 3 5").stream().map(Integer::parseInt).collect(Collectors.toList());
-        int target = Integer.parseInt("8");
+        List<Integer> candidates = splitWords("2 3 6 7").stream().map(Integer::parseInt).collect(Collectors.toList());
+        int target = Integer.parseInt("7");
         
         List<List<Integer>> res = combinationSum(candidates, target);
         for (List<Integer> row : res) {

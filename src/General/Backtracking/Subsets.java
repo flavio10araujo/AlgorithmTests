@@ -23,9 +23,12 @@ import java.util.stream.Collectors;
  * ]
  */
 public class Subsets {
+	
 	public static List<List<Integer>> subsets(List<Integer> nums) {
-        List<List<Integer>> res = new ArrayList<List<Integer>>();
-        dfs(res, nums, new ArrayList<Integer>(), 0);
+        List<List<Integer>> res = new ArrayList<>();
+        
+        getSubsets(nums, res, new ArrayList<Integer>(), 0);
+        
         return res;
     }
     
@@ -38,21 +41,22 @@ public class Subsets {
      * @param start
      * @return
      */
-	public static List<List<Integer>> dfs(List<List<Integer>> res, List<Integer> nums, List<Integer> path, int start) {
-        if (start == nums.size()) {
-            return res;
+	public static void getSubsets(List<Integer> nums, List<List<Integer>> res, List<Integer> path, int start) {
+	    
+        if (start <= nums.size()) {
+            res.add(new ArrayList<Integer>(path));
+        }
+        
+        if (start > nums.size()) {
+            return;
         }
         
         for (int i = start; i < nums.size(); i++) {
             path.add(nums.get(i));
-            res.add(new ArrayList<Integer>(path));
             
-            dfs(res, nums, path, i + 1);
-            
+            getSubsets(nums, res, path, i + 1);
             path.remove(path.size() - 1);
         }
-        
-        return res;
     }
 
     public static List<String> splitWords(String s) {

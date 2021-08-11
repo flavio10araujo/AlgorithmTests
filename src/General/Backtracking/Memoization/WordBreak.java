@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class WordBreak {
 	
-	public static boolean wordBreak(String s, List<String> words) {
+	/*public static boolean wordBreak(String s, List<String> words) {
         return dfs(s, words, new StringBuilder(), new HashSet<String>());
     }
     
@@ -44,6 +44,38 @@ public class WordBreak {
         }
         
         return false;
+    }*/
+	
+	private static boolean dfs(int i, Boolean[] memo, String s, List<String> words) {
+        if (i == s.length()) {
+            return true;
+        }
+
+        if (memo[i] != null) {
+            System.out.println("memo i="+i);
+        	return memo[i];
+        }
+
+        boolean ok = false;
+        
+        for (String word : words) {
+        	
+        	System.out.println("i="+i+ " word="+word);
+        	
+        	if (s.substring(i).startsWith(word)) {
+                
+        		ok = ok || dfs(i + word.length(), memo, s, words);
+            }
+        }
+        
+        System.out.println("Saiu do for e inseriu " + ok + " no memo["+i+"]");
+        
+        memo[i] = ok;
+        return ok;
+    }
+
+    public static boolean wordBreak(String s, List<String> words) {
+        return dfs(0, new Boolean[s.length()], s, words);
     }
 
     public static List<String> splitWords(String s) {
@@ -52,8 +84,13 @@ public class WordBreak {
     
     public static void main(String[] args) {
     	long startTime = System.nanoTime();
-    	String s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
-        List<String> words = splitWords("a aa aaa aaaa aaaaa aaaaaa aaaaaaa aaaaaaaa aaaaaaaaa aaaaaaaaaa");
+    	
+    	//String s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
+        //List<String> words = splitWords("a aa aaa aaaa aaaaa aaaaaa aaaaaaa aaaaaaaa aaaaaaaaa aaaaaaaaaa");
+        
+    	String s = "aaac";
+    	List<String> words = splitWords("a aa b");
+    			
         boolean res = wordBreak(s, words);
         System.out.println(res);
         long endTime = System.nanoTime();
