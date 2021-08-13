@@ -33,11 +33,10 @@ import java.util.stream.Collectors;
 public class CountNumberOfNiceSubarrays {
 	
 	public static int countNiceSubarrays(int k, List<Integer> arr) {
-        ArrayList<Integer> oddIndices = new ArrayList<>();
+        List<Integer> oddIndices = new ArrayList<>();
         
         // For the sake of easier calculation, let the zeroth odd index be -1.
-        // This way, we can easily calculate the number of even numbers before the first
-        // odd number using the same way as between two odd numbers.
+        // This way, we can easily calculate the number of even numbers before the first odd number using the same way as between two odd numbers.
         oddIndices.add(-1);
         
         for (int i = 0; i < arr.size(); i++) {
@@ -51,6 +50,7 @@ public class CountNumberOfNiceSubarrays {
         }
         
         int ans = 0;
+        
         // For the same reason as above, the final index is n, where n is the size of arr.
         oddIndices.add(arr.size());
         

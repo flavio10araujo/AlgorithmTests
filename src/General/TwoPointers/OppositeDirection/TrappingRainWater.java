@@ -10,27 +10,34 @@ import java.util.stream.Collectors;
  * find how much water is trapped in the columns after a rain. 
  * Left and right boundaries outside of the columns have 0 elevations.
  * 
- * Input: [3, 2, 1, 2, 2, 3, 2] Output: 5
+ * Input: [3 2 1 2 2 3 2] Output: 5
  * 
  * X . . . . X
  * X X . X X X X
  * X X X X X X X
  * 
+ * Input: [1 0 2 1 0 1 3 2 1 2 1] Output: 6
+ * 
+ *             X
+ *     X . . . X X . X
+ * X . X X . X X X X X X
  */
 public class TrappingRainWater {
+	
 	public static int trappingRainWater(List<Integer> elevations) {
-        
+    
 		int n = elevations.size();
         int[] leftWalls = new int[n];
         int[] rightWalls = new int[n];
-
-        int maxLeftWall = 0;
+        int maxLeftWall = 0, maxRightWall = 0;
+        
+        // Registrando o muro mais alto da esquerda para cada item do array elevations. 
         for (int i = 0; i < n; i++) {
             leftWalls[i] = maxLeftWall;
-            maxLeftWall = Math.max(elevations.get(i), maxLeftWall);  // 1
+            maxLeftWall = Math.max(elevations.get(i), maxLeftWall);
         }
 
-        int maxRightWall = 0;
+        // Registrando o muro mais alto da direita para cada item do array elevations.
         for (int i = n - 1; i >= 0; i--) {
             rightWalls[i] = maxRightWall;
             maxRightWall = Math.max(elevations.get(i), maxRightWall);  // 1
@@ -40,6 +47,7 @@ public class TrappingRainWater {
         for (int i = 0; i < n; i++) {
             int elevation = elevations.get(i);
             int lowestWall = Math.min(leftWalls[i], rightWalls[i]);
+            
             if (lowestWall > elevation) {  // 2
                 totalWater += lowestWall - elevation;
             }
@@ -53,7 +61,7 @@ public class TrappingRainWater {
     }
 
     public static void main(String[] args) {
-        List<Integer> elevations = splitWords("2 1 2 2 3 2").stream().map(Integer::parseInt).collect(Collectors.toList());
+        List<Integer> elevations = splitWords("1 0 2 1 0 1 3 2 1 2 1").stream().map(Integer::parseInt).collect(Collectors.toList());
         int res = trappingRainWater(elevations);
         System.out.println(res);
     }

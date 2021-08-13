@@ -3,6 +3,8 @@ package Tests;
 import java.util.Arrays;
 
 /**
+ * https://leetcode.com/problems/maximum-units-on-a-truck/
+ * 
  * You are assigned to put some amount of boxes onto one truck. 
  * 
  * You are given a 2D array boxTypes, where boxTypes[i] = [numberOfBoxesi, numberOfUnitsPerBoxi]:
