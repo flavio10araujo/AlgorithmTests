@@ -36,6 +36,7 @@ public class UglyNumberII {
     public static int nthUglyNumber(int n) {
         Queue<Integer> ansHeap = new PriorityQueue<>();
         Set<Integer> usedNums = new HashSet<>();
+        
         ansHeap.offer(1);
         usedNums.add(1);
         
@@ -46,6 +47,9 @@ public class UglyNumberII {
                 if (!usedNums.contains(res * multiplier)) {
                     ansHeap.offer(res * multiplier);
                     usedNums.add(res * multiplier);
+                    
+                    System.out.println(ansHeap);
+                    
                 }
             }
         }

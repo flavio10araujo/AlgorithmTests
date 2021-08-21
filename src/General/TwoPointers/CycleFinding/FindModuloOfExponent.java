@@ -1,5 +1,7 @@
 package General.TwoPointers.CycleFinding;
 
+import java.util.Scanner;
+
 /**
  * Calculate the value of n^(2^k) % m. 
  * This question must be solved using constant memory.
@@ -13,7 +15,7 @@ package General.TwoPointers.CycleFinding;
  * Example 1
  * Input: n = 2, k = 3, m = 10
  * Output: 6
- * Explanation: 2^(2^3) % 10 == 2^8 % 10 == 256 % 10 == 6.
+ * Explanation: 2^(2^3) % 10 = 2^8 % 10 = 256 % 10 = 6.
  * 
  * Example 2
  * Input: n = 2, k = 34, m = 21
@@ -35,4 +37,72 @@ package General.TwoPointers.CycleFinding;
  */
 public class FindModuloOfExponent {
 
+	public static int step(int n, int m) {
+        return (int) Math.pow(n, 2) % m;
+    }
+	
+    public static int moduloOfExponent(int n, int k, int m) {
+        k -= 1;
+        
+        int tortoise = step(n, m);
+        int hare = step(step(n, m), m);
+        
+        while (k > 0 && tortoise != hare) {
+            k -= 1;
+            tortoise = step(tortoise, m);
+            hare = step(step(hare, m), m);
+        }
+        
+        if (k == 0) {
+            return tortoise;
+        }
+        
+        int cycleSize = 1;
+        tortoise = step(tortoise, m);
+        hare = step(step(hare, m), m);
+        k -= 1;
+        
+        while (k > 0 && tortoise != hare) {
+            tortoise = step(tortoise, m);
+            hare = step(step(hare, m), m);
+            k -= 1;
+            cycleSize += 1;
+        }
+        
+        if (k == 0) {
+            return tortoise;
+        }
+        
+        k = k % cycleSize;
+        while (k > 0) {
+            tortoise  = step(tortoise, m);
+            k -= 1;
+        }
+        
+        return tortoise;
+    }
+
+    // 2
+    // 3
+    // 10
+    // Output: 6
+    
+    // 2
+    // 34
+    // 21
+    // Output: 16
+    
+    // 3
+    // 217
+    // 53
+    // Output: 44
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        int n = Integer.parseInt(scanner.nextLine());
+        int k = Integer.parseInt(scanner.nextLine());
+        int m = Integer.parseInt(scanner.nextLine());
+        scanner.close();
+        int res = moduloOfExponent(n, k, m);
+        System.out.println(res);
+    }
 }

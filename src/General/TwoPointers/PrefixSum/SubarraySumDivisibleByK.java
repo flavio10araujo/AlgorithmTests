@@ -30,9 +30,15 @@ public class SubarraySumDivisibleByK {
             int num = nums.get(i);
             curSum += num;
             
+            System.out.println("i="+i+" curSum="+curSum);
+            
             int remainder = curSum % k;
             
+            System.out.println("remainder="+remainder);
+            
             int complement = (k - remainder) % k;
+            
+            System.out.println("complement="+complement);
             
             if (remainders.containsKey(complement)) {
                 count += remainders.get(complement);

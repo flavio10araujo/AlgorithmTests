@@ -47,6 +47,8 @@ public class CapacityToShipPackagesWithinDDays {
             }
         }
         
+        System.out.println("maxWeight="+maxWeight+" reqDays="+reqDays);
+        
         return reqDays;
     }
 
@@ -79,8 +81,8 @@ public class CapacityToShipPackagesWithinDDays {
     }
 
     public static void main(String[] args) {
-        List<Integer> weights = splitWords("1 2 3 1 1").stream().map(Integer::parseInt).collect(Collectors.toList());
-        int d = Integer.parseInt("4");
+        List<Integer> weights = splitWords("1 2 3 4 5 6 7 8 9 10").stream().map(Integer::parseInt).collect(Collectors.toList());
+        int d = Integer.parseInt("5");
         int res = minMaxWeight(weights, d);
         System.out.println(res);
     }

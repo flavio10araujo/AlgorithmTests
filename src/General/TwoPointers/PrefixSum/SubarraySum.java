@@ -34,15 +34,19 @@ public class SubarraySum {
 	public static List<Integer> subarraySum(List<Integer> arr, int target) {
         Map<Integer, Integer> prefixSums = new HashMap<>();
         
-        // prefix_sum 0 happens when we have an empty array
+        // prefix_sum 0 happens when we have an empty array.
         prefixSums.put(0, 0);
+        
         int curSum = 0;
         
         for (int i = 0; i < arr.size(); i++) {
             curSum += arr.get(i);
-            int complement = curSum - target;
+            System.out.println("i="+i+" curSum="+curSum);
             
             System.out.println(prefixSums);
+            
+            int complement = curSum - target;
+            
             System.out.println(complement);
             
             if (prefixSums.containsKey(complement)) {

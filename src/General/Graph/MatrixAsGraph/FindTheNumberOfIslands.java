@@ -3,6 +3,7 @@ package General.Graph.MatrixAsGraph;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -41,7 +42,7 @@ public class FindTheNumberOfIslands {
     }
 
     private static void bfs(List<List<Integer>> grid, Coordinate root, int numRows, int numCols) {
-        ArrayDeque<Coordinate> queue = new ArrayDeque<>();
+        Deque<Coordinate> queue = new ArrayDeque<>();
         queue.add(root);
         
         grid.get(root.r).set(root.c, 0); // a different way of marking the item as visited

@@ -43,24 +43,63 @@ public class MergeKSortedLists {
         }
     }
 
+	/**
+	 * Instead of putting all the elements in the heap (like the mergeKSortedLists02 solution),
+	 * we can just put the first elements of every linkedList, and add a comparator and then while retrieving, 
+	 * add the next node of the retrieved node and continue till the queue is empty.
+	 * This will call heapify only for k nodes at any time, so time complexity will be O(n log k).
+	 * 
+	 * @param lists
+	 * @return
+	 */
     public static List<Integer> mergeKSortedLists(List<List<Integer>> lists) {
         List<Integer> res = new ArrayList<>();
         Queue<Element> heap = new PriorityQueue<>(lists.size(), Comparator.comparingInt(e -> e.val));
         
-        // push first number of each list into the heap
+        // Push first number of each list into the heap.
         for (List<Integer> list : lists) {
-            heap.add(new Element(list.get(0), list, 0));  // 1
+            heap.add(new Element(list.get(0), list, 0));
         }
         
         while (!heap.isEmpty()) {
             Element e = heap.poll();
             res.add(e.val);
+            
+            // This variable is used as a pointer to get the next element in the list.
             int headIndex = e.headIndex + 1;
             
             // If there are more numbers in the list, push into the heap.
             if (headIndex < e.currentList.size()) {
                 heap.add(new Element(e.currentList.get(headIndex), e.currentList, headIndex));
             }
+        }
+        
+        return res;
+    }
+    
+    /**
+     * A simpler solution, but with worse time complexity.
+     * In this case, we put all the elements in the heap.
+     * Time complexity: O(n log n).
+     * 
+     * @param lists
+     * @return
+     */
+    public static List<Integer> mergeKSortedLists02(List<List<Integer>> lists) {
+    	List<Integer> res = new ArrayList<>();
+        Queue<Integer> myheap = new PriorityQueue<Integer>();
+        
+        for (int i = 0; i < lists.size(); i++) {
+        	for (int j = 0; j < lists.get(i).size(); j++) {
+        		myheap.add(lists.get(i).get(j));
+        	}
+        }
+        
+        Integer next = myheap.poll();
+        
+        while(next != null) {
+        	res.add(next);
+        	next = myheap.poll();
         }
         
         return res;

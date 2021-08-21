@@ -9,6 +9,8 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
+ * https://leetcode.com/problems/walls-and-gates/
+ * 
  * You are given an m by n grid of integers representing a map of a dungeon. 
  * In this map:
  * 		-1 represents a wall or an obstacle of some kind.

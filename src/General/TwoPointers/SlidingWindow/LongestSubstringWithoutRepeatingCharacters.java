@@ -1,5 +1,7 @@
 package General.TwoPointers.SlidingWindow;
 
+import java.util.ArrayDeque;
+import java.util.Deque;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -21,10 +23,7 @@ public class LongestSubstringWithoutRepeatingCharacters {
         Set<Character> window = new HashSet<>();
         
         while (r < n) {
-            System.out.println("r="+r+" l="+l);
-            System.out.println(window);
-        	
-        	if (!window.contains(s.charAt(r))) {
+            if (!window.contains(s.charAt(r))) {
                 window.add(s.charAt(r));
                 r++;
             } else {
@@ -33,16 +32,58 @@ public class LongestSubstringWithoutRepeatingCharacters {
             }
             
             longest = Math.max(longest, r - l);
-            
-            System.out.println("longest="+longest);
         }
         
         return longest;
     }
+	
+	public static int longestSubstringWithoutRepeatingCharacters02(String s) {
+        
+        if (s == null || s.length() == 0) {
+            return 0;
+        }
+        
+        int total = 1;
+        int n = 1;
+        Deque<Character> stack = new ArrayDeque<>();
+        stack.add(s.charAt(0));
+        
+        for (int i = 1; i < s.length(); i++) {
+            n++;
+            
+            if (stack.contains(s.charAt(i))) {
+                stack.add(s.charAt(i));
+                
+                while(true) {
+                    n--;
+                    Character c = stack.pop();
+                    
+                    if (c == s.charAt(i)) {
+                        break;
+                    }
+                }
+            } else {
+                stack.add(s.charAt(i));
+            }
+            
+            if (n > total) {
+                total = n;
+            }
+        }
+        
+        return total;
+    }
 
     public static void main(String[] args) {
-        String s = "abcdbea";
-        int res = longestSubstringWithoutRepeatingCharacters(s);
+    	long startTime = System.nanoTime();
+    	
+    	String s = "abcdbea";
+        int res = longestSubstringWithoutRepeatingCharacters02(s);
         System.out.println(res);
+        
+        long endTime = System.nanoTime();
+        long timeElapsed = endTime - startTime;
+        System.out.println("Execution time in nanoseconds: " + timeElapsed);
+        System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
     }
 }

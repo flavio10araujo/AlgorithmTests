@@ -59,12 +59,11 @@ public class ReorganizeString {
         // Stores the resulting char array to be converted to string.
         char[] res = new char[n];
         
-        // Pointer to the next item to be inserted
-        // Increment by 2 until it reaches the end to fill out even positions,
-        // then it is reset to 1 to fill out odd positions
+        // Pointer to the next item to be inserted.
+        // Increment by 2 until it reaches the end to fill out even positions, then it is reset to 1 to fill out odd positions.
         int pointer = 0;
         
-        // Insert characters into the char array by their multiplicity
+        // Insert characters into the char array by their multiplicity.
         while (!heap.isEmpty()) {
             
         	Map.Entry<Character, Integer> pairing = heap.poll();
@@ -72,6 +71,7 @@ public class ReorganizeString {
         	for (int i = 0; i < pairing.getValue(); i++) {
                 res[pointer] = pairing.getKey();
                 pointer += 2;
+                
                 if (pointer >= n) {
                     pointer = 1;
                 }
