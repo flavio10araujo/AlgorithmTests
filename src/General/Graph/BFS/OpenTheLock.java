@@ -85,25 +85,35 @@ public class OpenTheLock {
 	        
 	        while (!bfsQueue.isEmpty()) {
 	            
+	        	System.out.println("queue = " + bfsQueue);
+	        	
 	        	String top = bfsQueue.poll();
 	            
 	        	for (int i = 0; i < 4; i++) {
 	                String newCombo = top.substring(0, i).concat(String.valueOf(nextDigit.get(top.charAt(i)))).concat(top.substring(i + 1));
 	                
+	                System.out.println("newCombo forward = " + newCombo);
+	                
 	                if (!trappedComboSet.contains(newCombo) && !bfsMap.containsKey(newCombo)) {
 	                    bfsQueue.offer(newCombo);
 	                    bfsMap.put(newCombo, bfsMap.get(top) + 1);
+	                    
 	                    if (newCombo.equals(combo)) {
+	                    	System.out.println("bfsMap = " + bfsMap);
 	                        return bfsMap.get(newCombo);
 	                    }
 	                }
 	                
 	                newCombo = top.substring(0, i).concat(String.valueOf(prevDigit.get(top.charAt(i)))).concat(top.substring(i + 1));
 	                
+	                System.out.println("newCombo backward = " + newCombo);
+	                
 	                if (!trappedComboSet.contains(newCombo) && !bfsMap.containsKey(newCombo)) {
 	                    bfsQueue.offer(newCombo);
 	                    bfsMap.put(newCombo, bfsMap.get(top) + 1);
+	                    
 	                    if (newCombo.equals(combo)) {
+	                    	System.out.println("bfsMap = " + bfsMap);
 	                        return bfsMap.get(newCombo);
 	                    }
 	                }

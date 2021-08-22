@@ -69,24 +69,32 @@ public class ZombieInMatrix {
         public Coords add(Coords other) {
             return new Coords(row + other.row, col + other.col);
         }
+        
+        public String toString() {
+        	return row+","+col;
+        }
     }
 
     public static List<Coords> directions = List.of(new Coords(0, 1), new Coords(1, 0), new Coords(0, -1), new Coords(-1, 0));
 
     public static List<List<Integer>> mapGateDistances(List<List<Integer>> dungeonMap) {
-        Deque<Coords> deque = new ArrayDeque<>();
+        Deque<Coords> queue = new ArrayDeque<>();
         int n = dungeonMap.size(), m = dungeonMap.get(0).size();
         
+        // Initialize the queue with the list of gates.
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if (dungeonMap.get(i).get(j) == 0) {
-                    deque.offer(new Coords(i, j));
+                    queue.offer(new Coords(i, j));
                 }
             }
         }
         
-        while (!deque.isEmpty()) {
-            Coords currentPos = deque.poll();
+        while (!queue.isEmpty()) {
+            
+        	System.out.println(queue);
+        	
+        	Coords currentPos = queue.poll();
             
             for (Coords delta : directions) {
                 Coords newPos = currentPos.add(delta);
@@ -94,7 +102,7 @@ public class ZombieInMatrix {
                 if (newPos.row >= 0 && newPos.row < n && newPos.col >= 0 && newPos.col < m) {
                     if (dungeonMap.get(newPos.row).get(newPos.col) == Integer.MAX_VALUE) {
                         dungeonMap.get(newPos.row).set(newPos.col, 1 + dungeonMap.get(currentPos.row).get(currentPos.col));
-                        deque.add(newPos);
+                        queue.add(newPos);
                     }
                 }
             }
@@ -124,11 +132,14 @@ public class ZombieInMatrix {
         Scanner scanner = new Scanner(System.in);
         int dungeonMapLength = Integer.parseInt(scanner.nextLine());
         List<List<Integer>> dungeonMap = new ArrayList<>();
+        
         for (int i = 0; i < dungeonMapLength; i++) {
             dungeonMap.add(splitWords(scanner.nextLine()).stream().map(Integer::parseInt).collect(Collectors.toList()));
         }
+        
         scanner.close();
         List<List<Integer>> res = mapGateDistances(dungeonMap);
+        
         for (List<Integer> row : res) {
             System.out.println(row.stream().map(String::valueOf).collect(Collectors.joining(" ")));
         }
