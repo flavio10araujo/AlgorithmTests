@@ -20,6 +20,14 @@ import java.util.Map;
  * 	tasks = ["a", "b", "c", "d"]
  * 	requirements = [["a", "b"], ["c", "b"], ["b", "d"]]
  * 	Output: ["a", "c", "b", "d"]
+ * 
+ * Solution:
+ * 
+ * Cycle detection
+ * One way to detect cycles is to use DFS. 
+ * For normal graph DFS, a node has two states, to be visited and visited. 
+ * We traverse the graph and visit each to be visited node and mark them as visited.
+ * In cycle detection, we need a third state: visiting.
  */
 public class TaskScheduling {
 	
@@ -30,7 +38,7 @@ public class TaskScheduling {
                 return;
             }
             
-            throw new RuntimeException("not a DAG: cycle detected");
+            throw new RuntimeException("not a DAG (Directed Acyclic Graph): cycle detected");
         }
         
         visited.put(node, false);

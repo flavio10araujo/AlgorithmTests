@@ -45,7 +45,7 @@ public class FindTheNumberOfIslands {
         Deque<Coordinate> queue = new ArrayDeque<>();
         queue.add(root);
         
-        grid.get(root.r).set(root.c, 0); // a different way of marking the item as visited
+        grid.get(root.r).set(root.c, 0); // Changing the value in the matrix from 1 to 0. It's a different way of marking the item as visited.
         
         while (queue.size() > 0) {
             Coordinate node = queue.pop();
@@ -57,7 +57,7 @@ public class FindTheNumberOfIslands {
                 }
                 
                 queue.add(neighbor);
-                grid.get(neighbor.r).set(neighbor.c, 0);
+                grid.get(neighbor.r).set(neighbor.c, 0);  // Changing the value in the matrix from 1 to 0. It's a different way of marking the item as visited.
             }
         }
     }
@@ -67,7 +67,7 @@ public class FindTheNumberOfIslands {
         int numCols = grid.get(0).size();
         int count = 0;
         
-        // bfs starting from each unvisited land cell
+        // BFS starting from each unvisited land cell.
         for (int r = 0; r < numRows; r++) {
             for (int c = 0; c < numCols; c++) {
                 if (grid.get(r).get(c) == 0) {
@@ -75,7 +75,8 @@ public class FindTheNumberOfIslands {
                 }
                 
                 bfs(grid, new Coordinate(r, c), numRows, numCols);
-                // bfs would find 1 connected island, increment count
+                
+                // BFS would find 1 connected island, increment count.
                 count++;
             }
         }

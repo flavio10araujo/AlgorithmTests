@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -46,15 +47,15 @@ public class FloodFill {
     }
 
     private static void bfs(List<List<Integer>> image, Coordinate root, int replacementColor, int numRows, int numCols) {
-        ArrayDeque<Coordinate> queue = new ArrayDeque<>();
+        Deque<Coordinate> queue = new ArrayDeque<>();
         queue.add(root);
         
         boolean[][] visited = new boolean[numRows][numCols];
         
         int rootColor = image.get(root.r).get(root.c);
         
-        image.get(root.r).set(root.c, replacementColor);  // replace root color
-        visited[root.r][root.c] = true;
+        image.get(root.r).set(root.c, replacementColor);  // Replace the color of the root coordinate.
+        visited[root.r][root.c] = true; // Marking the root coordinate as visited.
         
         while (queue.size() > 0) {
             Coordinate node = queue.pop();

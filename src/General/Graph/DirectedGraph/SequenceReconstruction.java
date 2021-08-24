@@ -47,6 +47,17 @@ import java.util.stream.Collectors;
  * 1 <= n <= 10^4
  * 1 <= m <= 10^4
  * 1 <= len(seqs[i]) <= n
+ * 
+ * Solution
+ * 
+ * For each sequence, we know the relative ordering of those elements in the reconstructed sequence. 
+ * We can use this to construct a directed ordered graph and do a topo sort on it to reconstruct the sequence. 
+ * This topo sort is going to be simple when using BFS because every time you have more than one item in the queue, 
+ * the reconstruction is non-unique and you can just return false. 
+ * Then it's just a problem of checking if the reconstruction matches the original sequence.
+ * Time Complexity: O(n+m)
+ * Since we are doing a topological sort the time complexity is equal to the number of edges + number of nodes. 
+ * We define n to be number of nodes in our graph and m the number of edges for O(n+m) time complexity.
  */
 public class SequenceReconstruction {
 

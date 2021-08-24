@@ -69,9 +69,16 @@ public class SlidingPuzzle {
 	public static List<Integer> rowDirections = List.of(1, 0, -1, 0);
     public static List<Integer> colDirections = List.of(0, 1, 0, -1);
 
-    // The serialized value of [[1, 2, 3], [4, 5, 0]]
+    // The serialized value of [[1, 2, 3], [4, 5, 0]].
     public static int targetState = 123450;
 
+    /**
+     * This method gets a List of List<Integer> and transform in a number.
+     * Ex.: [[1, 2, 3], [4, 5, 0]] becomes 123450.
+     * 
+     * @param position
+     * @return
+     */
     public static int serialize(List<List<Integer>> position) {
         int total = 0;
         
@@ -85,6 +92,13 @@ public class SlidingPuzzle {
         return total;
     }
 
+    /**
+     * This method gets a number and transform in a List of List<Integer>.
+     * Ex.: 123450 becomes [[1, 2, 3], [4, 5, 0]].
+     * 
+     * @param state
+     * @return
+     */
     public static List<List<Integer>> deserialize(int state) {
         List<List<Integer>> result = new ArrayList<>();
         
@@ -122,6 +136,7 @@ public class SlidingPuzzle {
             
             List<List<Integer>> topPosition = deserialize(topState);
             
+            // Looking for the zero means looking for the empty place in the puzzle.
             for (int i = 0; i < 2; i++) {
                 for (int j = 0; j < 3; j++) {
                     if (topPosition.get(i).get(j) == 0) {
@@ -131,10 +146,13 @@ public class SlidingPuzzle {
                 }
             }
             
-            for (int i = 0; i < rowDirections.size(); i++) {
+            // Using delta col and row.
+            for (int i = 0; i < 4; i++) {
                 
-            	int deltaRow = rowDirections.get(i), deltaCol = colDirections.get(i);
-                int newRow = row + deltaRow, newCol = col + deltaCol;
+            	int deltaRow = rowDirections.get(i);
+            	int deltaCol = colDirections.get(i);
+                int newRow = row + deltaRow;
+                int newCol = col + deltaCol;
                 
                 if (newRow >= 0 && newRow < 2 && newCol >= 0 && newCol < 3) {
                     

@@ -49,10 +49,12 @@ public class Forests {
 
         public T find(T x) {
             T y = f.getOrDefault(x, x);
+            
             if (y != x) {
                 y = find(y);
                 f.put(x, y);
             }
+            
             return y;
         }
 
