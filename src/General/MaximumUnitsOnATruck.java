@@ -1,4 +1,4 @@
-package Tests;
+package General;
 
 import java.util.Arrays;
 

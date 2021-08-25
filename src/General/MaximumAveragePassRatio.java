@@ -1,4 +1,4 @@
-package Tests;
+package General;
 
 /**
  * https://leetcode.com/problems/maximum-average-pass-ratio/
