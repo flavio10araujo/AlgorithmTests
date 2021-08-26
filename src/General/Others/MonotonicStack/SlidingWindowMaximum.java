@@ -79,7 +79,10 @@ public class SlidingWindowMaximum {
         List<Integer> res = new ArrayList<>();
         
         for (int i = 0; i < nums.size(); i++) {
-            while (!q.isEmpty() && nums.get(q.getLast()) <= nums.get(i)) {
+            
+        	System.out.println("q="+q);
+        	
+        	while (!q.isEmpty() && nums.get(q.getLast()) <= nums.get(i)) {
                 q.removeLast();
             }
             
