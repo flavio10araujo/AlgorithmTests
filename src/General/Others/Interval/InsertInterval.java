@@ -42,7 +42,11 @@ import java.util.stream.Collectors;
  * 
  * Solution:
  * 
+ * The easiest way to solve this problem is to insert the interval to be inserted to the end, and now the problem has become a Merge Intervals problem :).
+ * Literally the only thing we need to do is to add the new interval to the end and copy paste the code we had in the merge interval problem.
+ * 
  * O(n) solution
+ * 
  * The solution above is O(nlog(n)) because of the re-sorting of the entire array. 
  * Since log(n) grows so slowly, most of the time with small ns it can considered a constant. 
  * But there is also an O(n) solution to the problem.
@@ -60,19 +64,23 @@ public class InsertInterval {
         int i = 0;
         int n = intervals.size();
         
+        // For intervals whose end time is before the start time of the new interval, add them directly to the final result.
         while (i < n && intervals.get(i).get(1) < newInterval.get(0)) {
             r.add(intervals.get(i));
             i++;
         }
 
+        // For intervals that overlap with the new interval, expand the new interval's start and end time.
         while (i < n && intervals.get(i).get(0) <= newInterval.get(1)) {
             newInterval.set(0, Math.min(newInterval.get(0), intervals.get(i).get(0)));
             newInterval.set(1, Math.max(newInterval.get(1), intervals.get(i).get(1)));
             i++;
         }
         
+        // Add the new interval to the final results.
         r.add(newInterval);
 
+        // For intervals whose start time is after the end of the new interval, add them directly to the final result.
         while (i < n) {
             r.add(intervals.get(i));
             i++;

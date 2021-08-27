@@ -45,15 +45,23 @@ public class MergeIntervals {
 
     public static List<List<Integer>> mergeIntervals(List<List<Integer>> intervals) {
         
+    	// To merge the intervals, we have to establish an order so that the intervals that are close to each other are ordered next to each other so we can merge them. 
+    	// Since an interval is represented by a start time and an end time, we really only have two ways to order them - by start time or by end time.
+    	// Here we sort them by start time and go through each interval.
     	intervals.sort((i1, i2) -> Integer.compare(i1.get(0), i2.get(0)));
 
+    	// We keep a list of final intervals.
         List<List<Integer>> res = new ArrayList<>();
         
+        // For each interval in the sorted interval list...
         for (List<Integer> interval : intervals) {
             
+        	// if it has an overlap with the last interval in the final interval list, we update the last interval's end position.
         	if (res.isEmpty() || !overlap(res.get(res.size() - 1), interval)) {
                 res.add(interval);
-            } else {
+            }
+        	// Otherwise, we append the interval to the final interval list.
+        	else {
                 List<Integer> lastInterval = res.get(res.size() - 1);
                 lastInterval.set(1, Math.max(lastInterval.get(1), interval.get(1)));
             }
