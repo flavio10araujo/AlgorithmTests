@@ -29,6 +29,7 @@ import java.util.stream.Collectors;
  * nums[i] + dp[i - 2] means we rob the current house, skip the previous house and add max loot from previous i-2 houses.
  */
 public class HouseRobber {
+	
 	public static int rob(List<Integer> nums) {
 		if (nums.size() == 0) {
 	        return 0;
@@ -40,6 +41,7 @@ public class HouseRobber {
 
 	    int n = nums.size();
 	    int[] dp = new int[n];
+	    
 	    dp[0] = nums.get(0);
 	    dp[1] = Math.max(nums.get(0), nums.get(1));
 	    
