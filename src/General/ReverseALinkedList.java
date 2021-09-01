@@ -1,4 +1,4 @@
-package General.Others;
+package General;
 
 import java.util.Stack;
 

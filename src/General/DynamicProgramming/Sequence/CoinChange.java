@@ -28,10 +28,12 @@ import java.util.stream.Collectors;
  * 1 + because we are picking one coin. 
  * dp[i - coin] means we have to make up the remaining value.
  * 
- * Time Complexity: O(coins.length*amount)
+ * Time Complexity: O(coins.length * amount)
  */
 public class CoinChange {
 
+	public static int contador = 0;
+	
 	public static int coinChange(List<Integer> coins, int amount) {
         if (amount == 0) {
         	return 0;
@@ -44,6 +46,7 @@ public class CoinChange {
             
             for (int coin : coins) {
                 dp[i] = Math.min(dp[i], i >= coin ? dp[i - coin] + 1 : Integer.MAX_VALUE);
+                System.out.println(++contador);
             }
         }
         

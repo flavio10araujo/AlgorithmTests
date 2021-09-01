@@ -9,7 +9,7 @@ class Fibonacci {
 	private static int counter = 0;
 	
 	public static void main(String args[]) {
-		int n = 8;
+		int n = 6;
 		//System.out.println(fibSolution01(n)); // Solution with recursion.
 		//System.out.println(fibSolution02(n)); // Solution with dynamic programming and memoization.
 		System.out.println(fibSolution03(n)); // Solution with dynamic programming and tabulation.
@@ -75,7 +75,6 @@ class Fibonacci {
 		for (int i = 2; i <= n; i++) {
 			counter++;
 			dp[i] = dp[i - 1] + dp[i - 2];
-			//System.out.println("dp[i] = dp[i - 1] + dp[i - 2] => dp["+i+"]=" + dp[i] + " dp["+i+" - 1]=" + dp[i - 1] + " dp["+i+" - 2]=" + dp[i - 2]);
 		}
 
 		return dp[n];
