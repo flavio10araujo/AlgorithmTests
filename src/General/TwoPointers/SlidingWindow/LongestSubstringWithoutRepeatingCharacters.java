@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
+ * https://leetcode.com/problems/longest-substring-without-repeating-characters/
+ * 
  * Find the length of the longest substring of a given string without repeating characters.
  * Input: abccabcabcc
  * Output: 3
@@ -74,11 +76,45 @@ public class LongestSubstringWithoutRepeatingCharacters {
         return total;
     }
 
+	public static int lengthOfLongestSubstring(String s) {
+        
+		if (s == null || s.length() == 0) {
+            return 0;
+        } else if (s.length() == 1) {
+            return 1;
+        }
+        
+        Set<Character> chars = new HashSet<>();
+        
+        int slow = 0;
+        int fast = 1;
+        int count = 1;
+        
+        chars.add(s.charAt(0));
+        
+        while (fast < s.length()) {
+            if (!chars.contains(s.charAt(fast))) {
+                chars.add(s.charAt(fast));
+                fast++;
+                
+                if (chars.size() > count) {
+                    count = chars.size();
+                }
+            } else {
+                chars.remove(s.charAt(slow));
+                slow++;
+            }
+        }
+        
+        return count;
+        
+    }
+	
     public static void main(String[] args) {
     	long startTime = System.nanoTime();
     	
-    	String s = "abcdbea";
-        int res = longestSubstringWithoutRepeatingCharacters02(s);
+    	String s = "pwwkew";
+        int res = lengthOfLongestSubstring(s);
         System.out.println(res);
         
         long endTime = System.nanoTime();
