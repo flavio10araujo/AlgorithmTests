@@ -3,6 +3,8 @@ package General;
 import java.util.Stack;
 
 /**
+ * https://leetcode.com/problems/reverse-linked-list/
+ * 
  * Given pointer to the head node of a linked list, the task is to reverse the linked list. 
  * We need to reverse the list by changing the links between nodes.
  * 
@@ -40,20 +42,20 @@ import java.util.Stack;
  * https://www.geeksforgeeks.org/reverse-a-linked-list/
  * 
  */
-public class ReverseALinkedList {
+public class ReverseLinkedList {
 	static Node head;
 	 
 	public static void main(String[] args) {
-    	ReverseALinkedList list = new ReverseALinkedList();
+    	ReverseLinkedList list = new ReverseLinkedList();
         
     	list.head = new Node(1);
         list.head.next = new Node(2);
         list.head.next.next = new Node(3);
-        list.head.next.next.next = new Node(4);
+        //list.head.next.next.next = new Node(4);
  
-        System.out.println("Given Linked list:");
+        //System.out.println("Given Linked list:");
         
-        list.printList(head);
+        //list.printList(head);
         
         head = list.reverseWithPointers();
         //head = list.reverseWithStack();
@@ -87,11 +89,15 @@ public class ReverseALinkedList {
         Node current = head;
         Node next = null;
         
+        System.out.println("prev="+prev+" current="+current.data+" next="+next);
+        
         while (current != null) {
             next = current.next;
             current.next = prev;
             prev = current;
             current = next;
+            
+            System.out.println("prev="+prev.data+" current="+((current==null?null:current.data))+" next="+((next==null?null:next.data)));
         }
         
         return prev;
