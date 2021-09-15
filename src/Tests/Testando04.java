@@ -1,109 +1,169 @@
 package Tests;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 public class Testando04 {
 	
-	public static int contador = 0;
-
-	public static List<String> splitWords(String s) {
-        return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
-    }
-    
-    public static void main(String[] args) {
-        List<Integer> coins = splitWords("1 2 5").stream().map(Integer::parseInt).collect(Collectors.toList());
-        int amount = Integer.parseInt("11");
-        int res = coinChange(coins, amount);
-        System.out.println(res);
-    }
-    
-    public static int coinChange(List<Integer> coins, int amount) {
-    	List<Integer> res = new ArrayList<Integer>();
-    	
-    	int qtdCoins = 0;
-    	int qtdFinal = Integer.MAX_VALUE;
-    	Set<String> myset = new HashSet<String>();
-    	
-    	Collections.reverse(coins);
-    	
-    	for (Integer i : coins) {
-    		res.add(i);
-    		
-    		qtdCoins = dfs(coins, amount, res, i, myset, Integer.MAX_VALUE);
-    		
-    		if (qtdCoins > 0) {
-    			qtdFinal = Math.min(qtdFinal, qtdCoins);
-    		}
-    		
-    		res.clear();
-    	}
-    	
-    	return qtdFinal;
-    }
-    
-    public static String prepareList(List<Integer> res) {
-    	StringBuilder s = new StringBuilder();
-    	
-    	List<Integer> lista = new ArrayList<Integer>(res);
-    	
-    	Collections.sort(lista);
-    	
-    	for (Integer i : lista) {
-    		s.append(i+" ");
-    	}
-    	
-    	return s.toString();
-    }
-    
-    public static int dfs(List<Integer> coins, int amount, List<Integer> res, int sum, Set<String> myset, int qtdFinal) {
-    	
-    	System.out.println(++contador);
-    	
-    	if (sum >= amount) {
-	    	if (sum == amount) {
-	    		return res.size();
-	    	} else if (sum > amount) {
-	    		return -1;
-	    	}
-    	}
-    	
-    	int qtdCoins = 0;
-    	
-    	for (Integer i : coins) {
-    		sum += i;
-    		res.add(i);
-    		
-    		if (res.size() < qtdFinal && !myset.contains(prepareList(res))) {
-    			if (sum >= amount) {
-    				
-    				myset.add(prepareList(res));
-    				
-    		    	if (sum == amount) {
-    		    		qtdCoins = res.size();
-    		    	} else if (sum > amount) {
-    		    		qtdCoins = -1;
-    		    	}
-    	    	} else {
-    	    		qtdCoins = dfs(coins, amount, res, sum, myset, qtdFinal);
-    			}
-    		}
-    		
-    		sum -= i;
-			res.remove(res.size() - 1);
-    		
-    		if (qtdCoins > 0) {
-    			qtdFinal = Math.min(qtdFinal, qtdCoins);
-    		} else {
-    			break;
-    		}
-    	}
-    	
-    	return qtdFinal;
+	public static void main(String[] args) {
+        /*int[] arr = new int[10];
+        
+        Arrays.fill(arr, 8);
+        
+        String s = Arrays.toString(arr);
+        
+        System.out.println(s);
+        
+        int[] arr2 = {3, 7, 2, 9, 4};
+        System.out.println(Arrays.toString(arr2));
+        Arrays.sort(arr2);
+        System.out.println(Arrays.toString(arr2));
+        
+        Integer[] arr3 = {3, 7, 8, 2, 5, 7};
+        List<Integer> myList = Arrays.asList(arr3);
+        
+        for (Integer i : myList) {
+        	System.out.println(i);
+        }
+        
+        System.out.println(myList);*/
+		
+		/*List<Integer> myList = List.of(1, 2);
+		
+		System.out.println(myList);
+		
+		String s2 = "abc$def";
+		
+		char[] cArr = s2.toCharArray();
+		
+		for (int i = 0; i < cArr.length; i++) {
+			
+			if (!Character.isLetterOrDigit(cArr[i])) {
+				System.out.println(cArr[i] + " is not a valid character!");
+			} else {
+				System.out.println(Character.toUpperCase(cArr[i]));
+			}
+		}*/
+		
+		/*List<Integer> integers = List.of(1, 2, 3, 4, 5);
+		
+		int sum = integers.stream().mapToInt(lala -> lala).sum();
+		
+		System.out.println(sum);*/
+		
+		
+		/*List<Integer> nums = List.of(2, 2, 5, 5, 5);
+		Map<Integer, Integer> numCount1 = new HashMap<>();
+		Map<Integer, Integer> numCount2 = new HashMap<>();
+		
+		for (int i : nums) { 
+			numCount1.merge(i, 1, Integer::sum);
+			numCount2.put(i, numCount2.getOrDefault(i, 0) + 1);
+		}
+		
+		System.out.println(numCount1);
+		System.out.println(numCount2);*/
+		
+		//Map<Integer, String> alphabet = Map.of(1, "A", 2, "B", 3, "C");
+		
+		/*Map<Integer, String> alphabet = new HashMap<>();
+		
+		alphabet.put(1, "A");
+		alphabet.put(2, "B");
+		alphabet.put(3, "C");
+		
+		System.out.println(alphabet);
+		
+		//System.out.println(alphabet.get(3));
+		
+		System.out.println(alphabet.getOrDefault(3, "Not found"));
+		System.out.println(alphabet.getOrDefault(4, "Not found"));*/
+		
+		/*Map<Integer, String> myMap = Map.of(1, "A", 2, "B", 3, "C");
+		
+		for (Integer i : myMap.keySet()) {
+			System.out.println("key = " + i + " value = " + myMap.get(i));
+		}*/
+		
+		//Map<String, List<String>> graph = Map.of("A", List.of("A1", "A2"), "B", List.of("B1", "B2"));
+		
+		/*Map<Integer, String> myMap = Map.of(1, "A", 2, "B", 3, "C");
+		
+		for (Map.Entry<Integer, String> entry : myMap.entrySet()) {
+			System.out.println("key = " + entry.getKey() + " value = " + entry.getValue());
+		}*/
+		
+		/*Map<String, Boolean> mymap = Map.of("A", true, "B", false);
+		
+		if (mymap.containsKey("A")) {
+			System.out.println("entrou");
+		}
+		
+		if (mymap.containsKey("B")) {
+			System.out.println("entrou");
+		}
+		
+		if (mymap.containsKey("C")) {
+			System.out.println("não entrou");
+		}
+		
+		if (mymap.get("A")) {
+			System.out.println("lalala");
+		}*/
+		
+		/*Map<Integer, String> mymap = Map.of(1, "A", 2, "B", 3, "C");
+		
+		if (mymap.containsValue("A")) {
+			System.out.println("entrou");
+		}
+		
+		if (mymap.containsValue("D")) {
+			System.out.println("não entrou");
+		}*/
+		
+		/*Map<Integer, String> visited = Map.of(1, "A", 2, "B");
+		if (visited.containsKey(1)) {}
+		if (visited.containsValue("A")) {}*/
+		
+		/*int n = 3968;
+		
+		System.out.println("Parte 1: " + (n / 1000));
+		System.out.println("Parte 1: " + (n % 1000));
+		System.out.println("Parte 2: " + (n % 10));*/
+		
+		//List<String> lista = List.of("a", "b", "c", "d");
+		/*List<String> lista = new LinkedList<>();
+		
+		lista.add("a");
+		lista.add("b");
+		lista.add("c");
+		
+		System.out.println(lista);
+		
+		lista.remove(lista.size() - 1);
+		
+		System.out.println(lista);*/
+		
+		/*String s = "01234 6789 ABCD";
+		System.out.println(s.indexOf(" ")); // 5
+		System.out.println(s.lastIndexOf(" ")); // 10*/
+		
+		/*List<String> list = new LinkedList<>();
+		
+		list.add("DDD");
+		list.add("AAA");
+		list.add("CCC");
+		list.add("BBB");
+		
+		System.out.println(list);*/
+		
+		char[][] board = new char[10][20];
+		
+		int height = board.length;
+	    int width = board[0].length;
+	    
+	    System.out.println(height);
+	    System.out.println(width);
     }
 }

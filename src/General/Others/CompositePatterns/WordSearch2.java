@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
+ * https://leetcode.com/problems/word-search-ii/
+ * 
  * Word Search II | Depth First Search + Trie
  * 
  * For this question we ask you to determine if it is possible to make certain words given a 2-d matrix of characters. 
