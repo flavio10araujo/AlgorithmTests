@@ -38,9 +38,8 @@ import java.util.Scanner;
 public class Autocomplete {
 
 	public static class Node {
-        // Mostly the same as the provided trie data structure in the introductory article, add freq to keep track of frequency we get this prefix.
-        char value;
-        int freq;
+        char value; // The value of the node.
+        int freq; // The number of words that uses this char in the trie.
         Map<Character, Node> children = new HashMap<Character, Node>();
         
         public Node(char value) {
@@ -49,26 +48,32 @@ public class Autocomplete {
         
         void insert(String s, int idx) {
             freq++;
+            
+            // Base case to stop the recursion.
             if (s.length() == idx) {
                 return;
             }
+            
+            System.out.println("INSERT: s = " + s + " idx = " + idx + " s.charAt(idx) = " + s.charAt(idx) + " freq = "+ freq);
+            
             if (children.containsKey(s.charAt(idx))) {
                 children.get(s.charAt(idx)).insert(s, idx + 1);
-            }
-            else {
+            } else {
                 children.put(s.charAt(idx), new Node(s.charAt(idx)));
                 children.get(s.charAt(idx)).insert(s, idx + 1);
             }
         }
-        // function to check frequency we get a prefix
+
         int query(String s, int idx) {
-            // we have reached end of prefix, terminate by returning the value
+        	// Base case to stop the recursion.
             if (s.length() == idx || freq == 1) {
                 return 0;
             }
+            
             return children.get(s.charAt(idx)).query(s, idx + 1) + 1;
         }
     }
+	
     public static int autocomplete(List<String> words) {
         Node trie = new Node('$');
         int total = 0;
@@ -78,7 +83,7 @@ public class Autocomplete {
             total += trie.query(word, 0);
         }
         
-        return total + 1;
+        return total + 1; // 
     }
 
     public static List<String> splitWords(String s) {

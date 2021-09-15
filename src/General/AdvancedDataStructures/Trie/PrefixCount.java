@@ -86,12 +86,13 @@ public class PrefixCount {
             trie.insert(word, 0);
         }
         
-        Set<Map.Entry<Character, Node>> entries = trie.children.entrySet();
+        /*Set<Map.Entry<Character, Node>> entries = trie.children.entrySet();
+        
         entries.forEach((Map.Entry<Character, Node> entry) -> {
         	Character key = entry.getKey();
         	Node value = entry.getValue();
 			System.out.println("key=" + key + ", value=" + value);
-		});
+		});*/
         
         List<Integer> ans = new ArrayList<Integer>();
         
