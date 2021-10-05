@@ -10,6 +10,8 @@ import java.util.Queue;
 import java.util.Set;
 
 /**
+ * Leetcode 269 : Hard.
+ * 
  * There is a new alien language which uses the latin alphabet. 
  * However, the order among letters are unknown to you.
  * You receive a list of non-empty words from the dictionary, where words are sorted lexicographically by the rules of this new language. 
@@ -29,7 +31,7 @@ import java.util.Set;
  * Example 1:
  * Input: ["z","x"]
  * Output: zx
- * Explanation: From z and x，we can get 'z < x'. So return zx.
+ * Explanation: From z and x we can get 'z < x'. So return zx.
  * 
  * Example 2:
  * Input: ["wrt","wrf","er","ett","rftt"]
