@@ -2,16 +2,12 @@ package General;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import java.util.Scanner;
-import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * https://leetcode.com/problems/top-k-frequent-words/
@@ -31,80 +27,57 @@ import java.util.regex.Pattern;
  */
 public class TopKFrequentlyMentionedKeywords {
 
-	public static List<String> topMentioned(int k, List<String> keywords, List<String> reviews) {
-		
-        Pattern patt = Pattern.compile("\\b(:?" + String.join("|", keywords) + ")\\b", Pattern.CASE_INSENSITIVE);
-        Map<String, Integer> counts = new HashMap<>();
+	public static List<String> topKFrequent(String[] words, int k) {	
+        Map<String, Integer> mapWords = new HashMap<>();
         
-        for (String review : reviews) {
-            Matcher m = patt.matcher(review);
-            Set<String> words = new HashSet<>();
-            
-            while (m.find())
-                words.add(m.group(0).toLowerCase());
-            
-            for (String word : words)
-                counts.merge(word, 1, Integer::sum);
+        // O(n)
+        for (String word : words) {
+        	mapWords.put(word, mapWords.getOrDefault(word, 0) + 1);
         }
         
-        Queue<Map.Entry<Integer, String>> queue = new PriorityQueue<>((a, b) -> {
-            if (a.getKey() != b.getKey())
-                return Integer.compare(a.getKey(), b.getKey());
-            return -a.getValue().compareTo(b.getValue());
+        // Creating an heap.
+        Queue<String> heap = new PriorityQueue<>(new Comparator<String>() {
+        	@Override
+        	public int compare(String word1, String word2) {
+        		int frequency1 = mapWords.get(word1);
+        		int frequency2 = mapWords.get(word2);
+        		
+        		if (frequency1 == frequency2) {
+        			return word2.compareTo(word1);
+        		}
+        		
+        		return frequency1 - frequency2;
+        	}
         });
         
-        for (Map.Entry<String, Integer> entry : counts.entrySet()) {
-            queue.offer(Map.entry(entry.getValue(), entry.getKey()));
-            
-            if (queue.size() > k)
-                queue.poll();
+        // O(n).
+        for (Map.Entry<String, Integer> entry : mapWords.entrySet()) {
+        	heap.add(entry.getKey());
+        	
+        	if (heap.size() > k) {
+        		heap.poll();
+        	}
         }
         
-        List<String> res = new ArrayList<>();
+        List<String> res = new ArrayList<String>();
         
-        while (!queue.isEmpty())
-            res.add(queue.poll().getValue());
+        while (!heap.isEmpty()) {
+        	res.add(heap.poll());
+        }
         
         Collections.reverse(res);
         
         return res;
     }
 	
-	// 2
-	// 6
-	// i
-	// love
-	// leetcode
-	// i
-	// love
-	// coding
-	// 
-    public static void main(String[] args) {
-    	long startTime = System.nanoTime();
+	public static void main(String[] args) {
+    	//String[] words = {"i","love","leetcode","i","love","coding"};
+    	//int k = 2;
     	
-    	Scanner scanner = new Scanner(System.in);
-        int k = Integer.parseInt(scanner.nextLine());
-        int keywordsLength = Integer.parseInt(scanner.nextLine());
-        List<String> keywords = new ArrayList<>();
-        
-        for (int i = 0; i < keywordsLength; i++) {
-            keywords.add(scanner.nextLine());
-        }
-        
-        int reviewsLength = Integer.parseInt(scanner.nextLine());
-        List<String> reviews = new ArrayList<>();
-        
-        for (int i = 0; i < reviewsLength; i++) {
-            reviews.add(scanner.nextLine());
-        }
-        
-        scanner.close();
-        List<String> res = topMentioned(k, keywords, reviews);
+    	String[] words = {"the","day","is","sunny","the","the","the","sunny","is","is"};
+    	int k = 4;
+    	
+        List<String> res = topKFrequent(words, k);
         System.out.println(String.join(" ", res));
-        
-        long endTime = System.nanoTime();
-	    long timeElapsed = endTime - startTime;
-	    System.out.println("Execution time in nanoseconds: " + timeElapsed);
-	    System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
     }
 }

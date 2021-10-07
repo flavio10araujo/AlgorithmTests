@@ -1,14 +1,13 @@
 package Tests;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
  * You work on a team whose job is to understand the most sought after toys for the holiday season. 
@@ -39,7 +38,7 @@ import java.util.stream.Collectors;
  *   quotes = [
  *   	"Elmo is the hottest of the season! Elmo will be on every kid's wishlist!",
  *      "The new Elmo dolls are super high quality",
- *      "Expect the Elsa dolls to be very popular this year, Elsa",
+ *      "Expect the Elsa dolls to be very popular this year, Elsa!",
  *      "Elsa and Elmo are the toys I'll be buying for my kids, Elsa is good",
  *      "For parents of older kids, look into buying them a drone",
  *      "Warcraft is slowly rising in popularity ahead of the holiday season"
@@ -68,22 +67,16 @@ public class AmazonTopKBuzzwords {
 		toys.add("wacraft");
 
 		List<String> quotes = new ArrayList<String>();
-		quotes.add("o brinquedo ELMO é o mais legal");
-		quotes.add("comprei para meu filho um tablet");
-		quotes.add("ainda tem muita gente na fila para comprar a nova versão do eLmO para baixinhos");
-		quotes.add("o lançamento do novo tablet da apple vem em várias cores");
-		quotes.add("elMO e elsa são os grandes vencedores");
-		quotes.add("os mais velhos preferem os legos porque os legos mais novos são melhores que os legos antigos");
-		quotes.add("o filme da elsa na neve venceu todas as categorias");
-
-		// Results expected:
-		// 1) elmo = 3
-		// 2) elsa = 2
-		// 3) tablet = 2
+		quotes.add("Elmo is the hottest of the season! Elmo will be on every kid's wishlist!");
+		quotes.add("The new Elmo dolls are super high quality");
+		quotes.add("Expect the Elsa dolls to be very popular this year, Elsa !"); // esse "!" pode dar problema se estiver grudado na palavra
+		quotes.add("Elsa and Elmo are the toys I'll be buying for my kids, Elsa is good");
+		quotes.add("For parents of older kids, look into buying them a drone");
+		quotes.add("Warcraft is slowly rising in popularity ahead of the holiday season");
 
 		int numToys = 6;
-		int topToys = 3;
-		int numQuotes = 7;
+		int topToys = 2;
+		int numQuotes = 6;
 
 		List<String> retorno = q.popularNToys(numToys, topToys, toys, numQuotes, quotes);
 		
@@ -94,81 +87,65 @@ public class AmazonTopKBuzzwords {
 
 	public List<String> popularNToys(int numToys, int topToys, List<String> toys, int numQuotes, List<String> quotes) {
 
-		// Map for tracing all the occurrences for every toy in the list toys[].
-		// The TreeMap was chosen because its elements are added in the right order (alphabetically).
-		//Map<String, Integer> toysOccurrences = new TreeMap<String, Integer>();
-		Map<String, Integer> toysOccurrences = new HashMap<String, Integer>();
-		// The list of the n (being n = topToys) more quoted toys in quotes[].
-		List<String> mostQuotedToys = new ArrayList<String>();
-
-		for (int i = 0; i < quotes.size(); i++) {
-			for (int j = 0; j < toys.size(); j++) {
-				// Searching the toy from the list toys[] in each item of the array quotes[].
-				// Ignoring the case sensitive with a toLowerCase in both of the contents.
-				if (quotes.get(i).toLowerCase().contains(toys.get(j).toLowerCase())) {
-					// If : the toy is already in the map toysOccurrences, so we add 1 for its value.
-					// Else : We add the toy in the map toysOccurrences with value 1.
-					if (toysOccurrences.get(toys.get(j)) != null) {
-						toysOccurrences.put(toys.get(j), toysOccurrences.get(toys.get(j)) + 1);
-					} else {
-						toysOccurrences.put(toys.get(j), 1);
-					}
-				}
-			}
-		}
-
-		// We need to sort the map by the numbers of occurrences of each toy.
-		Map<String, Integer> sortedMap = sortByValues(toysOccurrences);
-		Set set = sortedMap.entrySet();
-	    Iterator i = set.iterator();
-	 
-	    // We need to get the n (being n = topToys) first toys in the list.
-	    while(i.hasNext() && topToys > 0) {
-	    	topToys--;
-	    	Map.Entry me = (Map.Entry) i.next();
-	    	mostQuotedToys.add(me.getKey().toString());
-	    }
-
-		return mostQuotedToys;
+		Map<String,Integer> countToyMentions = new HashMap<>();
+        Map<String, Integer> countToyMentionsDistinctReviews = new HashMap<>();
+        
+        for (String toy : toys) {
+            countToyMentions.put(toy, 0);
+            countToyMentionsDistinctReviews.put(toy, 0);
+        }
+        
+        for (int i = 0; i < quotes.size(); i++) {
+        	for (int j = 0; j < toys.size(); j++) {
+        		if (quotes.get(i).toLowerCase().contains(toys.get(j).toLowerCase())) {
+                    countToyMentionsDistinctReviews.put(toys.get(j), countToyMentionsDistinctReviews.get(toys.get(j)) + 1);
+                }
+            }
+        }
+        
+        //System.out.println(countToyMentionsDistinctReviews);
+        
+        for (int i = 0; i < quotes.size(); i++) {
+            for (String reviewWord : quotes.get(i).toLowerCase().split(" ")) {
+                if (countToyMentions.containsKey(reviewWord)) {
+                    countToyMentions.put(reviewWord, countToyMentions.get(reviewWord) + 1);
+                }
+            }
+        }
+        
+        //System.out.println(countToyMentions);
+        
+        Queue<String> heap = new PriorityQueue<>(new Comparator<String>() {
+            @Override
+            public int compare(String t1, String t2) {
+                if (countToyMentions.get(t1) != countToyMentions.get(t2)) {
+                    return countToyMentions.get(t1) - countToyMentions.get(t2);
+                } else if(countToyMentionsDistinctReviews.get(t1) != countToyMentionsDistinctReviews.get(t2)) {
+                    return countToyMentionsDistinctReviews.get(t1) - countToyMentionsDistinctReviews.get(t2);
+                } else {
+                    return t2.compareTo(t1);
+                }
+            }
+        });
+        
+        for (String toy : toys) {
+            heap.offer(toy);
+            
+            if (heap.size() > topToys) {
+                heap.poll();
+            }
+        }
+        
+        //System.out.println(heap);
+        
+        List<String> topKToys = new ArrayList<>(topToys);
+        
+        while (!heap.isEmpty()) {
+            topKToys.add(heap.poll());
+        }
+        
+        Collections.reverse(topKToys);
+        
+        return topKToys;
 	}
-
-	// Method for sorting the TreeMap descending based on values.
-	// With Java 8.
-	public static Map<String, Integer> sortByValues(final Map<String, Integer> map) {
-		return map.entrySet().stream()
-			    .sorted(Map.Entry.comparingByKey()) 			
-			    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (oldValue, newValue) -> oldValue, TreeMap::new));
-	}
-	/*public static Map<String, Integer> sortByValues(final Map<String, Integer> map) {
-		Comparator<String> valueComparator = new Comparator<String>() {
-			public int compare(String k1, String k2) {
-				int compare = map.get(k2).compareTo(map.get(k1));
-				if (compare == 0)
-					return 1;
-				else
-					return compare;
-			}
-		};
-		
-		Map<String, Integer> sortedByValues = new TreeMap<String, Integer>(valueComparator);
-		sortedByValues.putAll(map);
-		
-		return sortedByValues;
-	}*/
-	// The same method but with generics:
-	/*public static <K, V extends Comparable<V>> Map<K, V> sortByValues(final Map<K, V> map) {
-		Comparator<K> valueComparator = new Comparator<K>() {
-			public int compare(K k1, K k2) {
-				int compare = map.get(k2).compareTo(map.get(k1));
-				if (compare == 0)
-					return 1;
-				else
-					return compare;
-			}
-		};
-
-		Map<K, V> sortedByValues = new TreeMap<K, V>(valueComparator);
-		sortedByValues.putAll(map);
-		return sortedByValues;
-	}*/
 }

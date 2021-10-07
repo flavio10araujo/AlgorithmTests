@@ -89,8 +89,9 @@ public class LowestCommonAncestorOfABinaryTree {
 
     public static void main(String[] args) {
         Node root = Node.buildTree(Arrays.stream("5 4 3 x x 8 x x 6 x x".split(" ")).iterator());
-        Node node1 = Node.findNode(root, 3);
+    	Node node1 = Node.findNode(root, 3);
         Node node2 = Node.findNode(root, 8);
+    	
         Node ans = lca(root, node1, node2);
         System.out.println(ans == null ? "null" : ans.val);
     }
