@@ -1,6 +1,11 @@
 package General;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
  * https://leetcode.com/problems/maximum-units-on-a-truck/
@@ -44,49 +49,102 @@ import java.util.Arrays;
 public class MaximumUnitsOnATruck {
 
 	public static void main(String[] args) {
-		int[][] boxTypes = { {2, 2}, {1, 3}, {3, 1} };
-		int truckSize = 4;
+		//int[][] boxTypes = { {2, 2}, {1, 3}, {3, 1} };
+		//int truckSize = 4;
 		
-		System.out.println(getMaximumUnitsOnATruck(boxTypes, truckSize));
+		//int[][] boxTypes = { {5,10},{2,5},{4,7},{3,9} };
+		//int truckSize = 10;
+		
+		int[][] boxTypes = { {1,3},{5,5},{2,5},{4,2},{4,1},{3,1},{2,2},{1,3},{2,5},{3,2} };
+		int truckSize = 35; // return 76
+		
+		System.out.println(solution01(boxTypes, truckSize));
+		System.out.println(solution02(boxTypes, truckSize));
 	}
 	
-	public static int getMaximumUnitsOnATruck(int[][] boxTypes, int truckSize) {
-		
-		/*for(int i = 0; i < boxTypes.length; i++) {
-			for(int j = 0; j < 2; j++) {
-				System.out.print(boxTypes[i][j]);
-			}
-			System.out.println("");
-		}*/
+	/**
+	 * O(n log n).
+	 * @param boxTypes
+	 * @param truckSize
+	 * @return
+	 */
+	public static int solution01(int[][] boxTypes, int truckSize) {
 		
 		// First thing is to order the list by unit. Biggest units first.
 		Arrays.sort(boxTypes, (a, b) -> -Integer.compare(a[1], b[1]));
 		
-		/*for(int i = 0; i < boxTypes.length; i++) {
-			for(int j = 0; j < 2; j++) {
-				System.out.print(boxTypes[i][j]);
+		int maximumUnits = 0;
+		
+		for (int i = 0; i < boxTypes.length; i++) {
+			int numBoxes = boxTypes[i][0];
+			
+			if (numBoxes > truckSize) {
+				numBoxes = truckSize;
 			}
-			System.out.println("");
-		}*/
-		
-		int maximumUnitsOnATruck = 0;
-		int countBoxes = 0;
-		
-		label : {
-			for (int i = 0; i < boxTypes.length; i++) {
-				for (int j = 1; j <= boxTypes[i][0]; j++) {
-					
-					maximumUnitsOnATruck += boxTypes[i][1];
-					
-					countBoxes++;
-					
-					if (countBoxes >= truckSize) {
-						break label;
-					}
-				}
+			
+			maximumUnits = maximumUnits + (numBoxes * boxTypes[i][1]);
+			
+			truckSize = truckSize - numBoxes;
+			
+			if (truckSize == 0) {
+				break;
 			}
 		}
 		
-		return maximumUnitsOnATruck;
+		return maximumUnits;
+	}
+	
+	/**
+	 * O(log n).
+	 * @param boxTypes
+	 * @param truckSize
+	 * @return
+	 */
+	public static int solution02(int[][] boxTypes, int truckSize) {
+		Queue<Element> heap = new PriorityQueue<>(new Comparator<Element>() {
+            public int compare(Element o1, Element o2) {
+                return o2.getNumberOfUnitsPerBox() - o1.getNumberOfUnitsPerBox();
+            }
+        });
+        
+        for (int i = 0; i < boxTypes.length; i++) {
+            heap.offer(new Element(boxTypes[i][0], boxTypes[i][1]));
+        }
+        
+        int max = 0;
+        
+        while(truckSize > 0 && !heap.isEmpty()) {
+            Element e = heap.poll();
+            
+            int numberOfBoxes = e.getNumberOfBoxes();
+            
+            if (numberOfBoxes > truckSize) {
+                numberOfBoxes = truckSize;
+            }
+            
+            max = max + (numberOfBoxes * e.getNumberOfUnitsPerBox());
+            
+            truckSize = truckSize - numberOfBoxes;
+        }
+        
+        return max;
+	}
+	
+	static class Element {
+	    int numberOfBoxes;
+	    int numberOfUnitsPerBox;
+	    
+	    public Element(int numberOfBoxes, int numberOfUnitsPerBox) {
+	        this.numberOfBoxes = numberOfBoxes;
+	        this.numberOfUnitsPerBox = numberOfUnitsPerBox;
+	    }
+	    
+	    public int getNumberOfBoxes() {
+	        return this.numberOfBoxes;
+	    }
+	    
+	    public int getNumberOfUnitsPerBox() {
+	        return this.numberOfUnitsPerBox;
+	    }
 	}
 }

@@ -69,7 +69,7 @@ public class AmazonTopKBuzzwords {
 		List<String> quotes = new ArrayList<String>();
 		quotes.add("Elmo is the hottest of the season! Elmo will be on every kid's wishlist!");
 		quotes.add("The new Elmo dolls are super high quality");
-		quotes.add("Expect the Elsa dolls to be very popular this year, Elsa !"); // esse "!" pode dar problema se estiver grudado na palavra
+		quotes.add("Expect the Elsa dolls to be very popular this year, Elsa!");
 		quotes.add("Elsa and Elmo are the toys I'll be buying for my kids, Elsa is good");
 		quotes.add("For parents of older kids, look into buying them a drone");
 		quotes.add("Warcraft is slowly rising in popularity ahead of the holiday season");
@@ -87,6 +87,8 @@ public class AmazonTopKBuzzwords {
 
 	public List<String> popularNToys(int numToys, int topToys, List<String> toys, int numQuotes, List<String> quotes) {
 
+		quotes = preProcessReviews(quotes);
+		
 		Map<String,Integer> countToyMentions = new HashMap<>();
         Map<String, Integer> countToyMentionsDistinctReviews = new HashMap<>();
         
@@ -148,4 +150,12 @@ public class AmazonTopKBuzzwords {
         
         return topKToys;
 	}
+	
+	private static List<String> preProcessReviews(List<String> quotes) {
+        for (int i = 0; i < quotes.size(); i++) {
+            quotes.set(i, quotes.get(i).replaceAll("[^ a-zA-Z]", "").toLowerCase());
+        }
+        
+        return quotes;
+    }
 }

@@ -61,7 +61,8 @@ public class TrappingRainWater {
     }
 
     public static void main(String[] args) {
-        List<Integer> elevations = splitWords("1 0 2 1 0 1 3 2 1 2 1").stream().map(Integer::parseInt).collect(Collectors.toList());
+        //List<Integer> elevations = splitWords("1 0 2 1 0 1 3 2 1 2 1").stream().map(Integer::parseInt).collect(Collectors.toList());
+        List<Integer> elevations = splitWords("1 8 6 2 5 4 8 3 7").stream().map(Integer::parseInt).collect(Collectors.toList());
         int res = trappingRainWater(elevations);
         System.out.println(res);
     }
