@@ -8,7 +8,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
- * There are a total of n courses a student has to take, numbered from 0 to n-1. 
+ * https://leetcode.com/problems/course-schedule/
+ * 
+ * There are a total of n courses a student has to take, numbered from 0 to n-1.
  * A course may have prerequisites. 
  * The "depends on" relationship is expressed as a pair of numbers. 
  * For example, [0, 1] means you need to take course 1 before taking course 0. 
