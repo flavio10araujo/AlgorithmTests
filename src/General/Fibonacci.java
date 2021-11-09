@@ -10,9 +10,9 @@ class Fibonacci {
 	
 	public static void main(String args[]) {
 		int n = 6;
-		//System.out.println(fibSolution01(n)); // Solution with recursion.
+		System.out.println(fibSolution01(n)); // Solution with recursion.
 		//System.out.println(fibSolution02(n)); // Solution with dynamic programming and memoization.
-		System.out.println(fibSolution03(n)); // Solution with dynamic programming and tabulation.
+		//System.out.println(fibSolution03(n)); // Solution with dynamic programming and tabulation.
 		
 		System.out.println("Counter = " + counter);
 	}
@@ -21,7 +21,6 @@ class Fibonacci {
 	 * Solution with recursion.
 	 * Time complexity - exponential: O(2 ^ n).
 	 */
-	@SuppressWarnings("unused")
 	private static int fibSolution01(int n) {
 		counter++;
 		System.out.println("n = " + n);

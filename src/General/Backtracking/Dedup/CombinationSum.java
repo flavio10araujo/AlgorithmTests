@@ -99,8 +99,11 @@ public class CombinationSum {
     }
 
     public static void main(String[] args) {
-        List<Integer> candidates = splitWords("2 3 6 7").stream().map(Integer::parseInt).collect(Collectors.toList());
-        int target = Integer.parseInt("7");
+        //List<Integer> candidates = splitWords("2 3 6 7").stream().map(Integer::parseInt).collect(Collectors.toList());
+        //int target = Integer.parseInt("7");
+    	
+    	List<Integer> candidates = splitWords("4 3 2").stream().map(Integer::parseInt).collect(Collectors.toList());
+        int target = Integer.parseInt("32");
         
         List<List<Integer>> res = combinationSum(candidates, target);
         for (List<Integer> row : res) {

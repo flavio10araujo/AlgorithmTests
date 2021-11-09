@@ -62,7 +62,7 @@ public class DecodeWays {
     
     public static void main(String[] args) {
     	long startTime = System.nanoTime();
-    	String digits = "18";
+    	String digits = "12345";
         int res = decodeWays(digits);
         System.out.println(res);
         long endTime = System.nanoTime();

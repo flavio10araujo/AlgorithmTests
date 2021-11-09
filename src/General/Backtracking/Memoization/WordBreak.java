@@ -1,8 +1,10 @@
 package General.Backtracking.Memoization;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -20,83 +22,185 @@ import java.util.Set;
  * Output: false
  */
 public class WordBreak {
-	
-	/*public static boolean wordBreak(String s, List<String> words) {
-        return dfs(s, words, new StringBuilder(), new HashSet<String>());
-    }
-    
-    public static boolean dfs(String s, List<String> words, StringBuilder path, Set<String> memo) {
-        
-        if (path.length() >= s.length()) {
-            if (s.equals(path.toString())) return true;
-            else return false;
-        }
-        
-        for (int i = 0; i < words.size(); i++) {
-        	path = new StringBuilder(path.append(words.get(i)));
-        	
-        	if (s.startsWith(path.toString()) && !memo.contains(path.toString())) {
-        		memo.add(path.toString());
-        		if (dfs(s, words, path, memo)) return true;
-            }
-            
-        	path = new StringBuilder(path.substring(0, path.length() - words.get(i).length()));
-        }
-        
-        return false;
-    }*/
-	
-	private static boolean dfs(int i, Boolean[] memo, String s, List<String> words) {
-        if (i == s.length()) {
-            return true;
-        }
 
-        if (memo[i] != null) {
-            System.out.println("memo i="+i);
-        	return memo[i];
-        }
+	public static void main(String[] args) {
+		String s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
+		List<String> words = splitWords("a aa aaa aaaa aaaaa aaaaaa aaaaaaa aaaaaaaa aaaaaaaaa aaaaaaaaaa");
 
-        boolean ok = false;
-        
-        for (String word : words) {
-        	
-        	System.out.println("i="+i+ " word="+word);
-        	
-        	if (s.substring(i).startsWith(word)) {
-                
-        		ok = ok || dfs(i + word.length(), memo, s, words);
-            }
-        }
-        
-        System.out.println("Saiu do for e inseriu " + ok + " no memo["+i+"]");
-        
-        memo[i] = ok;
-        return ok;
-    }
+		//String s = "aaac";
+		//List<String> words = splitWords("a aa b");
 
-    public static boolean wordBreak(String s, List<String> words) {
-        return dfs(0, new Boolean[s.length()], s, words);
-    }
+		//String s = "leetcode";
+		//List<String> words = splitWords("code leet");
 
-    public static List<String> splitWords(String s) {
-        return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
-    }
-    
-    public static void main(String[] args) {
-    	long startTime = System.nanoTime();
-    	
-    	//String s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
-        //List<String> words = splitWords("a aa aaa aaaa aaaaa aaaaaa aaaaaaa aaaaaaaa aaaaaaaaa aaaaaaaaaa");
-        
-    	String s = "aaac";
-    	List<String> words = splitWords("a aa b");
-    			
-        boolean res = wordBreak(s, words);
-        System.out.println(res);
-        long endTime = System.nanoTime();
-        long timeElapsed = endTime - startTime;
-        
-        System.out.println("Execution time in nanoseconds: " + timeElapsed);
-        System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
-    }
+		//String s = "catsandog";
+		//List<String> words = splitWords("cats dog sand and cat");
+
+		//String s = "applepenapple";
+		//List<String> words = splitWords("apple pen");
+
+		long startTime = System.nanoTime();
+		System.out.println(solution01(s, words));
+		long endTime = System.nanoTime();
+		long timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+
+		startTime = System.nanoTime();
+		System.out.println(solution02(s, words));
+		endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+
+		startTime = System.nanoTime();
+		System.out.println(solution03(s, words));
+		endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+		
+		startTime = System.nanoTime();
+		System.out.println(solution04(s, words));
+		endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+	}
+
+	/**
+	 * 
+	 * @param s
+	 * @param words
+	 * @return
+	 */
+	public static boolean solution01(String s, List<String> words) {
+		return solution01DFS(0, new Boolean[s.length()], s, words);
+	}
+
+	private static boolean solution01DFS(int i, Boolean[] memo, String s, List<String> words) {
+		if (i == s.length()) {
+			return true;
+		}
+
+		if (memo[i] != null) {
+			//System.out.println("memo i="+i);
+			return memo[i];
+		}
+
+		boolean ok = false;
+
+		for (String word : words) {
+
+			//System.out.println("i="+i+ " word="+word);
+
+			if (s.substring(i).startsWith(word)) {
+
+				ok = ok || solution01DFS(i + word.length(), memo, s, words);
+			}
+		}
+
+		//System.out.println("Saiu do for e inseriu " + ok + " no memo["+i+"]");
+
+		memo[i] = ok;
+		return ok;
+	}
+
+	/**
+	 * 
+	 * @param s
+	 * @param words
+	 * @return
+	 */
+	public static boolean solution02(String s, List<String> words) {
+		return solution02DFS(s, words, new StringBuilder(), new HashSet<String>());
+	}
+
+	public static boolean solution02DFS(String s, List<String> words, StringBuilder path, Set<String> memo) {
+
+		if (path.length() >= s.length()) {
+			if (s.equals(path.toString())) return true;
+			else return false;
+		}
+
+		for (int i = 0; i < words.size(); i++) {
+			path = new StringBuilder(path.append(words.get(i)));
+
+			if (s.startsWith(path.toString()) && !memo.contains(path.toString())) {
+				memo.add(path.toString());
+				if (solution02DFS(s, words, path, memo)) return true;
+			}
+
+			path = new StringBuilder(path.substring(0, path.length() - words.get(i).length()));
+		}
+
+		return false;
+	}
+
+	/**
+	 * Approach: DFS + DP Top-down.
+	 * Time complexity: O(n ^ 3).
+	 * @param s
+	 * @param wordDict
+	 * @return
+	 */
+	public static boolean solution03(String s, List<String> wordDict) {
+		Set<String> wordSet = new HashSet<>(wordDict);
+		Map<String, Boolean> memo = new HashMap<>();
+		return solution03(s, wordSet, memo);
+	}
+
+	private static boolean solution03(final String s, Set<String> wordSet, Map<String, Boolean> memo) {
+		if (memo.containsKey(s))
+			return memo.get(s);
+
+		if (wordSet.contains(s)) {
+			memo.put(s, true);
+			return true;
+		}
+
+		// 1 <= prefix.length() < s.length()
+		for (int i = 1; i < s.length(); ++i) {
+			final String prefix = s.substring(0, i);
+			final String suffix = s.substring(i);
+
+			if (wordSet.contains(prefix) && solution03(suffix, wordSet, memo)) {
+				memo.put(s, true);
+				return true;
+			}
+		}
+
+		memo.put(s, false);
+		return false;
+	}
+
+	/**
+	 * Approach: DP Bottom-up.
+	 * Time complexity: O(n ^ 3).
+	 * @param s
+	 * @param wordDict
+	 * @return
+	 */
+	public static boolean solution04(String s, List<String> wordDict) {
+		final int n = s.length();
+
+		Set<String> wordSet = new HashSet<>(wordDict);
+		boolean[] dp = new boolean[n + 1]; // dp[i] := true if s[0..i) can be segmented
+		dp[0] = true;
+
+		for (int i = 1; i <= n; ++i)
+			for (int j = 0; j < i; ++j)
+				// s[0..j) can be segmented and s[j..i) in wordSet
+				// so s[0..i) can be segmented
+				if (dp[j] && wordSet.contains(s.substring(j, i))) {
+					dp[i] = true;
+					break;
+				}
+
+		return dp[n];
+	}
+
+	public static List<String> splitWords(String s) {
+		return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
+	}
 }

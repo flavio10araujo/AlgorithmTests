@@ -2,7 +2,6 @@ package General.DynamicProgramming.DynamicNumberOfSubproblems;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Longest Increasing Subsequence (LIS).
@@ -23,14 +22,15 @@ import java.util.stream.Collectors;
  */
 public class LongestIncreasingSubsequence {
 	
-	public static int longestSubLen(List<Integer> nums) {
-        int[] dp = new int[nums.size()];
+	public static int longestSubLen(int[] nums) {
+        int[] dp = new int[nums.length];
         Arrays.fill(dp, 1);
+        
         int best = 0;
         
-        for (int i = 0; i < nums.size(); i++) {
+        for (int i = 0; i < nums.length; i++) {
             for (int j = 0; j < i; j++) {
-                if (nums.get(i) > nums.get(j)) {
+                if (nums[i] > nums[j]) {
                     dp[i] = Math.max(dp[i], dp[j] + 1);
                 }
             }
@@ -46,8 +46,7 @@ public class LongestIncreasingSubsequence {
     }
 
     public static void main(String[] args) {
-        List<Integer> nums = splitWords("50 3 10 7 40 80").stream().map(Integer::parseInt).collect(Collectors.toList());
-        int res = longestSubLen(nums);
-        System.out.println(res);
+    	int[] nums = {10, 9, 2, 5, 3, 7, 101, 18};
+    	System.out.println(longestSubLen(nums));
     }
 }

@@ -1,4 +1,4 @@
-package General;
+package General.LinkedList;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
