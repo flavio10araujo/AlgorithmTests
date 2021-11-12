@@ -48,81 +48,147 @@ import java.util.stream.Collectors;
  * We have a pointer moving through the list and each step we move through the list another time.
  */
 public class ThreeSum {
+
+	public static void main(String[] args) {
+		//int[] nums = {-1, 0, 1, 2, -1, -4};
+		int[] nums = {-9, 16, 2, -11, 5, 8, 3, 10};
+		
+		long startTime = System.nanoTime();
+		System.out.println("Solution 01:");
+		for (List<Integer> row : solution01(nums)) {
+			System.out.println(row.stream().map(String::valueOf).collect(Collectors.joining(" ")));
+		}
+		long endTime = System.nanoTime();
+		long timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+		
+		startTime = System.nanoTime();
+		System.out.println("Solution 02:");
+		for (List<Integer> row : solution02(nums)) {
+			System.out.println(row.stream().map(String::valueOf).collect(Collectors.joining(" ")));
+		}
+		endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+	}
 	
-	public static List<List<Integer>> tripletsWithSum0(List<Integer> nums) {
-        
+	/**
+	 * Time Complexity: O(n ^ 2)
+	 * @param nums
+	 * @return
+	 */
+	public static List<List<Integer>> solution01(int[] nums) {
+
 		// This stores how many numbers of each kind is in the list.
-        Map<Integer, Integer> numCount = new HashMap<>();
-        
-        for (int i : nums) {
-            numCount.merge(i, 1, Integer::sum);
-        }
-        
-        // This stores all unique numbers in "nums", sorted.
-        List<Integer> uniqueNums = new ArrayList<>(numCount.keySet());
-        
-        Collections.sort(uniqueNums);
-        
-        // Stores a list of triplets that is the return value.
-        List<List<Integer>> resList = new ArrayList<>();
-        
-        // "i" is the first, and slow pointer, pointing towards the first value of the triplets.
-        for (int i = 0; i < uniqueNums.size(); i++) {
-            
-        	int firstNum = uniqueNums.get(i);
-            
-        	// Subtract the count by 1 so it can't be used by the second or third pointer.
-            numCount.merge(firstNum, -1, Integer::sum);
-            
-            // "j" is the second pointer that moves forward, pointing towards the second value of the triplets.
-            // With that, we can easily get the value of the third pointer.
-            // Because we are using a map, we can easily get whether there is a number for the third pointer and whether it hasn't been used up yet.
-            for (int j = i; j < uniqueNums.size(); j++) {
-                
-            	int secondNum = uniqueNums.get(j);
-                int thirdNum = -firstNum - secondNum;
-                
-                // Inner loop ends if the third number is smaller than the second.
-                if (thirdNum < secondNum) {
-                    break;
-                }
-                
-                // If the number is used up by the first one, we can't assign it to the second one, go to the next one.
-                if (numCount.get(secondNum) <= 0) {
-                    continue;
-                }
-                
-                numCount.merge(secondNum, -1, Integer::sum);
-                
-                // If the number is used up by the previous ones, or if it doesn't exist, go to the next one and reset counter.
-                if (numCount.getOrDefault(thirdNum, 0) <= 0) {
-                    numCount.merge(secondNum, 1, Integer::sum);
-                    continue;
-                }
-                
-                // Otherwise, add the triplet to the result.
-                List<Integer> newList = new ArrayList<>();
-                newList.add(firstNum);
-                newList.add(secondNum);
-                newList.add(thirdNum);
-                resList.add(newList);
-                numCount.merge(secondNum, 1, Integer::sum);
-            }
-        }
-        
-        return resList;
-    }
+		Map<Integer, Integer> numCount = new HashMap<>();
 
-    public static List<String> splitWords(String s) {
-        return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
-    }
+		for (int i : nums) {
+			numCount.merge(i, 1, Integer::sum);
+		}
 
-    public static void main(String[] args) {
-        List<Integer> nums = splitWords("-1 0 1 2 -1 -4").stream().map(Integer::parseInt).collect(Collectors.toList());
-        List<List<Integer>> res = tripletsWithSum0(nums);
-        
-        for (List<Integer> row : res) {
-            System.out.println(row.stream().map(String::valueOf).collect(Collectors.joining(" ")));
-        }
-    }
+		// This stores all unique numbers in "nums", sorted.
+		List<Integer> uniqueNums = new ArrayList<>(numCount.keySet());
+
+		Collections.sort(uniqueNums);
+
+		// Stores a list of triplets that is the return value.
+		List<List<Integer>> resList = new ArrayList<>();
+
+		// "i" is the first, and slow pointer, pointing towards the first value of the triplets.
+		for (int i = 0; i < uniqueNums.size(); i++) {
+
+			int firstNum = uniqueNums.get(i);
+
+			// Subtract the count by 1 so it can't be used by the second or third pointer.
+			numCount.merge(firstNum, -1, Integer::sum);
+
+			// "j" is the second pointer that moves forward, pointing towards the second value of the triplets.
+			// With that, we can easily get the value of the third pointer.
+			// Because we are using a map, we can easily get whether there is a number for the third pointer and whether it hasn't been used up yet.
+			for (int j = i; j < uniqueNums.size(); j++) {
+
+				int secondNum = uniqueNums.get(j);
+				int thirdNum = -firstNum - secondNum;
+
+				// Inner loop ends if the third number is smaller than the second.
+				if (thirdNum < secondNum) {
+					break;
+				}
+
+				// If the number is used up by the first one, we can't assign it to the second one, go to the next one.
+				if (numCount.get(secondNum) <= 0) {
+					continue;
+				}
+
+				numCount.merge(secondNum, -1, Integer::sum);
+
+				// If the number is used up by the previous ones, or if it doesn't exist, go to the next one and reset counter.
+				if (numCount.getOrDefault(thirdNum, 0) <= 0) {
+					numCount.merge(secondNum, 1, Integer::sum);
+					continue;
+				}
+
+				// Otherwise, add the triplet to the result.
+				List<Integer> newList = new ArrayList<>();
+				newList.add(firstNum);
+				newList.add(secondNum);
+				newList.add(thirdNum);
+				resList.add(newList);
+				numCount.merge(secondNum, 1, Integer::sum);
+			}
+		}
+
+		return resList;
+	}
+
+	/**
+	 * Time complexity: O(n ^ 2).
+	 * Space complexity: O(ans.size)
+	 * @param nums
+	 * @return
+	 */
+	public static List<List<Integer>> solution02(int[] nums) {
+		if (nums.length < 3) {
+			return new ArrayList<>();
+		}
+
+		List<List<Integer>> ans = new ArrayList<>();
+
+		Arrays.sort(nums);
+
+		for (int i = 0; i + 2 < nums.length; ++i) {
+			
+			if (i > 0 && nums[i] == nums[i - 1]) {
+				continue;
+			}
+			
+			// Choose nums[i] as the first num in the triplet, and search the remaining nums in [i + 1, n - 1].
+			int l = i + 1;
+			int r = nums.length - 1;
+			
+			while (l < r) {
+				final int sum = nums[i] + nums[l] + nums[r];
+				
+				if (sum == 0) {
+					ans.add(Arrays.asList(nums[i], nums[l++], nums[r--]));
+					
+					while (l < r && nums[l] == nums[l - 1]) {
+						++l;
+					}
+					
+					while (l < r && nums[r] == nums[r + 1]) {
+						--r;
+					}
+				} else if (sum < 0) {
+					++l;
+				} else {
+					--r;
+				}
+			}
+		}
+
+		return ans;
+	}
 }

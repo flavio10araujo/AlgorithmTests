@@ -1,4 +1,4 @@
-package General;
+package General.BitManipulation;
 
 /**
  * https://leetcode.com/problems/number-of-1-bits/

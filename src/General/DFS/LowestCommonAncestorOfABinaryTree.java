@@ -24,75 +24,121 @@ import java.util.Iterator;
  *  Output: 5.
  */
 public class LowestCommonAncestorOfABinaryTree {
-	public static Node lca(Node root, Node node1, Node node2) {
-        if (root == null) {
-        	return null;
-        }
 
-        // Case 2 : Current node is LCA : Current node is one of the target and the other node is in a subtree.
-        if (root.equals(node1) || root.equals(node2)) {
-        	return root;
-        }
-        
-        Node left = lca(root.left, node1, node2);
-        Node right = lca(root.right, node1, node2);
+	/**
+	 * 
+	 * @param root
+	 * @param node1
+	 * @param node2
+	 * @return
+	 */
+	public static Node solution01(Node root, Node node1, Node node2) {
+		if (root == null) {
+			return null;
+		}
 
-        // Case 1 : Current node is LCA : One target node is on the left subtree, the other target node on the right subtree, so the current node itself is the LCA.
-        if (left != null && right != null) {
-        	return root;
-        }
+		// Case 2 : Current node is LCA : Current node is one of the target and the other node is in a subtree.
+		if (root.equals(node1) || root.equals(node2)) {
+			return root;
+		}
 
-        // At this point, left and right can't be both non-null
-        // Case 4 : Current node is not LCA : Current node is in the path between LCA and target node in case 2.
-        // Case 5 : Current node is not LCA : LCA is in the subtree of current node.
-        // report target node or LCA back to parent
-        if (left != null) {
-        	return left;
-        }
-        
-        if (right != null) {
-        	return right;
-        }
+		Node left = solution01(root.left, node1, node2);
+		Node right = solution01(root.right, node1, node2);
 
-        // Case 4, not found return null
-        return null;
-    }
+		// Case 1 : Current node is LCA : One target node is on the left subtree, the other target node on the right subtree, so the current node itself is the LCA.
+		if (left != null && right != null) {
+			return root;
+		}
 
-    /** Driver class, do not change **/
-    static class Node {
-        int val;
-        Node left, right;
+		// At this point, left and right can't be both non-null
+		// Case 4 : Current node is not LCA : Current node is in the path between LCA and target node in case 2.
+		// Case 5 : Current node is not LCA : LCA is in the subtree of current node.
+		// report target node or LCA back to parent
+		if (left != null) {
+			return left;
+		}
 
-        public Node(int val) {
-            this.val = val;
-        }
+		if (right != null) {
+			return right;
+		}
 
-        public static Node buildTree(Iterator<String> iter) {
-            String nxt = iter.next();
-            if (nxt.equals("x")) return null;
-            Node node = new Node(Integer.parseInt(nxt));
-            node.left = buildTree(iter);
-            node.right = buildTree(iter);
-            return node;
-        }
+		// Case 4, not found return null
+		return null;
+	}
 
-        public static Node findNode(Node root, int target) {
-            if (root == null) return null;
-            if (root.val == target) return root;
-            Node leftSearch = findNode(root.left, target);
-            if (leftSearch != null) {
-                return leftSearch;
-            }
-            return findNode(root.right, target);
-        }
-    }
+	/**
+	 * 
+	 * @param root
+	 * @param p
+	 * @param q
+	 * @return
+	 */
+	public Node solution02(Node root, Node p, Node q) {
+		// If p and q are in the left subtree of LCA.
+		if (root.val > Math.max(p.val, q.val)) {
+			return solution02(root.left, p, q);
+		}
+		
+		// If p and q are in the right subtree of LCA.
+		if (root.val < Math.min(p.val, q.val)) {
+			return solution02(root.right, p, q);
+		}
+		
+		// Return root if:
+		// => p and q are not in the same subtree 
+		// => OR p is the LCA
+		// => OR q is the LCA
+		return root;
+	}
 
-    public static void main(String[] args) {
-        Node root = Node.buildTree(Arrays.stream("5 4 3 x x 8 x x 6 x x".split(" ")).iterator());
-    	Node node1 = Node.findNode(root, 3);
-        Node node2 = Node.findNode(root, 8);
-    	
-        Node ans = lca(root, node1, node2);
-        System.out.println(ans == null ? "null" : ans.val);
-    }
+	/** Driver class, do not change **/
+	static class Node {
+		int val;
+		Node left, right;
+
+		public Node(int val) {
+			this.val = val;
+		}
+
+		public static Node buildTree(Iterator<String> iter) {
+			String nxt = iter.next();
+			if (nxt.equals("x")) return null;
+			Node node = new Node(Integer.parseInt(nxt));
+			node.left = buildTree(iter);
+			node.right = buildTree(iter);
+			return node;
+		}
+
+		public static Node findNode(Node root, int target) {
+			if (root == null) return null;
+			if (root.val == target) return root;
+			Node leftSearch = findNode(root.left, target);
+			if (leftSearch != null) {
+				return leftSearch;
+			}
+			return findNode(root.right, target);
+		}
+	}
+
+	public static void main(String[] args) {
+		Node root = Node.buildTree(Arrays.stream("5 4 3 x x 8 x x 6 x x".split(" ")).iterator());
+		Node node1 = Node.findNode(root, 3);
+		Node node2 = Node.findNode(root, 8);
+
+		long startTime = System.nanoTime();
+		Node ans = solution01(root, node1, node2);
+		System.out.println(ans == null ? "null" : ans.val);
+		long endTime = System.nanoTime();
+		long timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+		
+		startTime = System.nanoTime();
+		Node ans02 = solution01(root, node1, node2);
+		System.out.println(ans02 == null ? "null" : ans02.val);
+		endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+	}
 }

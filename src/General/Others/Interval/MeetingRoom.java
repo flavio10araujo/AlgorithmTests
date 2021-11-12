@@ -30,7 +30,8 @@ public class MeetingRoom {
 
 	public static boolean meetingRooms(List<List<Integer>> intervals) {
 		
-        intervals.sort(Comparator.comparingInt(p -> p.get(0)));
+        //intervals.sort(Comparator.comparingInt(p -> p.get(0)));
+		intervals.sort((a, b) -> Integer.compare(a.get(0), b.get(0)));
 
         for (int i = 0; i < intervals.size() - 1; i++) {
             if (intervals.get(i).get(1) > intervals.get(i + 1).get(0)) {
