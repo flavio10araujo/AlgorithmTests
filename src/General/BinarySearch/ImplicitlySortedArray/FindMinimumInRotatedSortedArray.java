@@ -17,6 +17,12 @@ import java.util.stream.Collectors;
  */
 public class FindMinimumInRotatedSortedArray {
 
+	/**
+	 * Time complexity: O(log n).
+	 * Space complexity: O(1).
+	 * @param arr
+	 * @return
+	 */
 	public static int findMinRotated(List<Integer> arr) {
 		int left = 0;
         int right = arr.size() - 1;

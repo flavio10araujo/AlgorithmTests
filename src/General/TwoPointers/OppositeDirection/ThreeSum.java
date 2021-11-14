@@ -43,7 +43,7 @@ import java.util.stream.Collectors;
  * We use a map to count the multiplicity of the numbers that appeared (If a BST is an option, then use it to reduce the need for sorting). 
  * Every time the pair is reset, the left pointer is reset to the position of the first pointer to guarantee sorted order.
  * 
- * Time Complexity: O(n^2)
+ * Time Complexity: O(n ^ 2)
  * 
  * We have a pointer moving through the list and each step we move through the list another time.
  */
@@ -160,9 +160,9 @@ public class ThreeSum {
 
 		for (int i = 0; i + 2 < nums.length; ++i) {
 			
-			if (i > 0 && nums[i] == nums[i - 1]) {
+			/*if (i > 0 && nums[i] == nums[i - 1]) {
 				continue;
-			}
+			}*/
 			
 			// Choose nums[i] as the first num in the triplet, and search the remaining nums in [i + 1, n - 1].
 			int l = i + 1;
@@ -172,15 +172,18 @@ public class ThreeSum {
 				final int sum = nums[i] + nums[l] + nums[r];
 				
 				if (sum == 0) {
-					ans.add(Arrays.asList(nums[i], nums[l++], nums[r--]));
+					ans.add(Arrays.asList(nums[i], nums[l], nums[r]));
 					
-					while (l < r && nums[l] == nums[l - 1]) {
+					++l;
+					--r;
+					
+					/*while (l < r && nums[l] == nums[l - 1]) {
 						++l;
 					}
 					
 					while (l < r && nums[r] == nums[r + 1]) {
 						--r;
-					}
+					}*/
 				} else if (sum < 0) {
 					++l;
 				} else {

@@ -30,6 +30,12 @@ public class MaximumProductSubarray {
 		System.out.println(maxProduct(nums));
 	}
 	
+	/**
+	 * Time complexity: O(n).
+	 * Space complexity: O(1).
+	 * @param nums
+	 * @return
+	 */
 	public static int maxProduct(int[] nums) {
 		if (nums.length == 1) {
             return nums[0]; 

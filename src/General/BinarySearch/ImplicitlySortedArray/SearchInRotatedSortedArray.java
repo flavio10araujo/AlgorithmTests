@@ -56,6 +56,13 @@ public class SearchInRotatedSortedArray {
 		System.out.println(search(nums, target));
 	}
 	
+	/**
+	 * Time complexity: O(log n).
+	 * Space complexity: O(1).
+	 * @param nums
+	 * @param target
+	 * @return
+	 */
 	public static int search(int[] nums, int target) {
         int L = 0;
         int R = nums.length - 1;
