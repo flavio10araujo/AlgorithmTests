@@ -38,12 +38,51 @@ public class RemoveNthNodeFromEndOfList {
 		head.next.next.next = new ListNode(4);
 		head.next.next.next.next = new ListNode(5);
 
-		ListNode res = solution02(head, n);
-		
+		long startTime = System.nanoTime();
+		System.out.println("Solution 01:");
+		ListNode res = solution01(head, n);
 		while (res != null) {
 			System.out.println(res.val);
 			res = res.next;
 		}
+		long endTime = System.nanoTime();
+		long timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+
+		head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(4);
+		head.next.next.next.next = new ListNode(5);
+		startTime = System.nanoTime();
+		System.out.println("Solution 02:");
+		ListNode res2 = solution02(head, n);
+		while (res2 != null) {
+			System.out.println(res2.val);
+			res2 = res2.next;
+		}
+		endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+		
+		head = new ListNode(1);
+		head.next = new ListNode(2);
+		head.next.next = new ListNode(3);
+		head.next.next.next = new ListNode(4);
+		head.next.next.next.next = new ListNode(5);
+		startTime = System.nanoTime();
+		System.out.println("Solution 03:");
+		ListNode res3 = solution03(head, n);
+		while (res3 != null) {
+			System.out.println(res3.val);
+			res3 = res3.next;
+		}
+		endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
 	}
 
 	public static ListNode solution01(ListNode head, int n) {
@@ -82,36 +121,56 @@ public class RemoveNthNodeFromEndOfList {
 
 		return head;
 	}
-	
+
 	public static ListNode solution02(ListNode head, int n) {
-        if (head.next == null) {
-            return null;
-        }
-        
-        ListNode current = head;
-        ListNode target = head;
-        ListNode before = null;
-        int count = 0;
-        
-        while (current != null) {
-            count++;
-            
-            if (count > n) {
-                before = target;
-                target = target.next;
-            }
-            
-            current = current.next;
-        }
-        
-        if (count == n) {
-            return head.next;
-        } 
-        
-        before.next = target.next;
-        
-        return head;
-    }
+		if (head.next == null) {
+			return null;
+		}
+
+		ListNode current = head;
+		ListNode target = head;
+		ListNode before = null;
+		int count = 0;
+
+		while (current != null) {
+			count++;
+
+			if (count > n) {
+				before = target;
+				target = target.next;
+			}
+
+			current = current.next;
+		}
+
+		if (count == n) {
+			return head.next;
+		} 
+
+		before.next = target.next;
+
+		return head;
+	}
+
+	public static ListNode solution03(ListNode head, int n) {
+		ListNode slow = head;
+		ListNode fast = head;
+
+		while (n-- > 0)
+			fast = fast.next;
+		
+		if (fast == null)
+			return head.next;
+
+		while (fast.next != null) {
+			slow = slow.next;
+			fast = fast.next;
+		}
+		
+		slow.next = slow.next.next;
+
+		return head;
+	}
 
 	public static class ListNode {
 		int val;

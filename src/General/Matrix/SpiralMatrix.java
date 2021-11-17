@@ -1,4 +1,4 @@
-package General;
+package General.Matrix;
 
 import java.util.ArrayList;
 import java.util.HashSet;

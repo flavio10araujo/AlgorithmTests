@@ -68,39 +68,64 @@ public class KthSmallestNumberInBST {
 
 	public static int val = -1;
 
-	public static int treeSize(Node<Integer> tree, int existingK, int k) {
-		if (val != -1) {
-			return -1;
-		}
+	// 8 4 2 1 x x 3 x x 6 x x 12 10 x x 14 x 15 x x
 
-		if (tree == null) {
-			return 0;
-		}
+	// 37 19 2 x x 28 23 x x 35 x x 44 x 58 52 x x 67 x x
+	// 8
+	// output: 52
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		Node<Integer> bst = buildTree(splitWords(scanner.nextLine()).iterator(), Integer::parseInt);
+		int k = Integer.parseInt(scanner.nextLine());
+		scanner.close();
 
-		int leftSize = treeSize(tree.left, existingK, k);
+		long startTime = System.nanoTime();
+		System.out.println(solution01(bst, k));
+		long endTime = System.nanoTime();
+		long timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
 
-		if (val != -1) {
-			return -1;
-		}
+		startTime = System.nanoTime();
+		System.out.println(solution02(bst, k));
+		endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
 
-		if (leftSize + existingK == k - 1) {
-			val = tree.val;
-			return -1;
-		}
-
-		int rightSize = treeSize(tree.right, existingK + leftSize + 1, k);
-
-		if (val != -1) {
-			return -1;
-		}
-
-		return leftSize + rightSize + 1;
+		startTime = System.nanoTime();
+		System.out.println(solution03(bst, k));
+		endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
 	}
 
+	/**
+	 * Approach: Binary Search
+	 * Time complexity: O(n ^ 2).
+	 * Space complexity: O(h).
+	 * @param bst
+	 * @param k
+	 * @return
+	 */
 	public static int solution01(Node<Integer> bst, int k) {
-		val = -1;
-		treeSize(bst, 0, k);
-		return val;
+		final int leftCount = countNodes(bst.left);
+
+		if (leftCount == k - 1)
+			return bst.val;
+
+		if (leftCount >= k)
+			return solution01(bst.left, k);
+
+		return solution01(bst.right, k - 1 - leftCount); // leftCount < k
+	}
+
+	private static int countNodes(Node<Integer> root) {
+		if (root == null)
+			return 0;
+
+		return 1 + countNodes(root.left) + countNodes(root.right);
 	}
 
 	/**
@@ -114,19 +139,19 @@ public class KthSmallestNumberInBST {
 	public static int solution02(Node<Integer> bst, int k) {
 		List<Integer> nums = new ArrayList<>();
 
-		inorder(bst, nums);
+		inorder(bst, nums, k);
 
 		return nums.get(k - 1);
 	}
 
-	public static void inorder(Node<Integer> node, List<Integer> nums) {
-		if (node == null) {
+	public static void inorder(Node<Integer> node, List<Integer> nums, int k) {
+		if (node == null || nums.size() == k) {
 			return;
 		}
 
-		inorder(node.left, nums);
+		inorder(node.left, nums, k);
 		nums.add(node.val);
-		inorder(node.right, nums);
+		inorder(node.right, nums, k);
 	}
 
 	/**
@@ -168,21 +193,5 @@ public class KthSmallestNumberInBST {
 
 	public static List<String> splitWords(String s) {
 		return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
-	}
-
-	// 8 4 2 1 x x 3 x x 6 x x 12 10 x x 14 x 15 x x
-
-	// 37 19 2 x x 28 23 x x 35 x x 44 x 58 52 x x 67 x x
-	// 8
-	// output: 52
-	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		Node<Integer> bst = buildTree(splitWords(scanner.nextLine()).iterator(), Integer::parseInt);
-		int k = Integer.parseInt(scanner.nextLine());
-		scanner.close();
-
-		System.out.println(solution01(bst, k));
-		System.out.println(solution02(bst, k));
-		System.out.println(solution03(bst, k));
 	}
 }

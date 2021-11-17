@@ -32,14 +32,14 @@ public class ReorderList {
 		head.next.next.next = new ListNode(4);
 		head.next.next.next.next = new ListNode(5);
 		
-		ListNode copy = head;
+		ListNode copy1 = head;
 		
-		while(copy != null) {
-			System.out.print(copy.val+ " ");
-			copy = copy.next;
+		while(copy1 != null) {
+			System.out.print(copy1.val+ " ");
+			copy1 = copy1.next;
 		}
 		
-		reorderList(head);
+		solution01(head);
 		
 		System.out.println("");
 		
@@ -49,7 +49,7 @@ public class ReorderList {
 		}
 	}
 
-	public static void reorderList(ListNode head) {
+	public static void solution01(ListNode head) {
 		if (head == null || head.next == null)
 			return;
 

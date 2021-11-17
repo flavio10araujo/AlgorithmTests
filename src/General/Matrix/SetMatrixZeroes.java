@@ -1,4 +1,4 @@
-package General;
+package General.Matrix;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +36,25 @@ public class SetMatrixZeroes {
 		int[][] matrix = {{0,1,2,0}, {3,4,5,2}, {1,3,1,5}};
 		
 		print(matrix);
+		long startTime = System.nanoTime();
+		System.out.println("Solution 01:");
 		solution01(matrix);
-		System.out.println("-----");
+		long endTime = System.nanoTime();
+		long timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
 		print(matrix);
+		
+		int[][] matrix2 = {{0,1,2,0}, {3,4,5,2}, {1,3,1,5}};
+		print(matrix2);
+		startTime = System.nanoTime();
+		System.out.println("Solution 02:");
+		solution02(matrix2);
+		endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+		print(matrix2);
 	}
 	
 	/**
@@ -121,4 +137,34 @@ public class SetMatrixZeroes {
 			return this.y;
 		}
 	} 
+
+	public static void solution02(int[][] matrix) {
+		boolean[] lines = new boolean[matrix.length];
+        boolean[] cols = new boolean[matrix[0].length];
+        
+        for (int i = 0; i < matrix.length; i++) {
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (matrix[i][j] == 0) {
+                    lines[i] = true;
+                    cols[j] = true;
+                }
+            }
+        }
+        
+        for (int i = 0; i < lines.length; i++) {
+            if (lines[i]) {
+                for (int j = 0; j < cols.length; j++) {
+                    matrix[i][j] = 0;
+                }
+            }
+        }
+        
+        for (int i = 0; i < cols.length; i++) {
+            if (cols[i]) {
+                for (int j = 0; j < lines.length; j++) {
+                    matrix[j][i] = 0;
+                }
+            }
+        }
+	}
 }

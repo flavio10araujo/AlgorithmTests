@@ -25,12 +25,31 @@ public class PalindromicSubstrings {
 
 	public static void main(String[] args) {
 		// String s = "AAA"; // 6
-		String s = "ABC"; // 3
+		// String s = "ABC"; // 3
+		String s = "AABA";
 		
-		System.out.println(countSubstrings(s));
+		long startTime = System.nanoTime();
+		System.out.println(solution01(s));
+		long endTime = System.nanoTime();
+		long timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+		
+		startTime = System.nanoTime();
+		System.out.println(solution02(s));
+		endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
 	}
 	
-	public static int countSubstrings(String s) {
+	/**
+	 * Time complexity: O(n ^ 2).
+	 * Space complexity: O(n ^ 2).
+	 * @param s
+	 * @return
+	 */
+	public static int solution01(String s) {
         boolean[][] dp = new boolean[s.length()][s.length()];
         int count = s.length();
         
@@ -71,6 +90,35 @@ public class PalindromicSubstrings {
         
         return count;
     }
+	
+	/**
+	 * Time complexity: O(n ^ 2)
+	 * Space complexity: O(1)
+	 * @param s
+	 * @return
+	 */
+	public static int solution02(String s) {
+	    int ans = 0;
+
+	    for (int i = 0; i < s.length(); ++i) {
+	      ans += extendPalindromes(s, i, i);
+	      ans += extendPalindromes(s, i, i + 1);
+	    }
+
+	    return ans;
+	  }
+
+	  private static int extendPalindromes(final String s, int l, int r) {
+	    int count = 0;
+
+	    while (l >= 0 && r < s.length() && s.charAt(l) == s.charAt(r)) {
+	      ++count;
+	      --l;
+	      ++r;
+	    }
+
+	    return count;
+	  }
 	
 	public static void printMatrix(boolean[][] matrix) {
 		System.out.println("Matrix: ");

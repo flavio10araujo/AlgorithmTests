@@ -43,6 +43,33 @@ import java.util.Scanner;
  */
 public class GroupAnagrams {
 
+	// eat tea tan ate nat bat
+	// output: ate eat tea; bat; nat tan
+
+	// abba baba baab abba bbba abab aaab aaba abaa aaaa bbab bbaa abbb
+	// output: aaaa; aaab aaba abaa; abab abba abba baab baba bbaa; abbb bbab bbba
+	public static void main(String[] args) {
+		// Marcar o tempo de execução de um algoritmo:
+		long startTime = System.nanoTime();
+
+		Scanner scanner = new Scanner(System.in);
+		List<String> strings = splitWords(scanner.nextLine());
+		scanner.close();
+		List<List<String>> res = solution02(strings);
+		for (List<String> row : res) {
+			Collections.sort(row);
+		}
+		Collections.sort(res, (a, b) -> a.get(0).compareTo(b.get(0)));
+		for (List<String> row : res) {
+			System.out.println(String.join(" ", row));
+		}
+
+		long endTime = System.nanoTime();
+		long timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+	}
+
 	/**
 	 * Time complexity: O(n * m log m),
 	 * where n is the number of strings and m is the max size of each string.
@@ -50,33 +77,32 @@ public class GroupAnagrams {
 	 * @param strings
 	 * @return
 	 */
-	public static List<List<String>> groupAnagrams(List<String> strings) {
-        Map<String, List<String>> anagramMap = new HashMap<>();
-        
-        for (String entry : strings) {
-            
-            char[] charArray = entry.toCharArray();
-            
-            Arrays.sort(charArray);
-            
-            String anagramId = new String(charArray);
-            
-            if (!anagramMap.containsKey(anagramId)) {
-                anagramMap.put(anagramId, new ArrayList<>());
-            }
-            
-            anagramMap.get(anagramId).add(entry);
-        }
-        
-        return new ArrayList<>(anagramMap.values());
-    }
-	
+	public static List<List<String>> solution01(List<String> strings) {
+		Map<String, List<String>> anagramMap = new HashMap<>();
+
+		for (String entry : strings) {
+
+			char[] charArray = entry.toCharArray();
+			Arrays.sort(charArray);
+
+			String anagramId = new String(charArray);
+
+			if (!anagramMap.containsKey(anagramId)) {
+				anagramMap.put(anagramId, new ArrayList<>());
+			}
+
+			anagramMap.get(anagramId).add(entry);
+		}
+
+		return new ArrayList<>(anagramMap.values());
+	}
+
 	/**
 	 * 
 	 * @param strings
 	 * @return
 	 */
-	public static List<List<String>> groupAnagrams02(List<String> strings) {
+	public static List<List<String>> solution02(List<String> strings) {
 
 		List<List<String>> res = new ArrayList<>();
 
@@ -146,32 +172,5 @@ public class GroupAnagrams {
 
 	public static List<String> splitWords(String s) {
 		return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
-	}
-
-	// eat tea tan ate nat bat
-	// output: ate eat tea; bat; nat tan
-	
-	// abba baba baab abba bbba abab aaab aaba abaa aaaa bbab bbaa abbb
-	// output: aaaa; aaab aaba abaa; abab abba abba baab baba bbaa; abbb bbab bbba
-	public static void main(String[] args) {
-		// Marcar o tempo de execução de um algoritmo:
-		long startTime = System.nanoTime();
-		
-		Scanner scanner = new Scanner(System.in);
-		List<String> strings = splitWords(scanner.nextLine());
-		scanner.close();
-		List<List<String>> res = groupAnagrams02(strings);
-		for (List<String> row : res) {
-			Collections.sort(row);
-		}
-		Collections.sort(res, (a, b) -> a.get(0).compareTo(b.get(0)));
-		for (List<String> row : res) {
-			System.out.println(String.join(" ", row));
-		}
-		
-		long endTime = System.nanoTime();
-		long timeElapsed = endTime - startTime;
-		System.out.println("Execution time in nanoseconds: " + timeElapsed);
-		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
 	}
 }
