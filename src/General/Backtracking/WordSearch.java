@@ -46,9 +46,21 @@ public class WordSearch {
 		char[][] board = {{'A', 'B', 'C', 'E'}, {'S', 'F', 'C', 'S'}, {'A', 'D', 'E', 'E'}};
 		String word = "ABCB";
 		
+		long startTime = System.nanoTime();
+		System.out.println("Solution 01:");
     	System.out.println(solution01(board, word));
+    	long endTime = System.nanoTime();
+		long timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
     	
+		startTime = System.nanoTime();
+		System.out.println("Solution 02:");
     	System.out.println(solution02(board, word));
+    	endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
     }
 	
 	static int[][] delta = new int[4][2];
@@ -280,6 +292,7 @@ public class WordSearch {
     			|| dfs(board, i, j - 1, count + 1, word);
     	
     	board[i][j] = temp;
+    	
     	return found;
     }
 }

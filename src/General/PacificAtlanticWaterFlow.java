@@ -77,6 +77,7 @@ public class PacificAtlanticWaterFlow {
 
 	/**
 	 * Approach: doing the DFS in every cell twice (once for Pacific and other - if Pacific is true - for Atlantic).
+	 * Time complexity: O(n ^ 2).
 	 * @param heights
 	 * @return
 	 */
@@ -124,8 +125,6 @@ public class PacificAtlanticWaterFlow {
 		if (visited.contains(rowAfter+","+colAfter)) {
 			return false;
 		}
-
-
 
 		// pacific
 		if (oceanType == 0) {
@@ -179,6 +178,12 @@ public class PacificAtlanticWaterFlow {
 		return found;
 	}
 
+	/**
+	 * Time complexity: O(mn).
+	 * Space complexity: O(mn).
+	 * @param heights
+	 * @return
+	 */
 	public static List<List<Integer>> solution02(int[][] heights) {
 		if (heights.length == 0) {
 			return new ArrayList<>();
