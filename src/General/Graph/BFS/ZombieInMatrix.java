@@ -92,7 +92,7 @@ public class ZombieInMatrix {
         
         while (!queue.isEmpty()) {
             
-        	System.out.println(queue);
+        	System.out.println("QUEUE: " + queue);
         	
         	Coords currentPos = queue.poll();
             
@@ -103,6 +103,11 @@ public class ZombieInMatrix {
                     if (dungeonMap.get(newPos.row).get(newPos.col) == Integer.MAX_VALUE) {
                         dungeonMap.get(newPos.row).set(newPos.col, 1 + dungeonMap.get(currentPos.row).get(currentPos.col));
                         queue.add(newPos);
+                        
+                        for (List<Integer> row : dungeonMap) {
+                            System.out.println(row.stream().map(String::valueOf).collect(Collectors.joining(" ")));
+                        }
+                        System.out.println("   ");
                     }
                 }
             }
