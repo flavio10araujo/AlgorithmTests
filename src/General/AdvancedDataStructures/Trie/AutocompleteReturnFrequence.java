@@ -35,7 +35,7 @@ import java.util.Scanner;
  * An implementation detail is to make sure when we have reached the end of the word 
  * so we can properly terminate and ensure we are counting the correct number of strokes.
  */
-public class Autocomplete {
+public class AutocompleteReturnFrequence {
 
 	public static class Node {
         char value; // The value of the node.
