@@ -36,10 +36,12 @@ public class SetSize {
 
         public T find(T x) {
             T y = f.getOrDefault(x, x);
+            
             if (y != x) {
                 y = find(y);
                 f.put(x, y);
             }
+            
             return y;
         }
 
@@ -53,7 +55,10 @@ public class SetSize {
         private Map<Integer, Integer> sizes = new HashMap<>();
 
         public void merge(int x, int y) {
-            int newSize = count(x) + count(y);
+        	int countX = count(x);
+        	int countY = count(y);
+        	int newSize = countX + countY;
+        	//int newSize = count(x) + count(y);
             dsu.union(x, y);
             sizes.put(dsu.find(x), newSize);
         }

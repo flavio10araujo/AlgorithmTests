@@ -74,10 +74,12 @@ public class MergeUserAccounts {
 
         public T find(T x) {
             T y = f.getOrDefault(x, x);
+            
             if (y != x) {
                 y = find(y);
                 f.put(x, y);
             }
+            
             return y;
         }
 
@@ -143,7 +145,7 @@ public class MergeUserAccounts {
             }
         }
         
-        Map<UserEmailPair, ArrayList<UserEmailPair>> accountAssociation = new HashMap<>();
+        Map<UserEmailPair, List<UserEmailPair>> accountAssociation = new HashMap<>();
         
         for (UserEmailPair userEmailPair : allUserEmails) {
             UserEmailPair ancestor = unionFind.find(userEmailPair);
@@ -157,7 +159,7 @@ public class MergeUserAccounts {
         
         List<List<String>> returnRes = new ArrayList<>();
         
-        for (Map.Entry<UserEmailPair, ArrayList<UserEmailPair>> userInfo : accountAssociation.entrySet()) {
+        for (Map.Entry<UserEmailPair, List<UserEmailPair>> userInfo : accountAssociation.entrySet()) {
             List<String> oneUser = new ArrayList<>();
             oneUser.add(userInfo.getKey().user);
             Collections.sort(userInfo.getValue());

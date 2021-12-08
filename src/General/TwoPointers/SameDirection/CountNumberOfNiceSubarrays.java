@@ -32,7 +32,7 @@ import java.util.stream.Collectors;
  */
 public class CountNumberOfNiceSubarrays {
 	
-	public static int countNiceSubarrays(int k, List<Integer> arr) {
+	public static int solution01(int k, List<Integer> arr) {
         List<Integer> oddIndices = new ArrayList<>();
         
         // For the sake of easier calculation, let the zeroth odd index be -1.
@@ -62,6 +62,57 @@ public class CountNumberOfNiceSubarrays {
         
         return ans;
     }
+	
+	public static int solution02(int k, List<Integer> arr) {
+        int counter = 0, odds = 0, slow = 0, fast = 0;
+        int lastOdd = -1, firstOdd = arr.size();
+        
+        while(fast < arr.size()) {
+            if (isOdd(arr.get(fast))) {
+                odds++;
+                
+                if (odds > k) {
+                    counter += calculatePossibilities(slow, fast - 1, lastOdd, firstOdd);
+                    slow = firstOdd + 1;
+                    lastOdd = Math.max(lastOdd, fast);
+                    firstOdd++;
+                    
+                    while(!isOdd(arr.get(firstOdd))) {
+                        firstOdd++;
+                    }
+                    
+                    odds--;
+                } else {
+                    firstOdd = Math.min(firstOdd, fast);
+                    lastOdd = Math.max(lastOdd, fast);
+                }
+            }
+            
+            fast++;
+        }
+        
+        if (odds == k) {
+            counter += calculatePossibilities(slow, fast - 1, lastOdd, firstOdd);
+        }
+        
+        return counter;
+    }
+    
+    private static int calculatePossibilities(int S, int F, int lastOdd, int firstOdd) {
+        return ((F - lastOdd) + 1) * ((firstOdd - S) + 1);
+    }
+    
+    private static boolean isOdd(int n) {
+        if (n == 0) {
+            return false;
+        }
+        
+        if (n % 2 != 0) {
+            return true;
+        }
+        
+        return false;
+    }
 
     public static List<String> splitWords(String s) {
         return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
@@ -71,7 +122,7 @@ public class CountNumberOfNiceSubarrays {
     	long startTime = System.nanoTime();
     	int k = Integer.parseInt("3");
         List<Integer> arr = splitWords("2 4 5 7 8 10 11 12 14 15 18 20").stream().map(Integer::parseInt).collect(Collectors.toList());
-        int res = countNiceSubarrays(k, arr);
+        int res = solution02(k, arr);
         System.out.println(res);
         long endTime = System.nanoTime();
         long timeElapsed = endTime - startTime;

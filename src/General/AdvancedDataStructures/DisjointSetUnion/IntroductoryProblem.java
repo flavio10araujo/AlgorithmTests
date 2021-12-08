@@ -62,7 +62,10 @@ public class IntroductoryProblem {
         }
 
         public boolean isSame(int x, int y) {
-            return dsu.find(x) == dsu.find(y);
+            Integer ix = dsu.find(x);
+            Integer iy = dsu.find(y);
+            return ix == iy;
+        	//return dsu.find(x) == dsu.find(y);
         }
     }
 
