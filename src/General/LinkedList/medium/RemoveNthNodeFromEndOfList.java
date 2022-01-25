@@ -1,9 +1,7 @@
-package General.LinkedList;
+package General.LinkedList.medium;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
-
-import General.LinkedList.SwappingNodesInALinkedList.ListNode;
 
 /**
  * https://leetcode.com/problems/remove-nth-node-from-end-of-list/

@@ -1,4 +1,4 @@
-package General.LinkedList;
+package General.LinkedList.medium;
 
 /**
  * https://leetcode.com/problems/reorder-list/
