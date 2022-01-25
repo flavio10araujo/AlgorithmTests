@@ -24,8 +24,11 @@ import java.util.Set;
 public class WordBreak {
 
 	public static void main(String[] args) {
-		String s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
-		List<String> words = splitWords("a aa aaa aaaa aaaaa aaaaaa aaaaaaa aaaaaaaa aaaaaaaaa aaaaaaaaaa");
+		//String s = "algomonster";
+		//List<String> words = splitWords("algo monster");
+		
+		//String s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab";
+		//List<String> words = splitWords("a aa aaa aaaa aaaaa aaaaaa aaaaaaa aaaaaaaa aaaaaaaaa aaaaaaaaaa");
 
 		//String s = "aaac";
 		//List<String> words = splitWords("a aa b");
@@ -33,8 +36,8 @@ public class WordBreak {
 		//String s = "leetcode";
 		//List<String> words = splitWords("code leet");
 
-		//String s = "catsandog";
-		//List<String> words = splitWords("cats dog sand and cat");
+		String s = "catsandog";
+		List<String> words = splitWords("cats dog sand and cat catsandog");
 
 		//String s = "applepenapple";
 		//List<String> words = splitWords("apple pen");

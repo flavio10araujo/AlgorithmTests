@@ -20,7 +20,7 @@ import java.util.Set;
  */
 public class WordPatternII {
 	
-	public static boolean helper(String pattern,  String s,  int i,  int j, Map<Character, String> map,  Set<String> set) {
+	public static boolean helper(String pattern, String s, int i, int j, Map<Character, String> map, Set<String> set) {
 
 		if (i == pattern.length() && j == s.length()) {
 			return true;
@@ -63,6 +63,13 @@ public class WordPatternII {
 		return false;
 	}
 
+	/**
+	 * Time complexity: O(pattern.length ^ s.length()).
+	 * Space complexity: 
+	 * @param pattern
+	 * @param s
+	 * @return
+	 */
 	public static boolean wordPatternMatch(String pattern, String s) {
 		if (pattern.length() == 0 && s.length() == 0) {
 			return true;
@@ -80,8 +87,8 @@ public class WordPatternII {
 
 	public static void main(String[] args) {
 		long startTime = System.nanoTime();
-    	String pattern = "abab";
-        String s = "redareda";
+    	String pattern = "ABAB";
+        String s = "redblueredblue";
         boolean res = wordPatternMatch(pattern, s);
         System.out.println(res);
         long endTime = System.nanoTime();

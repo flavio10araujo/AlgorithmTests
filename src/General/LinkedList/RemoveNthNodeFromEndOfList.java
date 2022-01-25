@@ -3,6 +3,8 @@ package General.LinkedList;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import General.LinkedList.SwappingNodesInALinkedList.ListNode;
+
 /**
  * https://leetcode.com/problems/remove-nth-node-from-end-of-list/
  * 
@@ -40,15 +42,12 @@ public class RemoveNthNodeFromEndOfList {
 
 		long startTime = System.nanoTime();
 		System.out.println("Solution 01:");
-		ListNode res = solution01(head, n);
-		while (res != null) {
-			System.out.println(res.val);
-			res = res.next;
-		}
+		printNode(solution01(head, n));
 		long endTime = System.nanoTime();
 		long timeElapsed = endTime - startTime;
 		System.out.println("Execution time in nanoseconds: " + timeElapsed);
 		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+		System.out.println("");
 
 		head = new ListNode(1);
 		head.next = new ListNode(2);
@@ -57,15 +56,12 @@ public class RemoveNthNodeFromEndOfList {
 		head.next.next.next.next = new ListNode(5);
 		startTime = System.nanoTime();
 		System.out.println("Solution 02:");
-		ListNode res2 = solution02(head, n);
-		while (res2 != null) {
-			System.out.println(res2.val);
-			res2 = res2.next;
-		}
+		printNode(solution02(head, n));
 		endTime = System.nanoTime();
 		timeElapsed = endTime - startTime;
 		System.out.println("Execution time in nanoseconds: " + timeElapsed);
 		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+		System.out.println("");
 		
 		head = new ListNode(1);
 		head.next = new ListNode(2);
@@ -74,15 +70,12 @@ public class RemoveNthNodeFromEndOfList {
 		head.next.next.next.next = new ListNode(5);
 		startTime = System.nanoTime();
 		System.out.println("Solution 03:");
-		ListNode res3 = solution03(head, n);
-		while (res3 != null) {
-			System.out.println(res3.val);
-			res3 = res3.next;
-		}
+		printNode(solution03(head, n));
 		endTime = System.nanoTime();
 		timeElapsed = endTime - startTime;
 		System.out.println("Execution time in nanoseconds: " + timeElapsed);
 		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+		System.out.println("");
 	}
 
 	public static ListNode solution01(ListNode head, int n) {
@@ -156,8 +149,10 @@ public class RemoveNthNodeFromEndOfList {
 		ListNode slow = head;
 		ListNode fast = head;
 
-		while (n-- > 0)
+		while (n > 0) {
 			fast = fast.next;
+			n--;
+		}
 		
 		if (fast == null)
 			return head.next;
@@ -178,5 +173,14 @@ public class RemoveNthNodeFromEndOfList {
 		ListNode() {}
 		ListNode(int val) { this.val = val; }
 		ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+	}
+	
+	public static void printNode(ListNode head) {
+		while (head != null) {
+			System.out.print(head.val + " ");
+			head = head.next;
+		}
+		
+		System.out.println("");
 	}
 }
