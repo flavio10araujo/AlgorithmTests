@@ -32,26 +32,26 @@ public class ReorderList {
 		head.next.next.next = new ListNode(4);
 		head.next.next.next.next = new ListNode(5);
 		
-		ListNode copy1 = head;
-		
-		while(copy1 != null) {
-			System.out.print(copy1.val+ " ");
-			copy1 = copy1.next;
-		}
+		printLinkedList(head);
 		
 		solution01(head);
 		
-		System.out.println("");
-		
-		while(head != null) {
-			System.out.print(head.val+ " ");
-			head = head.next;
+		printLinkedList(head);
+	}
+	
+	public static void printLinkedList(ListNode node) {
+		while(node != null) {
+			System.out.print(node.val + " ");
+			node = node.next;
 		}
+		
+		System.out.println("");
 	}
 
 	public static void solution01(ListNode head) {
-		if (head == null || head.next == null)
+		if (head == null || head.next == null) {
 			return;
+		}
 
 		ListNode mid = findMid(head);
 		ListNode reversed = reverse(mid);
@@ -77,9 +77,10 @@ public class ReorderList {
 	private static ListNode reverse(ListNode head) {
 		ListNode prev = null;
 		ListNode curr = head;
+		ListNode next = null;
 
 		while (curr != null) {
-			ListNode next = curr.next;
+			next = curr.next;
 			curr.next = prev;
 			prev = curr;
 			curr = next;
