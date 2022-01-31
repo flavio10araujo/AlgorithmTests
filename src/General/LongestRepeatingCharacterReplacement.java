@@ -26,8 +26,8 @@ package General;
 public class LongestRepeatingCharacterReplacement {
 
 	public static void main(String[] args) {
-		// String s = "BAAAB"; // output=5
-		// int k = 2;
+		//String s = "BAAAB"; // output=5
+		//int k = 2;
 
 		//String s = "ABBB"; // output=4
 		//int k = 2;
@@ -78,17 +78,6 @@ public class LongestRepeatingCharacterReplacement {
 					count++;
 					fast++;
 				} else {
-					/*if (k > 0) {
-                        count = 0;
-                        fast = slow + 1;
-                        slow = fast;
-                        lives = k;
-                    } else {
-                        count = 0;
-                        //fast--;
-                        slow = fast;
-                        lives = k;
-                    }*/
 					count = 0;
 					slow++;
 					fast = slow;
