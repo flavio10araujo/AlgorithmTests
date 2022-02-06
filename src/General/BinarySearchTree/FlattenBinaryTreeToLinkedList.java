@@ -1,17 +1,13 @@
 package General.BinarySearchTree;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Scanner;
-import java.util.function.Function;
+import java.util.Stack;
 
 /**
- * Given a binary tree, return a linked list that is a "flattened" version of the tree.
- * The linked list still uses the same nodes as a normal binary tree, 
- * only the left subtree is always empty, and the right subtree always points to the next element in the linked list (or the empty tree).
- * The flattened tree represents the pre-order traversal of the tree.
+ * https://leetcode.com/problems/flatten-binary-tree-to-linked-list/
+ * 
+ * Given the root of a binary tree, flatten the tree into a "linked list":
+ * - The "linked list" should use the same TreeNode class where the right child pointer points to the next node in the list and the left child pointer is always null.
+ * - The "linked list" should be in the same order as a pre-order traversal of the binary tree.
  * 
  * Input
  * 		tree: the binary tree to be flattened.
@@ -27,82 +23,145 @@ import java.util.function.Function;
  * Output:
  * 1 -> 2 -> 3 -> 4 -> 5
  * 
- * Solution
+ * Input: root = [1,2,5,3,4,null,6]
+ * Output: [1,null,2,null,3,null,4,null,5,null,6]
  * 
- * 1. Decide on the return value
- * Since we are building the list backwards to form a pre-order traversal, 
- * the return value is the linked list representing the pre-order traversal of the current subtree, followed by the existing linked list.
- * 2. Identify states
- * To build up the linked list backwards, we add the flattened right subtree before the existing linked linked list, 
- * then the flattened left tree, and finally the current node.
+ * Input: root = []
+ * Output: []
+ * 
+ * Input: root = [0]
+ * Output: [0]
  */
 public class FlattenBinaryTreeToLinkedList {
 
-	public static class Node<T> {
-        public T val;
-        public Node<T> left;
-        public Node<T> right;
+	static class TreeNode {
+		int val;
+		TreeNode left;
+		TreeNode right;
+		TreeNode() {}
+		TreeNode(int val) { this.val = val; }
+		TreeNode(int val, TreeNode left, TreeNode right) {
+			this.val = val;
+			this.left = left;
+			this.right = right;
+		}
+	}
 
-        public Node(T val) {
-            this(val, null, null);
-        }
+	public static void main(String[] args) {
+		TreeNode root = new TreeNode(1);
+		root.left = new TreeNode(2);
+		root.right = new TreeNode(3);
+		root.left.left = new TreeNode(4);
+		root.left.right = new TreeNode(5);
 
-        public Node(T val, Node<T> left, Node<T> right) {
-            this.val = val;
-            this.left = left;
-            this.right = right;
-        }
-    }
+		printTree(root);
 
-    public static Node<Integer> flattenTreeToStub(Node<Integer> tree, Node<Integer> existingList) {
-        if (tree == null) {
-            return existingList;
-        }
-        
-        existingList = flattenTreeToStub(tree.right, existingList);
-        existingList = flattenTreeToStub(tree.left, existingList);
-        
-        return new Node<Integer>(tree.val, null, existingList);
-    }
+		System.out.println("");
 
-    public static Node<Integer> flattenTree(Node<Integer> tree) {
-        return flattenTreeToStub(tree, null);
-    }
+		solution03(root);
 
-    public static <T> Node<T> buildTree(Iterator<String> iter, Function<String, T> f) {
-        String val = iter.next();
-        if (val.equals("x")) return null;
-        Node<T> left = buildTree(iter, f);
-        Node<T> right = buildTree(iter, f);
-        return new Node<T>(f.apply(val), left, right);
-    }
+		printTree(root);
+	}
 
-    public static List<String> splitWords(String s) {
-        return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
-    }
+	public static void printTree(TreeNode root) {
+		if (root == null) {
+			System.out.print("X ");
+			return;
+		}
 
-    public static <T> void formatTree(Node<T> node, List<String> out) {
-        if (node == null) {
-            out.add("x");
-            return;
-        }
-        out.add(node.val.toString());
-        formatTree(node.left, out);
-        formatTree(node.right, out);
-    }
+		System.out.print(root.val + " ");
+		printTree(root.left);
+		printTree(root.right);
+	}
 
-    // 1 2 4 x x 5 x x 3 x x
-    // output: 1 x 2 x 4 x 5 x 3 x x
-    
-    // 1 2 4 x x 5 6 x x x 3 x x
-    // output: 1 x 2 x 4 x 5 x 6 x 3 x x
-    public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        Node<Integer> tree = buildTree(splitWords(scanner.nextLine()).iterator(), Integer::parseInt);
-        scanner.close();
-        Node<Integer> res = flattenTree(tree);
-        ArrayList<String> resArr = new ArrayList<>();
-        formatTree(res, resArr);
-        System.out.println(String.join(" ", resArr));
-    }
+	/**
+	 * Approach 1: Recursive.
+	 * Time: O(n).
+	 * Space: O(h).
+	 */
+	public static void solution01(TreeNode root) {
+		if (root == null) {
+			return;
+		}
+
+		solution01(root.left);
+		solution01(root.right);
+
+		TreeNode left = root.left;   // flattened left
+		TreeNode right = root.right; // flattened right
+
+		root.left = null;
+		root.right = left;
+
+		// connect the original right subtree
+		// to the end of new right subtree
+		TreeNode rightmost = root;
+
+		while (rightmost.right != null) {
+			rightmost = rightmost.right;
+		}
+
+		rightmost.right = right;
+	}
+
+	/**
+	 * Approach 2: Iterative (stack).
+	 * Time: O(n).
+	 * Space: O(h).
+	 */
+	public static void solution02(TreeNode root) {
+		if (root == null) {
+			return;
+		}
+
+		Stack<TreeNode> stack = new Stack<>();
+		stack.push(root);
+
+		while (!stack.isEmpty()) {
+			root = stack.pop();
+
+			if (root.right != null) {
+				stack.push(root.right);
+			}
+
+			if (root.left != null) {
+				stack.push(root.left);
+			}
+
+			if (!stack.isEmpty()) {
+				root.right = stack.peek();
+			}
+
+			root.left = null;
+		}
+	}
+
+	/**
+	 * Approach 3: Morris-like.
+	 * Time: O(n).
+	 * Space: O(1).
+	 */
+	public static void solution03(TreeNode root) {
+		if (root == null) {
+			return;
+		}
+
+		while (root != null) {
+			if (root.left != null) {
+				// find the rightmost root
+				TreeNode rightmost = root.left;
+				
+				while (rightmost.right != null)
+					rightmost = rightmost.right;
+				
+				// rewire the connections
+				rightmost.right = root.right;
+				root.right = root.left;
+				root.left = null;
+			}
+			
+			// move on to the right side of the tree
+			root = root.right;
+		}
+	}
 }
