@@ -36,74 +36,77 @@ public class WordBreak {
 		//String s = "leetcode";
 		//List<String> words = splitWords("code leet");
 
-		String s = "catsandog";
-		List<String> words = splitWords("cats dog sand and cat catsandog");
+		//String s = "catsandog";
+		//List<String> words = splitWords("cats dog sand and cat catsandog");
 
 		//String s = "applepenapple";
 		//List<String> words = splitWords("apple pen");
+		
+		String s = "abcd";
+		List<String> words = splitWords("a abc b cd");
 
-		long startTime = System.nanoTime();
+		long startTime, endTime, timeElapsed;
+		
+		startTime = System.nanoTime();
 		System.out.println(solution01(s, words));
-		long endTime = System.nanoTime();
-		long timeElapsed = endTime - startTime;
+		endTime = System.nanoTime();
+		timeElapsed = endTime - startTime;
 		System.out.println("Execution time in nanoseconds: " + timeElapsed);
 		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
 
-		startTime = System.nanoTime();
+		/*startTime = System.nanoTime();
 		System.out.println(solution02(s, words));
 		endTime = System.nanoTime();
 		timeElapsed = endTime - startTime;
 		System.out.println("Execution time in nanoseconds: " + timeElapsed);
-		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);*/
 
-		startTime = System.nanoTime();
+		/*startTime = System.nanoTime();
 		System.out.println(solution03(s, words));
 		endTime = System.nanoTime();
 		timeElapsed = endTime - startTime;
 		System.out.println("Execution time in nanoseconds: " + timeElapsed);
-		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);*/
 		
-		startTime = System.nanoTime();
+		/*startTime = System.nanoTime();
 		System.out.println(solution04(s, words));
 		endTime = System.nanoTime();
 		timeElapsed = endTime - startTime;
 		System.out.println("Execution time in nanoseconds: " + timeElapsed);
-		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);*/
 	}
 
 	/**
-	 * 
+	 * Approach: DFS + DP Top-down with index.
+	 * Time complexity: O(n ^ 3)
 	 * @param s
 	 * @param words
 	 * @return
 	 */
 	public static boolean solution01(String s, List<String> words) {
-		return solution01DFS(0, new Boolean[s.length()], s, words);
+		return solution01DFS(s, 0, words, new Boolean[s.length()]);
 	}
 
-	private static boolean solution01DFS(int i, Boolean[] memo, String s, List<String> words) {
+	private static boolean solution01DFS(String s, int i, List<String> words, Boolean[] memo) {
 		if (i == s.length()) {
 			return true;
 		}
 
 		if (memo[i] != null) {
-			//System.out.println("memo i="+i);
 			return memo[i];
 		}
 
 		boolean ok = false;
 
 		for (String word : words) {
-
-			//System.out.println("i="+i+ " word="+word);
-
 			if (s.substring(i).startsWith(word)) {
-
-				ok = ok || solution01DFS(i + word.length(), memo, s, words);
+				ok = ok || solution01DFS(s, i + word.length(), words, memo);
+			}
+			
+			if (ok) {
+				break;
 			}
 		}
-
-		//System.out.println("Saiu do for e inseriu " + ok + " no memo["+i+"]");
 
 		memo[i] = ok;
 		return ok;
@@ -141,7 +144,7 @@ public class WordBreak {
 	}
 
 	/**
-	 * Approach: DFS + DP Top-down.
+	 * Approach: DFS + DP Top-down with raw string.
 	 * Time complexity: O(n ^ 3).
 	 * @param s
 	 * @param wordDict

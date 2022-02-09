@@ -33,7 +33,6 @@ public class PalindromePartitioning {
         }
         
         for (int i = start; i < s.length(); i++) {
-            
         	if (isPalindrome(s.substring(start, i + 1))) {
                 path.add(s.substring(start, i + 1));
                 dfs(i + 1, s, path, res);
@@ -49,7 +48,7 @@ public class PalindromePartitioning {
     }
     
     public static void main(String[] args) {
-        String s = "aab";
+        String s = "aba";
         List<List<String>> res = partition(s);
         for (List<String> row : res) {
             System.out.println(String.join(" ", row));
