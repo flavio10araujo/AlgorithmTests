@@ -1,5 +1,6 @@
 package General.Graph.DirectedGraph;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,6 +9,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Queue;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Leetcode 269 : Hard.
@@ -47,8 +49,22 @@ import java.util.Set;
  * 	1 <= words[i] <= 30
  */
 public class AlienDictionary {
+	
+	public static void main(String[] args) {
+        List<String> words = splitWords("wrt wrf er ett rftt");
+        System.out.println(solution01(words));
+    }
+	
+    public static List<String> splitWords(String s) {
+        return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
+    }
 
-	public static String alienOrder(List<String> words) {
+	/**
+	 * 
+	 * @param words
+	 * @return
+	 */
+    public static String solution01(List<String> words) {
 		
         Map<Character, Set<Character>> postReqs = new HashMap<>();
         Map<Character, Integer> preReqCount = new HashMap<>();
@@ -133,14 +149,103 @@ public class AlienDictionary {
         
         return "";
     }
+    
+    /**
+     * Approach: BFS (Kahn's Algorithm).
+     * 
+     * @param words
+     * @return
+     */
+    public static String solution02(List<String> words) {
+        Map<Character, List<Character>> graph = new HashMap<>();
+        
+        for (String word : words) {
+            for (int i = 0; i < word.length(); i++) {
+                char c = word.charAt(i);
+                if (!graph.containsKey(c)) {
+                    graph.put(c, new ArrayList<>());
+                }
+            }
+        }
 
-    public static List<String> splitWords(String s) {
-        return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
+        String prev = words.get(0);
+        
+        // Derive order from adjacent words.
+        for (int i = 1; i < words.size(); i++) {
+            String cur = words.get(i);
+            
+            for (int j = 0; j < prev.length() && j < cur.length(); j++) {
+                if (prev.charAt(j) != cur.charAt(j)) {
+                    // Ignore duplicates.
+                    if (!graph.get(prev.charAt(j)).contains(cur.charAt(j))) {
+                        graph.get(prev.charAt(j)).add(cur.charAt(j));
+                    }
+                    
+                    break;
+                }
+            }
+            
+            prev = cur;
+        }
+
+        List<Character> sorted = topoSort(graph);
+        
+        return sorted == null ? "" : sorted.stream()
+                        				   .map(String::valueOf)
+                        				   .collect(Collectors.joining());
     }
+    
+    public static List<Character> topoSort(Map<Character, List<Character>> graph) {
+        List<Character> res = new ArrayList<>();
+        Queue<Character> q = new PriorityQueue<>();
+        
+        // Loop through all nodes and add all nodes that do not have any parent.
+        Map<Character, Integer> counts = countParents(graph);
+        
+        counts.entrySet().forEach(entry -> {
+            if (entry.getValue() == 0) {
+                q.add(entry.getKey());
+            }
+        });
+        
+        while (!q.isEmpty()) {
+            char node = q.poll();
+            res.add(node);
+            
+            for (char child : graph.get(node)) {
+                // Subtract one from every neighbor.
+                counts.put(child, counts.get(child) - 1);
+                
+                // Once the number of parents reaches zero you add it to the queue.
+                if (counts.get(child) == 0) {
+                    q.add(child);
+                }
+            }
+        }
 
-    public static void main(String[] args) {
-        List<String> words = splitWords("wrt wrf er ett rftt");
-        String res = alienOrder(words);
-        System.out.println(res);
+        for (int count : counts.values()) {
+            if (count != 0) {
+                return null;
+            }
+        }
+        
+        return res;
+    }
+    
+    public static <T> Map<T, Integer> countParents(Map<T, List<T>> graph) {
+        Map<T, Integer> counts = new HashMap<>();
+        
+        graph.keySet().forEach(node -> {
+            counts.put(node, 0);
+        });
+        
+        // Loop through every node and add to the child node 1 parent.
+        graph.entrySet().forEach(entry -> {
+            for (T node : entry.getValue()) {
+                counts.put(node, counts.get(node) + 1);
+            }
+        });
+        
+        return counts;
     }
 }

@@ -1,9 +1,13 @@
 package General.Graph.DirectedGraph;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Deque;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,7 +65,33 @@ import java.util.stream.Collectors;
  */
 public class SequenceReconstruction {
 
-	public static boolean sequenceReconstruction(List<Integer> original, List<List<Integer>> seqs) {
+	public static void main(String[] args) {
+		List<List<Integer>> seqs = new ArrayList<>();
+		
+		/*List<Integer> original = splitWords("1 2 3").stream().map(Integer::parseInt).collect(Collectors.toList());
+        seqs.add(splitWords("1 2").stream().map(Integer::parseInt).collect(Collectors.toList()));
+        seqs.add(splitWords("1 3").stream().map(Integer::parseInt).collect(Collectors.toList()));*/
+		
+		List<Integer> original = splitWords("1 2 3").stream().map(Integer::parseInt).collect(Collectors.toList());
+        seqs.add(splitWords("1 2").stream().map(Integer::parseInt).collect(Collectors.toList()));
+        seqs.add(splitWords("1 3").stream().map(Integer::parseInt).collect(Collectors.toList()));
+        seqs.add(splitWords("2 3").stream().map(Integer::parseInt).collect(Collectors.toList()));
+        
+        boolean res = solution02(original, seqs);
+        System.out.println(res);
+    }
+	
+	public static List<String> splitWords(String s) {
+        return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
+    }
+	
+	/**
+	 * 
+	 * @param original
+	 * @param seqs
+	 * @return
+	 */
+	public static boolean solution01(List<Integer> original, List<List<Integer>> seqs) {
         
 		int n = original.size();
         List<Set<Integer>> postReqs = new ArrayList<>();
@@ -127,19 +157,81 @@ public class SequenceReconstruction {
         
         return checkIndex == n;
     }
-
-    public static List<String> splitWords(String s) {
-        return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
+	
+	/**
+	 * Approach: BFS (Kahn's Algorithm).
+	 * 
+	 * @param original
+	 * @param seqs
+	 * @return
+	 */
+	public static boolean solution02(List<Integer> original, List<List<Integer>> seqs) {
+        int n = original.size();
+        Map<Integer, Set<Integer>> graph = new HashMap<>();
+        
+        for (int i = 1; i <= n; i++) {
+            graph.put(i, new HashSet<>());
+        }
+        
+        for (List<Integer> seq : seqs) {
+            for (int i = 0; i < seq.size() - 1; i++) {
+                int earlyNum = seq.get(i), lateNum = seq.get(i + 1);
+                
+                if (!graph.get(earlyNum).contains(lateNum)) {
+                    graph.get(earlyNum).add(lateNum);
+                }
+            }
+        }
+        
+        return topoSort(graph, original);
     }
-    
-    public static void main(String[] args) {
-        List<Integer> original = splitWords("1 2 3").stream().map(Integer::parseInt).collect(Collectors.toList());
-        List<List<Integer>> seqs = new ArrayList<>();
+	
+	public static <T> boolean topoSort(Map<T, Set<T>> graph, List<T> original) {
+        List<T> reconstructed = new ArrayList<>();
+        Deque<T> q = new ArrayDeque<>();
+        Map<T, Integer> counts = countParents(graph);
         
-        seqs.add(splitWords("1 2").stream().map(Integer::parseInt).collect(Collectors.toList()));
-        seqs.add(splitWords("1 3").stream().map(Integer::parseInt).collect(Collectors.toList()));
+        counts.entrySet().forEach(entry -> {
+            if (entry.getValue() == 0) {
+                q.add(entry.getKey());
+            }
+        });
         
-        boolean res = sequenceReconstruction(original, seqs);
-        System.out.println(res);
+        while (!q.isEmpty()) {
+        	// If there's > 1 node in the queue, the reconstruction is not unique.
+        	if (q.size() > 1) {
+                return false;
+            }
+        	
+            T node = q.poll();
+            reconstructed.add(node);
+            
+            for (T child : graph.get(node)) {
+                counts.put(child, counts.get(child) - 1);
+                
+                if (counts.get(child) == 0) {
+                    q.add(child);
+                }
+            }
+        }
+        
+        // Check if sequence is the same as original sequence.
+        return original.equals(reconstructed);
+    }
+	
+	public static <T> Map<T, Integer> countParents(Map<T, Set<T>> graph) {
+        Map<T, Integer> counts = new HashMap<>();
+        
+        graph.keySet().forEach(node -> {
+            counts.put(node, 0);
+        });
+        
+        graph.entrySet().forEach(entry -> {
+            for (T node : entry.getValue()) {
+                counts.put(node, counts.get(node) + 1);
+            }
+        });
+        
+        return counts;
     }
 }
