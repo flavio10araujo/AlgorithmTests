@@ -7,6 +7,7 @@ import java.util.Deque;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 /**
@@ -27,10 +28,33 @@ import java.util.stream.Collectors;
  */
 public class TaskScheduling2 {
 
-	public static int taskScheduling2(List<String> tasks, List<Integer> times, List<List<String>> requirements) {
+	public static void main(String[] args) {
+        List<String> tasks = splitWords("a b c d");
+        List<Integer> times = splitWords("1 1 2 1").stream().map(Integer::parseInt).collect(Collectors.toList());
+        
+        List<List<String>> requirements = new ArrayList<>();
+        requirements.add(splitWords("a b"));
+        requirements.add(splitWords("c b"));
+        requirements.add(splitWords("b d"));
+        
+        System.out.println(solution02(tasks, times, requirements));
+    }
+    
+    public static List<String> splitWords(String s) {
+        return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
+    }
+	
+	/**
+	 * 
+	 * @param tasks
+	 * @param times
+	 * @param requirements
+	 * @return
+	 */
+    public static int solution01(List<String> tasks, List<Integer> times, List<List<String>> requirements) {
 		
-        // Initialize our data structures, we have a adjacencylist to represent the graph, parents stores number of parent nodes
-        // of current node, and taskTimes stores time for a fiven task.
+        // Initialize our data structures, we have a adjacency list to represent the graph, parents stores number of parent nodes
+        // of current node, and taskTimes stores time for a given task.
         Map<String, List<String>> graph = new HashMap<String, List<String>>();
         Map<String, Integer> parents = new HashMap<String, Integer>();
         Map<String, Integer> taskTimes = new HashMap<String, Integer>();
@@ -92,21 +116,87 @@ public class TaskScheduling2 {
         
         return ans;
     }
+    
+    /**
+     * Approach: BFS (Kahn's Algorithm).
+     * 
+     * @param tasks
+     * @param times
+     * @param requirements
+     * @return
+     */
+    public static int solution02(List<String> tasks, List<Integer> times, List<List<String>> requirements) {
+        Map<String, List<String>> graph = new HashMap<String, List<String>>();
+        Map<String, Integer> taskTimes = new HashMap<String, Integer>();
 
-    public static List<String> splitWords(String s) {
-        return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
+        // Initialize the graph and put in the relevant times into task times.
+        for (int i = 0; i < tasks.size(); i++) {
+            graph.put(tasks.get(i), new ArrayList<>());
+            taskTimes.put(tasks.get(i), times.get(i));
+        }
+
+        // Loop through the requirements and add it to our graph.
+        for (List<String> req : requirements) {
+            graph.get(req.get(0)).add(req.get(1));
+        }
+
+        return topoSort(graph, taskTimes);
     }
-
-    public static void main(String[] args) {
-        List<String> tasks = splitWords("a b c d");
-        List<Integer> times = splitWords("1 1 2 1").stream().map(Integer::parseInt).collect(Collectors.toList());
-        List<List<String>> requirements = new ArrayList<>();
+    
+    public static int topoSort(Map<String, List<String>> graph, Map<String, Integer> taskTimes) {
+        int ans = 0;
+        Queue<String> q = new ArrayDeque<>();
+        Map<String, Integer> dis = new HashMap<String, Integer>();
         
-        requirements.add(splitWords("a b"));
-        requirements.add(splitWords("c b"));
-        requirements.add(splitWords("b d"));
+        graph.keySet().forEach(key -> {
+            dis.put(key, 0);
+        });
         
-        int res = taskScheduling2(tasks, times, requirements);
-        System.out.println(res);
+        // Loop through all nodes and add all nodes that do not have any parent.
+        Map<String, Integer> counts = countParents(graph);
+        
+        for (String node : counts.keySet()) {
+            if (counts.get(node) == 0) {
+                q.add(node);
+                dis.put(node, taskTimes.get(node));
+                ans = Math.max(ans, dis.get(node));
+            }
+        }
+        
+        while (!q.isEmpty()) {
+            String node = q.poll();
+            
+            for (String child : graph.get(node)) {
+                // Subtract one from every neighbor.
+                counts.put(child, counts.get(child) - 1);
+                // Update distances for children and answer.
+                dis.put(child, Math.max(dis.get(child), dis.get(node) + taskTimes.get(child)));
+                ans = Math.max(ans, dis.get(child));
+                
+                // Once the number of parents reaches zero you add it to the queue.
+                if (counts.get(child) == 0) {
+                    q.add(child);
+                }
+            }
+        }
+        
+        return ans;
+    }
+    
+    public static <T> Map<T, Integer> countParents(Map<T, List<T>> graph) {
+        Map<T, Integer> counts = new HashMap<>();
+        
+        graph.keySet().forEach(node -> {
+            counts.put(node, 0);
+        });
+        
+        // Loop through every node and add to the child node 1 parent.
+        graph.entrySet().forEach(entry -> {
+            for (T node : entry.getValue()) {
+                counts.put(node, counts.get(node) + 1);
+            }
+        });
+        
+        return counts;
     }
 }
