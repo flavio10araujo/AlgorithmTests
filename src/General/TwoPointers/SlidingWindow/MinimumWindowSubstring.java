@@ -28,25 +28,60 @@ import java.util.Map;
  */
 public class MinimumWindowSubstring {
 
-	// Change the number of "char" inside the window by "delta"
-    // Automatically increase or decrease "satisfyCount" to reflect the current value.
-    // Returns the new "satisfyCount".
-    public static int deltaChar(char ch, int delta, int satisfyCount, Map<Character, Integer> checkCount, Map<Character, Integer> windowCount) {
+	public static void main(String[] args) {
+        //String s = "cdbaebaecd"; String t = "abc";
         
-    	if (windowCount.getOrDefault(ch, 0) >= checkCount.getOrDefault(ch, 0)) {
-            satisfyCount--;
-        }
-    	
-        windowCount.merge(ch, delta, Integer::sum);
+        String s = "ADOBECODEBANC"; String t = "ABC";
+      		
+      	//String s = "A"; String t = "A";
+      		
+      	//String s = "AA"; String t = "AA";
         
-        if (windowCount.getOrDefault(ch, 0) >= checkCount.getOrDefault(ch, 0)) {
-            satisfyCount++;
-        }
-        
-        return satisfyCount;
+        System.out.println(solution01(s, t));
+        System.out.println(solution02(s, t));
     }
+    
+    /**
+     * Time: O(|s| + |t|)
+     * Space: O(128) = O(1)
+     * @param s
+     * @param t
+     * @return
+     */
+	public static String solution01(String s, String t) {
+        int[] count = new int[128];
+        int required = t.length();
+        int bestLeft = -1;
+        int minLength = s.length() + 1;
 
-    public static String getMinimumWindow(String original, String check) {
+        for (final char c : t.toCharArray())
+            ++count[c];
+
+        for (int l = 0, r = 0; r < s.length(); ++r) {
+            if (--count[s.charAt(r)] >= 0)
+                --required;
+      
+            while (required == 0) {
+                if (r - l + 1 < minLength) {
+                    bestLeft = l;
+                    minLength = r - l + 1;
+                }
+        
+                if (++count[s.charAt(l++)] > 0)
+                    ++required;
+            }
+        }
+
+        return bestLeft == -1 ? "" : s.substring(bestLeft, bestLeft + minLength);
+    }
+	
+	/**
+	 * 
+	 * @param original
+	 * @param check
+	 * @return
+	 */
+	public static String solution02(String original, String check) {
     	
         // Counts the number of each character of "check".
         Map<Character, Integer> checkCount = new HashMap<>();
@@ -103,11 +138,22 @@ public class MinimumWindowSubstring {
         
         return smallestStr == null ? "" : smallestStr;
     }
-
-    public static void main(String[] args) {
-        String original = "cdbaebaecd";
-        String check = "abc";
-        String res = getMinimumWindow(original, check);
-        System.out.println(res);
+	
+	// Change the number of "char" inside the window by "delta"
+    // Automatically increase or decrease "satisfyCount" to reflect the current value.
+    // Returns the new "satisfyCount".
+    public static int deltaChar(char ch, int delta, int satisfyCount, Map<Character, Integer> checkCount, Map<Character, Integer> windowCount) {
+        
+    	if (windowCount.getOrDefault(ch, 0) >= checkCount.getOrDefault(ch, 0)) {
+            satisfyCount--;
+        }
+    	
+        windowCount.merge(ch, delta, Integer::sum);
+        
+        if (windowCount.getOrDefault(ch, 0) >= checkCount.getOrDefault(ch, 0)) {
+            satisfyCount++;
+        }
+        
+        return satisfyCount;
     }
 }

@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.Iterator;
 
 /**
+ * https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/
+ * 
  * Lowest common ancestor (LCA) of two nodes v and w in a tree is the lowest (i.e. deepest) node that has both v and w as descendants.
  * We also define each node to be a descendant of itself (so if v has a direct connection from w, w is the lowest common ancestor).
  * 
@@ -24,6 +26,28 @@ import java.util.Iterator;
  *  Output: 5.
  */
 public class LowestCommonAncestorOfABinaryTree {
+
+	public static void main(String[] args) {
+		/*Node root = Node.buildTree(Arrays.stream("5 4 3 x x 8 x x 6 x x".split(" ")).iterator());
+		Node node1 = Node.findNode(root, 3);
+		Node node2 = Node.findNode(root, 8);*/
+
+		Node root = Node.buildTree(Arrays.stream("3 5 6 x x 2 7 x x 4 x x 1 0 x x 8 x x".split(" ")).iterator());
+		Node node1 = Node.findNode(root, 5);
+		Node node2 = Node.findNode(root, 4);
+		
+		/*Node root = Node.buildTree(Arrays.stream("3 5 x x 1 x x".split(" ")).iterator());
+		Node node1 = Node.findNode(root, 5);
+		Node node2 = Node.findNode(root, 1);*/
+
+		long startTime = System.nanoTime();
+		Node ans = solution01(root, node1, node2);
+		System.out.println(ans == null ? "null" : ans.val);
+		long endTime = System.nanoTime();
+		long timeElapsed = endTime - startTime;
+		System.out.println("Execution time in nanoseconds: " + timeElapsed);
+		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
+	}
 
 	/**
 	 * 
@@ -66,31 +90,6 @@ public class LowestCommonAncestorOfABinaryTree {
 		return null;
 	}
 
-	/**
-	 * 
-	 * @param root
-	 * @param p
-	 * @param q
-	 * @return
-	 */
-	public Node solution02(Node root, Node p, Node q) {
-		// If p and q are in the left subtree of LCA.
-		if (root.val > Math.max(p.val, q.val)) {
-			return solution02(root.left, p, q);
-		}
-		
-		// If p and q are in the right subtree of LCA.
-		if (root.val < Math.min(p.val, q.val)) {
-			return solution02(root.right, p, q);
-		}
-		
-		// Return root if:
-		// => p and q are not in the same subtree 
-		// => OR p is the LCA
-		// => OR q is the LCA
-		return root;
-	}
-
 	/** Driver class, do not change **/
 	static class Node {
 		int val;
@@ -118,27 +117,5 @@ public class LowestCommonAncestorOfABinaryTree {
 			}
 			return findNode(root.right, target);
 		}
-	}
-
-	public static void main(String[] args) {
-		Node root = Node.buildTree(Arrays.stream("5 4 3 x x 8 x x 6 x x".split(" ")).iterator());
-		Node node1 = Node.findNode(root, 3);
-		Node node2 = Node.findNode(root, 8);
-
-		long startTime = System.nanoTime();
-		Node ans = solution01(root, node1, node2);
-		System.out.println(ans == null ? "null" : ans.val);
-		long endTime = System.nanoTime();
-		long timeElapsed = endTime - startTime;
-		System.out.println("Execution time in nanoseconds: " + timeElapsed);
-		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
-		
-		startTime = System.nanoTime();
-		Node ans02 = solution01(root, node1, node2);
-		System.out.println(ans02 == null ? "null" : ans02.val);
-		endTime = System.nanoTime();
-		timeElapsed = endTime - startTime;
-		System.out.println("Execution time in nanoseconds: " + timeElapsed);
-		System.out.println("Execution time in milliseconds: " + timeElapsed / 1000000);
 	}
 }
