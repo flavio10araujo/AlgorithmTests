@@ -1,10 +1,5 @@
 package General.TwoPointers;
 
-import java.util.ArrayDeque;
-import java.util.ArrayList;
-import java.util.Deque;
-import java.util.List;
-
 /**
  * https://leetcode.com/problems/house-robber-iii/
  * 
@@ -36,65 +31,53 @@ import java.util.List;
  *       2
  *      / \
  *     1   3
- *    /
- *   4
+ *      \
+ *       4
  *   
  * Output: 3 + 4 = 7
  */
 public class HouseRobber3 {
 
 	public static void main(String[] args) {
-		TreeNode root = new TreeNode(3);
+		/*TreeNode root = new TreeNode(3);
 		root.left = new TreeNode(2);
 		root.right = new TreeNode(3);
 		root.left.left = new TreeNode(3);
-		root.right.right = new TreeNode(1);
+		root.right.right = new TreeNode(1);*/
+
+		TreeNode root = new TreeNode(2);
+		root.left = new TreeNode(1);
+		root.left.right = new TreeNode(4);
+		root.right = new TreeNode(3);
 		
 		System.out.println(rob(root));
 	}
-	
+
 	public static int rob(TreeNode root) {
-        
-		Deque<TreeNode> queue = new ArrayDeque<>();
-		queue.add(root);
-		
-		int index = -1;
-		List<Integer> dp = new ArrayList<>();
-		
-		while(!queue.isEmpty()) {
-			int n = queue.size();
-			index++;
-			int countValues = 0;
-			
-			for (int i = 0; i < n; i++) {
-				TreeNode node = queue.poll();
-				
-				countValues += node.val;
-				
-				if (node.left != null) {
-					queue.add(node.left);
-				}
-				
-				if (node.right != null) {
-					queue.add(node.right);
-				}
-			}
-			
-			if (dp.isEmpty()) {
-				dp.add(countValues);
-			} else if (dp.size() == 1) {
-				dp.add(Math.max(dp.get(0), countValues));
-			} else {
-				dp.add(Math.max(dp.get(index - 2) + countValues, dp.get(index - 1)));
-			}
+		T t = robOrNotRob(root);
+		return Math.max(t.robRoot, t.notRobRoot);
+	}
+	
+	private static T robOrNotRob(TreeNode root) {
+	    if (root == null)
+	      return new T(0, 0);
+
+	    T l = robOrNotRob(root.left);
+	    T r = robOrNotRob(root.right);
+
+	    return new T(root.val + l.notRobRoot + r.notRobRoot,
+	                 Math.max(l.robRoot, l.notRobRoot) + Math.max(r.robRoot, r.notRobRoot));
+	  }
+
+	static class T {
+		public int robRoot;
+		public int notRobRoot;
+
+		public T(int robRoot, int notRobRoot) {
+			this.robRoot = robRoot;
+			this.notRobRoot = notRobRoot;
 		}
-		
-		if (dp.isEmpty()) {
-			return 0;
-		}
-		
-		return dp.get(dp.size() - 1);
-    }
+	}
 
 	static class TreeNode {
 		int val;

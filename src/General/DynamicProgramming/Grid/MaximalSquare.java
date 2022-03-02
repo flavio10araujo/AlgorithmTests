@@ -1,8 +1,5 @@
 package General.DynamicProgramming.Grid;
 
-import java.io.IOException;
-import java.util.Scanner;
-
 /**
  * Given a binary matrix, find out the largest size square sub-matrix with all 1's and return its area.
  * 
@@ -39,27 +36,23 @@ public class MaximalSquare {
         int[][] dp = new int[matrix.length][matrix[0].length];
 
         for (int i = 0; i < matrix.length; i++) {
-            dp[i][0] = matrix[i][0]-'0';
+            dp[i][0] = matrix[i][0] - '0';
             best = Math.max(best, dp[i][0]);
         }
 
         for (int j = 0; j < matrix[0].length; j++){
-            dp[0][j] = matrix[0][j]-'0';
+            dp[0][j] = matrix[0][j] - '0';
             best = Math.max(best, dp[0][j]);
         }
 
         for (int i = 1; i < matrix.length; i++) {
-        	
             for (int j = 1; j < matrix[0].length; j++) {
-            	
                 if (matrix[i][j] == '1') {
-                	
-                    int min = Math.min(dp[i-1][j], dp[i][j-1]);
-                    min = Math.min(min, dp[i-1][j-1]);
-                    dp[i][j] = min+1;
+                    int min = Math.min(dp[i - 1][j], dp[i][j - 1]);
+                    min = Math.min(min, dp[i - 1][j - 1]);
+                    dp[i][j] = min + 1;
                     best = Math.max(best, min + 1);
-                }
-                else {
+                } else {
                     dp[i][j] = 0;
                 }
             }
@@ -68,28 +61,14 @@ public class MaximalSquare {
         return best * best;
     }
 	
-	// 4
-	// 1 0 1 0 0
-	// 1 0 1 1 1
-	// 1 1 1 1 0
-	// 1 0 0 0 1
-	public static void main(String[] args) throws IOException {
-        Scanner scanner = new Scanner(System.in);
-        int rows = Integer.parseInt(scanner.nextLine());
-        String[] line = scanner.nextLine().trim().split(" ");
-        char [][] dataArray = new char[rows][line.length];
-        
-        while(scanner.hasNextLine()) {
-           for (int i=0; i<dataArray.length; i++) {
-              if(i != 0){
-                line = scanner.nextLine().trim().split(" ");
-              }
-              for (int j=0; j<line.length; j++) {
-                 dataArray[i][j] = line[j].charAt(0);
-              }
-           }
-        }
-        
-        System.out.println(maximalSquare(dataArray));
+	public static void main(String[] args) {
+		char[][] matrix = {
+				{'1', '0', '1', '0', '0'},
+				{'1', '0', '1', '1', '1'},
+				{'1', '1', '1', '1', '1'},
+				{'1', '0', '0', '0', '1'}
+		};
+		
+		System.out.println(maximalSquare(matrix));
     }
 }
