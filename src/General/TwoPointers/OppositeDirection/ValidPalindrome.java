@@ -9,6 +9,12 @@ package General.TwoPointers.OppositeDirection;
  * Input: A brown fox jumping over Output: False
  */
 public class ValidPalindrome {
+	
+	public static void main(String[] args) {
+        String s = "Do geese see God?";
+        System.out.println(isPalindrome(s));
+    }
+	
 	public static boolean isPalindrome(String s) {
         
 		if (s == null || "".equals(s)) {
@@ -37,11 +43,5 @@ public class ValidPalindrome {
 		}
 		
         return true;
-    }
-
-    public static void main(String[] args) {
-        String s = "Do geese see God?";
-        boolean res = isPalindrome(s);
-        System.out.println(res);
     }
 }

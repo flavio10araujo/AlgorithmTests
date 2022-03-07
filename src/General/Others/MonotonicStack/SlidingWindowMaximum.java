@@ -108,7 +108,8 @@ public class SlidingWindowMaximum {
     }
 
     public static void main(String[] args) {
-        List<Integer> nums = splitWords("1 3 2 5 8 7").stream().map(Integer::parseInt).collect(Collectors.toList());
+        //List<Integer> nums = splitWords("1 3 2 5 8 7").stream().map(Integer::parseInt).collect(Collectors.toList());
+    	List<Integer> nums = splitWords("1 3 -1 -3 5 3 6 7").stream().map(Integer::parseInt).collect(Collectors.toList());
         int k = Integer.parseInt("3");
         List<Integer> res = slidingWindowMaximum(nums, k);
         System.out.println(res.stream().map(String::valueOf).collect(Collectors.joining(" ")));
