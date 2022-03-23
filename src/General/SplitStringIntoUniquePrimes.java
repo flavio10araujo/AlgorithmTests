@@ -27,9 +27,82 @@ public class SplitStringIntoUniquePrimes {
 	static int maxn = 1000000;
 	
 	public static void main(String[] args) {
-		String str = "31173";
-	    sieve();
-	    System.out.println(primeSplit(str));
+		//String str = "31173"; // 6
+		//String str = "53739"; // 3
+		String str = "7013"; // 2
+		
+		System.out.println(solution01(str));
+	    System.out.println(solution02(str));
+	}
+	
+	/**
+	 * 
+	 * @param inputStr
+	 * @return
+	 */
+	private static int solution01(String inputStr) {
+		int count = 0;
+		List<List<String>> ans = new ArrayList<>();
+		
+		for (int i = 0; i < inputStr.length(); i++) {
+			if (!isPrime(inputStr.substring(0, i + 1))) {
+				continue;
+			}
+			
+			List<String> path = new ArrayList<>();
+			path.add(inputStr.substring(0, i + 1));
+			count += dfs(inputStr, i + 1, ans, path);
+		}
+		
+		System.out.println(ans);
+		
+		return count;
+	}
+	
+	private static int dfs(String inputStr, int index, List<List<String>> ans, List<String> path) {
+		if (index == inputStr.length()) {
+			ans.add(new ArrayList<>(path));
+			return 1;
+		}
+		
+		int count = 0;
+		
+		for (int i = index; i < inputStr.length(); i++) {
+			if (inputStr.substring(index, i + 1).startsWith("0")) {
+				break;
+			}
+			
+			if (!isPrime(inputStr.substring(index, i + 1))) {
+				continue;
+			}
+			
+			path.add(inputStr.substring(index, i + 1));
+			count += dfs(inputStr, i + 1, ans, path);
+			path.remove(path.size() - 1);
+		}
+		
+		return count;
+	}
+	
+	private static boolean isPrime(String number) {
+		int num = Integer.valueOf(number);
+
+		for (int i = 2; i * i <= num; i++) {
+			if ((num % i) == 0)
+				return false;
+		}
+		
+		return num > 1 ? true : false;
+	}
+	
+	/**
+	 * 
+	 * @param inputStr
+	 * @return
+	 */
+	private static int solution02(String inputStr) {
+		sieve();
+		return primeSplit(inputStr);
 	}
 
 	// Sieve of Eratosthenes
