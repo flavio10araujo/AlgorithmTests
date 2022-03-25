@@ -30,7 +30,8 @@ import java.util.List;
  */
 public class AmazonCacheOptimizationPower {
 
-	static long totalPower; 
+	static int totalPower;
+	static int MODULO = 1000000007;
 	
 	public static void main(String[] args) {
 		//System.out.println(solution(List.of(2,3,2,1))); // 69
@@ -55,7 +56,7 @@ public class AmazonCacheOptimizationPower {
 		
 		System.out.println(ans);
 		
-		return (int) totalPower % 1000000007;
+		return totalPower;
 	}
 	
 	private static boolean helper(List<Long> power, int start, long min, long sum, List<List<Long>> ans, List<Long> path) {
@@ -67,8 +68,8 @@ public class AmazonCacheOptimizationPower {
 		
 		for (int i = start; i < power.size(); i++) {
 			min = Math.min(min, power.get(i));
-			sum = (sum + power.get(i)) % 1000000007;
-			totalPower += (min * sum) % 1000000007;
+			sum = (sum + power.get(i)) % MODULO;
+			totalPower += (min * sum) % MODULO;
 			
 			path.add(power.get(i));
 			ans.add(new ArrayList<>(path));

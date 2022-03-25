@@ -12,7 +12,7 @@ import java.util.Queue;
  * 
  * Retorne o mínimo de dias necessário para esvaziar todos os delivery centers.
  * 
- * Examplo:
+ * Exemplo:
  * input: parcels[2,3,4,3,3]
  * ouput: 3
  * explanation:
