@@ -3,7 +3,7 @@ package Tests;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Test01 {
+public class RobotInMatrix {
 	
 	static int MATRIX_WIDTH = 10;
 	static int MATRIX_HEIGHT = 10;

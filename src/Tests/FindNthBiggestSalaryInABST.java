@@ -1,10 +1,10 @@
-package TestsB;
+package Tests;
 
 import java.util.Collections;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
-public class Test01 {
+public class FindNthBiggestSalaryInABST {
 
 	static int biggest = Integer.MIN_VALUE;
 	
