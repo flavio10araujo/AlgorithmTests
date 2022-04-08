@@ -377,29 +377,42 @@ public class PlayingCards {
         Game game = new Game();
         ArrayList<Integer> handAList = new ArrayList<>();
         int listALength = Integer.parseInt(scanner.nextLine());
+        
         for (int i = 0; i < listALength; i++) {
             String[] segs = scanner.nextLine().split(" ");
+            
             if (segs[0].equals("Joker"))
                 game.addJoker(segs[1]);
             else
                 game.addCard(segs[0], segs[1]);
+            
             handAList.add(i);
         }
+        
         game.addHand(handAList);
+        
         System.out.println(game.handString(0));
+        
         ArrayList<Integer> handBList = new ArrayList<>();
         int listBLength = Integer.parseInt(scanner.nextLine());
+        
         for (int i = listALength; i < listALength + listBLength; i++) {
             String[] segs = scanner.nextLine().split(" ");
+            
             if (segs[0].equals("Joker"))
                 game.addJoker(segs[1]);
             else
                 game.addCard(segs[0], segs[1]);
+            
             handBList.add(i);
         }
+        
         game.addHand(handBList);
+        
         System.out.println(game.handString(1));
+        
         System.out.println(game.handBeats(0, 1));
+        
         scanner.close();
     }
 }
