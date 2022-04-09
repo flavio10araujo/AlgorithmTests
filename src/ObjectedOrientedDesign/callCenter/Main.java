@@ -1,12 +1,8 @@
-package ObjectedOrientedDesign;
+package ObjectedOrientedDesign.callCenter;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Deque;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 /*
@@ -177,262 +173,61 @@ import java.util.Scanner;
  * Respondents also now has a performance rating score that we need to keep track of, for promotions. 
  * To promote a person, we remove them from their current job, and create a new instance of that person with the new role.
  */
-public class CallCenterProblem {
+public class Main {
 	
-	public static final int MAX_RANKS = 3;
-	
-	public static class CallInstance {
-		public String number;
-		public Employee talkingTo;
-		public int rank;
-
-		public CallInstance(String number) {
-			this.number = number;
-			this.talkingTo = null;
-			rank = 0;
-		}
-
-		public boolean startCall(Employee target, List<String> output) {
-            if (talkingTo == null && target.talkingTo == null) {
-                talkingTo = target;
-                target.talkingTo = this;
-                output.add(String.format("Connecting %s to %s", this.toString(), target.toString()));
-                
-                if (target instanceof Respondent) {
-                    ((Respondent) target).performanceRating++;
-                }
-                
-                return true;
-            }
-            
-            return false;
-        }
-
-		public boolean endCall(List<String> output) {
-			if (talkingTo != null) {
-				output.add(String.format("Call between %s and %s ended", this.toString(), this.talkingTo.toString()));
-				talkingTo.talkingTo = null;
-				talkingTo = null;
-				return true;
-			}
-			
-			return false;
+	/*
+	 8
+	 hire James
+	 hire Angie
+    dispatch 303-1142
+    dispatch 583-9045
+    dispatch 711-4375
+    end 583-9045
+    end 303-1142
+    end 711-4375
+	 */
+	// Testing Part One.
+		
+	/*
+	 7
+	 hire Respondent James
+	 hire Manager Angie
+    dispatch 303-1142
+    dispatch 583-9045
+    escalate 303-1142
+    end 303-1142
+    end 583-9045
+	 */
+	// Testing Part Two.
+		
+	/*
+	 7
+	 hire Respondent James
+	 hire Respondent Terry
+	 hire Manager Angie
+	 hire Director Kelly
+	 work Respondent Terry
+	 work Manager Angie
+	 work Director Kelly
+	 */
+	// Testing Part Three.
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		int instructionsLength = Integer.parseInt(scanner.nextLine());
+		List<List<String>> instructions = new ArrayList<>();
+		
+		for (int i = 0; i < instructionsLength; i++) {
+			instructions.add(splitWords(scanner.nextLine()));
 		}
 		
-		public boolean escalate(List<String> output) {
-            if (talkingTo != null && rank < MAX_RANKS - 1) {
-                if (endCall(output)) {
-                    rank++;
-                    return true;
-                }
-            }
-            
-            return false;
-        }
-
-		@Override
-		public String toString() {
-			return number;
+		scanner.close();
+		List<String> res = simulateCallCenter(instructions);
+		
+		for (String line : res) {
+			System.out.println(line);
 		}
 	}
-
-	public static abstract class Employee {
-		public CallInstance talkingTo;
-		public String name;
-
-		public Employee(String name) {
-			talkingTo = null;
-			this.name = name;
-		}
-
-		@Override
-		public String toString() {
-			return name;
-		}
-		
-		public static Employee createEmployee(String role, String name) {
-            if (role.equals("Respondent")) {
-                return new Respondent(name);
-            } else if (role.equals("Manager")) {
-                return new Manager(name);
-            } else if (role.equals("Director")) {
-                return new Director(name);
-            }
-            
-            return null;
-        }
-		
-		public abstract int rank();
-		
-		public abstract void work(CallCenter callCenter, List<String> output);
-	}
-
-	public static class Respondent extends Employee {
-		public int performanceRating;
-		
-		public Respondent(String name) {
-            super(name);
-            performanceRating = 0;
-        }
-
-        @Override
-        public String toString() {
-            return String.format("Respondent %s", name);
-        }
-
-        @Override
-        public int rank() {
-            return 0;
-        }
-        
-        @Override
-        public void work(CallCenter callCenter, List<String> output) {
-            performanceRating++;
-        }
-    }
 	
-	public static class Manager extends Employee {
-        public Manager(String name) {
-            super(name);
-        }
-
-        @Override
-        public String toString() {
-            return String.format("Manager %s", name);
-        }
-
-        @Override
-        public int rank() {
-            return 1;
-        }
-        
-        @Override
-        public void work(CallCenter callCenter, List<String> output) {
-            Respondent topWorker = null;
-            
-            for (Employee employee : callCenter.employees.get(0)) {
-                if (employee.talkingTo == null && employee instanceof Respondent) {
-                    Respondent respondent = (Respondent) employee;
-                    
-                    if (topWorker == null || respondent.performanceRating > topWorker.performanceRating) {
-                        topWorker = respondent;
-                    }
-                }
-            }
-            
-            if (topWorker != null) {
-                output.add(String.format("Respondent %s is promoted to Manager under the authority of Manager %s", topWorker.name, name));
-                callCenter.promote(topWorker, "Manager");
-            }
-        }
-    }
-	
-	public static class Director extends Employee {
-        public Director(String name) {
-            super(name);
-        }
-
-        @Override
-        public String toString() {
-            return String.format("Director %s", name);
-        }
-
-        @Override
-        public int rank() {
-            return 2;
-        }
-        
-        @Override
-        public void work(CallCenter callCenter, List<String> output) {
-            output.add(String.format("%s holds a meeting", this.toString()));
-        }
-    }
-	
-	public static class CallCenter {
-		public List<List<Employee>> employees;
-		public Map<String, Employee> employeeMap;
-        public List<Deque<CallInstance>> callQueue;
-        public Map<String, CallInstance> callMap;
-		
-		public CallCenter() {
-			employees = new ArrayList<>();
-            callQueue = new ArrayList<>();
-            
-            for (int i = 0; i < MAX_RANKS; i++) {
-                employees.add(new ArrayList<>());
-                callQueue.add(new ArrayDeque<>());
-            }
-            
-            employeeMap = new HashMap<>();
-            callMap = new HashMap<>();
-		}
-
-		public void hire(Employee employee) {
-            employees.get(employee.rank()).add(employee);
-            employeeMap.put(employee.toString(), employee);
-        }
-		
-		public void remove(Employee employee) {
-            List<Employee> employeeList = employees.get(employee.rank());
-            
-            if (employeeList.contains(employee)) {
-                employeeList.remove(employee);
-                employeeMap.remove(employee.toString());
-            }
-        }
-		
-		public void promote(Employee employee, String newRole) {
-            remove(employee);
-            Employee newEmployee = Employee.createEmployee(newRole, employee.name);
-            hire(newEmployee);
-        }
-
-		public void addNumberToQueue(String number) {
-            if (!callMap.containsKey(number)) {
-                callMap.put(number, new CallInstance(number));
-                callQueue.get(0).offer(callMap.get(number));
-            }
-        }
-
-		public void resolveQueue(List<String> output) {
-            for (int i = MAX_RANKS - 1; i >= 0; i--) {
-                Deque<CallInstance> currentQueue = callQueue.get(i);
-                List<Employee> currentEmployees = employees.get(i);
-                
-                while (!currentQueue.isEmpty()) {
-                    CallInstance top = currentQueue.getFirst();
-                    boolean resolved = false;
-                    
-                    for (Employee employee : currentEmployees) {
-                        if (top.startCall(employee, output)) {
-                            resolved = true;
-                            break;
-                        }
-                    }
-                    
-                    if (resolved) {
-                        currentQueue.poll();
-                    } else {
-                        break;
-                    }
-                }
-            }
-        }
-		
-		public boolean escalate(String phone, List<String> output) {
-            if (callMap.containsKey(phone)) {
-                CallInstance currentCall = callMap.get(phone);
-                
-                if (currentCall.escalate(output)) {
-                    callQueue.get(currentCall.rank).offer(currentCall);
-                    return true;
-                }
-            }
-            
-            return false;
-        }
-	}
-
 	public static List<String> simulateCallCenter(List<List<String>> instructions) {
 		CallCenter callCenter = new CallCenter();
 		List<String> output = new ArrayList<>();
@@ -484,90 +279,5 @@ public class CallCenterProblem {
 
 	public static List<String> splitWords(String s) {
 		return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
-	}
-
-	/*
-	 8
-	 hire James
- 	 hire Angie
-     dispatch 303-1142
-     dispatch 583-9045
-     dispatch 711-4375
-     end 583-9045
-     end 303-1142
-     end 711-4375
-	 */
-	// Testing Part One.
-	/*public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		int instructionsLength = Integer.parseInt(scanner.nextLine());
-		List<List<String>> instructions = new ArrayList<>();
-		
-		for (int i = 0; i < instructionsLength; i++) {
-			instructions.add(splitWords(scanner.nextLine()));
-		}
-		
-		scanner.close();
-		List<String> res = simulateCallCenter(instructions);
-		
-		for (String line : res) {
-			System.out.println(line);
-		}
-	}*/
-	
-	/*
-	 7
-	 hire Respondent James
- 	 hire Manager Angie
-     dispatch 303-1142
-     dispatch 583-9045
-     escalate 303-1142
-     end 303-1142
-     end 583-9045
-	 */
-	// Testing Part Two.
-	/*public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		int instructionsLength = Integer.parseInt(scanner.nextLine());
-		List<List<String>> instructions = new ArrayList<>();
-		
-		for (int i = 0; i < instructionsLength; i++) {
-			instructions.add(splitWords(scanner.nextLine()));
-		}
-		
-		scanner.close();
-		List<String> res = simulateCallCenter(instructions);
-		
-		for (String line : res) {
-			System.out.println(line);
-		}
-	}*/
-	
-	/*
-	 7
-	 hire Respondent James
- 	 hire Respondent Terry
- 	 hire Manager Angie
- 	 hire Director Kelly
- 	 work Respondent Terry
- 	 work Manager Angie
- 	 work Director Kelly
-	 */
-	// Testing Part Three.
-	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		int instructionsLength = Integer.parseInt(scanner.nextLine());
-		List<List<String>> instructions = new ArrayList<>();
-		
-		for (int i = 0; i < instructionsLength; i++) {
-			instructions.add(splitWords(scanner.nextLine()));
-		}
-		
-		scanner.close();
-		List<String> res = simulateCallCenter(instructions);
-		
-		for (String line : res) {
-			System.out.println(line);
-		}
 	}
 }
