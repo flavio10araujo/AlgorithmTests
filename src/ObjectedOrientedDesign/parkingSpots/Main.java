@@ -1,4 +1,9 @@
-package ObjectedOrientedDesign;
+package ObjectedOrientedDesign.parkingSpots;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
 
 /**
  * In this question, we ask you to design a system for a parking lot to keep track of the cars parked in the parking slot. 
@@ -48,7 +53,61 @@ package ObjectedOrientedDesign;
  * 		"Empty",
  * ]
  */
-public class ParkingSpots {
+public class Main {
 
+	/*
+	 6
+	 5
+ 	 park 1 Small Silver BMW
+     park 1 Large Black Nissan
+ 	 print 1
+ 	 print 2
+ 	 print 3
+	 */
+	// Testing Part One
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		int instructionsLength = Integer.parseInt(scanner.nextLine());
+		List<List<String>> instructions = new ArrayList<>();
+		
+		for (int i = 0; i < instructionsLength; i++) {
+			instructions.add(splitWords(scanner.nextLine()));
+		}
+		
+		scanner.close();
+		List<String> res = simulateParkingSpots(instructions);
+		
+		for (String line : res) {
+			System.out.println(line);
+		}
+	}
 	
+	public static List<String> simulateParkingSpots(List<List<String>> instructions) {
+		Parking parking = new Parking(Integer.parseInt(instructions.get(0).get(0)));
+		List<String> output = new ArrayList<>();
+		
+		
+		for (List<String> instruction : instructions) {
+			String command = instruction.get(0);
+			
+			if (command.equals("park")) {
+                parking.parkVehiculeByDescription(Integer.parseInt(instruction.get(1)), instruction.get(2), instruction.get(3), instruction.get(4));
+            }
+			else if (command.equals("remove")) {
+				parking.removeCar(Integer.parseInt(instruction.get(1)));
+            }
+			else if (command.equals("print")) {
+                output.add(parking.printSpot(Integer.parseInt(instruction.get(1))));
+            }
+			else if (command.equals("print_free_spots")) {
+                output.add(parking.printFreeSpots());
+            }
+		}
+		
+		return output;
+	}
+	
+	public static List<String> splitWords(String s) {
+		return s.isEmpty() ? List.of() : Arrays.asList(s.split(" "));
+	}
 }
