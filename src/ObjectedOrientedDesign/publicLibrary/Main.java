@@ -1,17 +1,9 @@
-package ObjectedOrientedDesign;
+package ObjectedOrientedDesign.publicLibrary;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.Set;
 import java.util.function.Function;
-import java.util.function.Predicate;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * In this question, we ask you to design a system for a public library that allows the looking up of books. 
@@ -206,201 +198,69 @@ import java.util.regex.Pattern;
  * For this part, each book has a set of tags and each user has a set of favorite tags. 
  * The only thing to be careful is that TraditionalBook has the traditional-book tag while Magazine has the magazine tag, and they each cannot gain the other.
  */
-public class PublicLibrary {
+public class Main {
 
-	public static abstract class Book {
-		public String title;
-		public String id;
-		public User borrowedBy;
-		public Set<String> tags;
+	/*
+    9
+    register book B-001 "Macbeth" by W. Shakespeare
+ 	 register book B-002 "Hamlet" by W. Shakespeare
+    register book B-003 "The Lord of the Rings" by J. R. R. Tolkien
+    register magazine M-001 "New York Times" Issue 2
+    lookup id B-002
+    lookup title Macbeth
+    lookup author W. Shakespeare
+    lookup author J. R. R. Tolkien
+    lookup title New York Times
+	 */
+	// Testing Part One.
 
-		public static final Set<String> disallowedTags = Set.of("traditional-book", "magazine");
+	/*
+	 11
+	 register book B-001 "Macbeth" by W. Shakespeare
+    register book B-002 "Hamlet" by W. Shakespeare
+    register magazine M-001 "New York Times" Issue 2
+    borrow B-002 John Smith
+    lookup id B-002
+    borrow M-001 John Smith
+    borrow M-001 Jane Doe
+    lookup title New York Times
+    lookup author W. Shakespeare
+    return John Smith
+    lookup title Hamlet
+	 */
+	// Testing Part Two.
 
-		public Book(String title) {
-			this.title = title;
-			this.id = null;
-			this.borrowedBy = null;
-			this.tags = new HashSet<>();
+	/*
+	10
+	register book B-001 "Macbeth" by W. Shakespeare
+    register book B-002 "Hamlet" by W. Shakespeare
+    register magazine M-001 "New York Times" Issue 2
+    tag B-001 tragedy play grade-12
+    tag B-002 tragedy play grade-11
+    tag M-001 news grade-11
+    lookup tags play tragedy
+    favorite traditional-book John Smith
+    favorite grade-11 John Smith
+    lookup suggestion John Smith
+	 */
+	// Testing Part Three.
+	public static void main(String[] args) {
+		Scanner scanner = new Scanner(System.in);
+		int instructionsLength = Integer.parseInt(scanner.nextLine());
+		List<String> instructions = new ArrayList<>();
+		
+		for (int i = 0; i < instructionsLength; i++) {
+			instructions.add(scanner.nextLine());
 		}
-
-		public void addTag(String tag) {
-			if (!disallowedTags.contains(tag)) {
-				tags.add(tag);
-			}
-		}
-	}
-
-	public static class TraditionalBook extends Book {
-		public String author;
-
-		public TraditionalBook(String title, String author) {
-			super(title);
-			this.author = author;
-			this.tags.add("traditional-book");
-		}
-
-		public static TraditionalBook parseDef(String bookRepresentation) {
-			Pattern pattern = Pattern.compile("\"(.*)\" by (.*)");
-			Matcher matcher = pattern.matcher(bookRepresentation);
-
-			if (matcher.find()) {
-				return new TraditionalBook(matcher.group(1), matcher.group(2));
-			} else {
-				return null;
-			}
-		}
-
-		@Override
-		public String toString() {
-			return String.format("\"%s\" by %s", title, author);
-		}
-	}
-
-	public static class Magazine extends Book {
-		public String issueNumber;
-
-		public Magazine(String title, String issueNumber) {
-			super(title);
-			this.issueNumber = issueNumber;
-			this.tags.add("magazine");
-		}
-
-		public static Magazine parseDef(String bookRepresentation) {
-			Pattern pattern = Pattern.compile("\"(.*)\" Issue (.*)");
-			Matcher matcher = pattern.matcher(bookRepresentation);
-			if (matcher.find()) {
-				return new Magazine(matcher.group(1), matcher.group(2));
-			} else {
-				return null;
-			}
-		}
-
-		@Override
-		public String toString() {
-			return String.format("\"%s\" Issue %s", title, issueNumber);
+		
+		scanner.close();
+		List<String> res = simulateLibrary(instructions);
+		
+		for (String line : res) {
+			System.out.println(line);
 		}
 	}
-
-	public static class User {
-		public String name;
-		public Book borrowedBook;
-		public Set<String> favoriteTags;
-
-		public User(String name) {
-			this.name = name;
-			this.borrowedBook = null;
-			this.favoriteTags = new HashSet<>();
-		}
-
-		@Override
-		public String toString() {
-			return name;
-		}
-
-		public void borrowBook(Book book) {
-			if (borrowedBook == null && book.borrowedBy == null) {
-				borrowedBook = book;
-				book.borrowedBy = this;
-			}
-		}
-
-		public void returnBook() {
-			if (borrowedBook != null && borrowedBook.borrowedBy != null) {
-				borrowedBook.borrowedBy = null;
-				borrowedBook = null;
-			}
-		}
-
-		public void addFavoriteTag(String tag) {
-			favoriteTags.add(tag);
-		}
-
-		public int getSuggestionScore(Book book) {
-			int count = 0;
-
-			for (String tag : book.tags) {
-				if (favoriteTags.contains(tag)) {
-					count++;
-				}
-			}
-
-			return count;
-		}
-
-		public int getMaxSuggestionScore(Collection<Book> books) {
-			int max = 0;
-
-			for (Book book : books) {
-				max = Math.max(max, getSuggestionScore(book));
-			}
-
-			return max;
-		}
-	}
-
-	public static class Library {
-		public Map<String, Book> books;
-		public Map<String, User> users;
-
-		public Library() {
-			books = new HashMap<>();
-			users = new HashMap<>();
-		}
-
-		public void registerBook(Book book) {
-			if (!books.containsKey(book.id)) {
-				books.put(book.id, book);
-			}
-		}
-
-		public List<Book> lookupBooks(Predicate<Book> lookupFn) {
-			List<Book> result = new ArrayList<>();
-
-			for (Book book : books.values()) {
-				if (lookupFn.test(book)) {
-					result.add(book);
-				}
-			}
-
-			return result;
-		}
-
-		public User findUser(String name) {
-			if (!users.containsKey(name)) {
-				users.put(name, new User(name));
-			}
-			return users.get(name);
-		}
-	}
-
-	public static void outputBooks(List<Book> bookList, List<String> output, Function<List<Book>, String> multipleMatchOutput) {
-		if (bookList.isEmpty()) {
-			output.add("No such book exists");
-		} else if (bookList.size() == 1) {
-			output.add(bookList.get(0).toString());
-			output.add(String.format("ID: %s", bookList.get(0).id));
-
-			if (bookList.get(0).borrowedBy != null) {
-				output.add(String.format("Borrowed by: %s", bookList.get(0).borrowedBy.toString()));
-			}
-		} else {
-			if (multipleMatchOutput == null) {
-				return;
-			}
-
-			output.add(multipleMatchOutput.apply(bookList));
-			int availableCount = 0;
-
-			for (Book book : bookList) {
-				if (book.borrowedBy == null) {
-					availableCount++;
-				}
-			}
-
-			output.add(String.format("%d book(s) available", availableCount));
-		}
-	}
-
+	
 	public static List<String> simulateLibrary(List<String> instructions) {
 		Library library = new Library();
 		List<String> output = new ArrayList<>();
@@ -431,13 +291,16 @@ public class PublicLibrary {
 				if (splitResult[0].equals("id")) {
 					List<Book> bookList = library.lookupBooks((book) -> book.id.equals(lookupParameter));
 					outputBooks(bookList, output, null);
-				} else if (splitResult[0].equals("title")) {
+				}
+				else if (splitResult[0].equals("title")) {
 					List<Book> bookList = library.lookupBooks((book) -> book.title.equals(lookupParameter));
 					outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the title: %s", outputBookList.size(), lookupParameter));
-				} else if (splitResult[0].equals("author")) {
+				}
+				else if (splitResult[0].equals("author")) {
 					List<Book> bookList = library.lookupBooks((book) -> (book instanceof TraditionalBook) && ((TraditionalBook)(book)).author.equals(lookupParameter));
 					outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the author: %s", outputBookList.size(), lookupParameter));
-				} else if (splitResult[0].equals("tags")) {
+				}
+				else if (splitResult[0].equals("tags")) {
 					String[] tags = lookupParameter.split(" ");
 
 					List<Book> bookList = library.lookupBooks((book) -> {
@@ -451,21 +314,25 @@ public class PublicLibrary {
 					});
 
 					outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the tag(s): %s", outputBookList.size(), lookupParameter));
-				} else if (splitResult[0].equals("suggestion")) {
+				}
+				else if (splitResult[0].equals("suggestion")) {
 					User user = library.findUser(lookupParameter);
 					int maxScore = user.getMaxSuggestionScore(library.books.values());
 					List<Book> bookList = library.lookupBooks((book) -> user.getSuggestionScore(book) > 0 && user.getSuggestionScore(book) == maxScore);
 					outputBooks(bookList, output, (outputBookList) -> String.format("%d books are suggested for: %s", outputBookList.size(), lookupParameter));
 				}
-			} else if (splitResult[0].equals("borrow")) {
+			}
+			else if (splitResult[0].equals("borrow")) {
 				splitResult = splitResult[1].split(" ", 2);
 
 				if (library.books.containsKey(splitResult[0])) {
 					library.findUser(splitResult[1]).borrowBook(library.books.get(splitResult[0]));
 				}
-			} else if (splitResult[0].equals("return")) {
+			}
+			else if (splitResult[0].equals("return")) {
 				library.findUser(splitResult[1]).returnBook();
-			} else if (splitResult[0].equals("tag")) {
+			}
+			else if (splitResult[0].equals("tag")) {
 				splitResult = splitResult[1].split(" ");
 
 				if (library.books.containsKey(splitResult[0])) {
@@ -475,7 +342,8 @@ public class PublicLibrary {
 						book.addTag(splitResult[i]);
 					}
 				}
-			} else if (splitResult[0].equals("favorite")) {
+			}
+			else if (splitResult[0].equals("favorite")) {
 				splitResult = splitResult[1].split(" ", 2);
 				library.findUser(splitResult[1]).addFavoriteTag(splitResult[0]);
 			}
@@ -483,98 +351,34 @@ public class PublicLibrary {
 
 		return output;
 	}
-
-	/*
-     9
-     register book B-001 "Macbeth" by W. Shakespeare
-  	 register book B-002 "Hamlet" by W. Shakespeare
-     register book B-003 "The Lord of the Rings" by J. R. R. Tolkien
-     register magazine M-001 "New York Times" Issue 2
-     lookup id B-002
-     lookup title Macbeth
-     lookup author W. Shakespeare
-     lookup author J. R. R. Tolkien
-     lookup title New York Times
-	 */
-	// Testing Part One.
-	/*public static void main(String[] args) {
-        Scanner scanner = new Scanner(System.in);
-        int instructionsLength = Integer.parseInt(scanner.nextLine());
-        List<String> instructions = new ArrayList<>();
-
-        for (int i = 0; i < instructionsLength; i++) {
-            instructions.add(scanner.nextLine());
-        }
-
-        scanner.close();
-
-        List<String> res = simulateLibrary(instructions);
-
-        for (String line : res) {
-            System.out.println(line);
-        }
-    }*/
-
-	/*
-	 11
-	 register book B-001 "Macbeth" by W. Shakespeare
-     register book B-002 "Hamlet" by W. Shakespeare
-     register magazine M-001 "New York Times" Issue 2
-     borrow B-002 John Smith
-     lookup id B-002
-     borrow M-001 John Smith
-     borrow M-001 Jane Doe
-     lookup title New York Times
-     lookup author W. Shakespeare
-     return John Smith
-     lookup title Hamlet
-	 */
-	// Testing Part Two.
-	/*public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		int instructionsLength = Integer.parseInt(scanner.nextLine());
-		List<String> instructions = new ArrayList<>();
-
-		for (int i = 0; i < instructionsLength; i++) {
-			instructions.add(scanner.nextLine());
+	
+	public static void outputBooks(List<Book> bookList, List<String> output, Function<List<Book>, String> multipleMatchOutput) {
+		if (bookList.isEmpty()) {
+			output.add("No such book exists");
 		}
+		else if (bookList.size() == 1) {
+			output.add(bookList.get(0).toString());
+			output.add(String.format("ID: %s", bookList.get(0).id));
 
-		scanner.close();
-		List<String> res = simulateLibrary(instructions);
-
-		for (String line : res) {
-			System.out.println(line);
+			if (bookList.get(0).borrowedBy != null) {
+				output.add(String.format("Borrowed by: %s", bookList.get(0).borrowedBy.toString()));
+			}
 		}
-	}*/
+		else {
+			if (multipleMatchOutput == null) {
+				return;
+			}
 
-	/*
-	 10
-	 register book B-001 "Macbeth" by W. Shakespeare
-     register book B-002 "Hamlet" by W. Shakespeare
-     register magazine M-001 "New York Times" Issue 2
-     tag B-001 tragedy play grade-12
-     tag B-002 tragedy play grade-11
-     tag M-001 news grade-11
-     lookup tags play tragedy
-     favorite traditional-book John Smith
-     favorite grade-11 John Smith
-     lookup suggestion John Smith
-	 */
-	// Testing Part Three.
-	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		int instructionsLength = Integer.parseInt(scanner.nextLine());
-		List<String> instructions = new ArrayList<>();
-		
-		for (int i = 0; i < instructionsLength; i++) {
-			instructions.add(scanner.nextLine());
-		}
-		
-		scanner.close();
-		List<String> res = simulateLibrary(instructions);
-		
-		for (String line : res) {
-			System.out.println(line);
+			output.add(multipleMatchOutput.apply(bookList));
+			int availableCount = 0;
+
+			for (Book book : bookList) {
+				if (book.borrowedBy == null) {
+					availableCount++;
+				}
+			}
+
+			output.add(String.format("%d book(s) available", availableCount));
 		}
 	}
 }
