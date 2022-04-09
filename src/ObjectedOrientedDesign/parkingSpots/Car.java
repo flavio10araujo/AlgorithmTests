@@ -14,18 +14,22 @@ public class Car extends Vehicule {
 		this.size = size;
 	}
 	
+	@Override
 	public String getColor() {
 		return color;
 	}
 	
+	@Override
 	public void setColor(String color) {
 		this.color = color;
 	}
 	
+	@Override
 	public String getBrand() {
 		return brand;
 	}
 	
+	@Override
 	public void setBrand(String brand) {
 		this.brand = brand;
 	}
