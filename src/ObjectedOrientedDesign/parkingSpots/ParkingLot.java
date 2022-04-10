@@ -1,12 +1,19 @@
 package ObjectedOrientedDesign.parkingSpots;
 
-public class Parking {
+import java.util.List;
+
+public class ParkingLot {
 
 	private ParkingSpot[] parkingSpots;
 	
-	public Parking(int parkingSpotsQtd) {
+	public ParkingLot(int parkingSpotsQtd) {
 		parkingSpots = new ParkingSpot[parkingSpotsQtd];
 		this.initializeSpots();
+	}
+	
+	public ParkingLot(List<String> parkingSpotsSize) {
+		parkingSpots = new ParkingSpot[parkingSpotsSize.size()];
+		this.initializeSpotsBySizes(parkingSpotsSize);
 	}
 	
 	private void initializeSpots() {
@@ -15,9 +22,15 @@ public class Parking {
 		}
 	}
 	
+	private void initializeSpotsBySizes(List<String> parkingSpotsSize) {
+		for (int i = 0; i < parkingSpots.length; i++) {
+			parkingSpots[i] = new ParkingSpot(parkingSpotsSize.get(i));
+		}
+	}
+	
 	public void parkVehiculeByDescription(int parkingSpotID, String size, String color, String brand) {
 		Vehicule vehicule = new Car();
-		((Car) vehicule).setSize(CarSize.valueOf(size));
+		((Car) vehicule).setParkingSpotSize(ParkingSpotSize.valueOf(size));
 		((Car) vehicule).setColor(color);
 		((Car) vehicule).setBrand(brand);
 		
@@ -29,7 +42,10 @@ public class Parking {
 			ParkingSpot parkingSpot = parkingSpots[parkingSpotID];
 			int nextSpot = parkingSpotID;
 			
-			while(parkingSpot.getVehicule() != null) {
+			// while:
+			// 		there is already a car at the parking spot
+			//		OR the parking spot size is smaller than the vehicule size.
+			while(parkingSpot.getVehicule() != null || parkingSpot.getSize().value < vehicule.getParkingSpotSize().value) {
 				nextSpot++;
 				
 				if (nextSpot == parkingSpots.length) {
@@ -44,7 +60,7 @@ public class Parking {
 				parkingSpot = parkingSpots[nextSpot];
 			}
 			
-			if (parkingSpot.getVehicule() == null) {
+			if (parkingSpot.getVehicule() == null || parkingSpot.getSize().value >= vehicule.getParkingSpotSize().value) {
 				parkingSpot.setVehicule(vehicule);
 			}
 		}

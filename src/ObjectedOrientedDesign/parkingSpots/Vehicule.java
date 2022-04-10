@@ -9,4 +9,6 @@ public abstract class Vehicule {
 	public abstract String getBrand();
 	
 	public abstract void setBrand(String brand);
+	
+	public abstract ParkingSpotSize getParkingSpotSize();
 }

@@ -2,10 +2,15 @@ package ObjectedOrientedDesign.parkingSpots;
 
 public class ParkingSpot {
 
+	private ParkingSpotSize size;
 	private Vehicule vehicule;
 	
 	public ParkingSpot() {
 		
+	}
+	
+	public ParkingSpot(String size) {
+		this.size = ParkingSpotSize.valueOf(size);
 	}
 
 	public Vehicule getVehicule() {
@@ -22,5 +27,13 @@ public class ParkingSpot {
 		} else {
 			return vehicule.toString();
 		}
+	}
+
+	public ParkingSpotSize getSize() {
+		return size;
+	}
+
+	public void setSize(ParkingSpotSize size) {
+		this.size = size;
 	}
 }

@@ -52,6 +52,21 @@ import java.util.Scanner;
  * 		"Large Black Nissan",
  * 		"Empty",
  * ]
+ * 
+ * 
+ * Part Two
+ * 
+ * In order to save space, there are new restrictions in place in terms of what cars are allowed to park at which spots. 
+ * There is now a size restriction for each parking spots, from "Small", "Medium", or "Large". 
+ * Only cars with less or equal size than the spot are allowed to park there. 
+ * Remember if a car cannot park at a spot it will try to find the next available spot down the parking lot, if one exists.
+ * 
+ * Parameters
+ * spots: A list of strings representing the size of the parking spots from spot 0 to n - 1.
+ * instructions: A string matrix representing the instructions.
+ * 
+ * Result
+ * A list of strings representing the printed output.
  */
 public class Main {
 
@@ -65,6 +80,18 @@ public class Main {
  	 print 3
 	 */
 	// Testing Part One
+	
+	/*
+	 6
+	 Small Medium Medium Medium Large
+	 park 1 Small Silver BMW
+     park 1 Large Black Nissan
+	 print 1
+	 print 2
+	 print 4
+	 */
+	// Testing Part Two
+	
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		int instructionsLength = Integer.parseInt(scanner.nextLine());
@@ -81,9 +108,15 @@ public class Main {
 			System.out.println(line);
 		}
 	}
-	
+
 	public static List<String> simulateParkingSpots(List<List<String>> instructions) {
-		Parking parking = new Parking(Integer.parseInt(instructions.get(0).get(0)));
+		
+		List<String> parkingSpotsSize = new ArrayList<>();
+		for (String instruction : instructions.get(0)) {
+			parkingSpotsSize.add(instruction);
+		}
+		
+		ParkingLot parking = new ParkingLot(parkingSpotsSize);
 		List<String> output = new ArrayList<>();
 		
 		

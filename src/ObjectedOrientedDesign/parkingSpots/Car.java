@@ -3,6 +3,7 @@ package ObjectedOrientedDesign.parkingSpots;
 public class Car extends Vehicule {
 
 	private CarSize size;
+	private ParkingSpotSize parkingSpotSize;
 	private String color;
 	private String brand;
 	
@@ -35,6 +36,15 @@ public class Car extends Vehicule {
 	}
 	
 	public String toString() {
-		return String.format("%s %s %s", this.size, this.color, this.brand);
+		return String.format("%s %s %s", this.parkingSpotSize, this.color, this.brand);
+	}
+
+	public void setParkingSpotSize(ParkingSpotSize parkingSpotSize) {
+		this.parkingSpotSize = parkingSpotSize;
+	}
+	
+	@Override
+	public ParkingSpotSize getParkingSpotSize() {
+		return this.parkingSpotSize;
 	}
 }
