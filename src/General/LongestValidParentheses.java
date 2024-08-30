@@ -29,18 +29,19 @@ import java.util.Stack;
 public class LongestValidParentheses {
 
     public static void main(String[] args) {
-        //String s = "(()"; // 2
+        String s = "(()"; // 2
         //String s = ")()())"; // 4
         //String s = ")("; // 0
         //String s = "()(())"; // 6
         //String s = "()(()"; // 2
         //String s = ")()())()()("; // 4
         //String s = ")))()"; // 2
-        String s = ")()(()()("; // 4
+        //String s = ")()(()()("; // 4
+        //String s = ")()))()()("; // 4
 
-        System.out.println(longestValidParenthesesNaiveSolution(s));
-        System.out.println(solution01(s));
-        System.out.println(solution02(s));
+        //System.out.println(longestValidParenthesesNaiveSolution(s));
+        //System.out.println(solution01(s));
+        //System.out.println(solution02(s));
         System.out.println(solution03(s));
     }
 
@@ -168,22 +169,17 @@ public class LongestValidParentheses {
      * @return
      */
     public static int solution03(String s) {
-        int open = 0, close = 0;
-        int max = 0;
+        int max = 0, open = 0, close = 0;
 
-        // 0 -- n
         for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-
-            if (c == '(') {
+            if (s.charAt(i) == '(') {
                 open++;
             } else {
                 close++;
             }
 
             if (open == close) {
-                int len = open + close;
-                max = Math.max(max, len);
+                max = Math.max(max, open + close);
             } else if (close > open) {
                 open = close = 0;
             }
@@ -191,19 +187,16 @@ public class LongestValidParentheses {
 
         open = close = 0;
 
-        // n -- 0
+        // We need this second for, otherwise it would not work for "(()" for example.
         for (int i = s.length() - 1; i >= 0; i--) {
-            char c = s.charAt(i);
-
-            if (c == '(') {
+            if (s.charAt(i) == '(') {
                 open++;
             } else {
                 close++;
             }
 
             if (open == close) {
-                int len = open + close;
-                max = Math.max(max, len);
+                max = Math.max(max, open + close);
             } else if (open > close) {
                 open = close = 0;
             }
